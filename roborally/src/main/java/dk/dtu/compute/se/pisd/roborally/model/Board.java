@@ -35,10 +35,11 @@ import static dk.dtu.compute.se.pisd.roborally.model.Phase.INITIALISATION;
  * @author Ekkart Kindler, ekki@dtu.dk
  *
  */
-public class Board extends Subject {
+public class    Board extends Subject {
 
     public final int width;
 
+    private int totalMoves = 0;
     public final int height;
 
     private Integer gameId;
@@ -211,7 +212,16 @@ public class Board extends Subject {
     }
 
     public String getStatusMessage() {
+        return "Phase: " + getPhase().name() +
+                ", Player = " + getCurrentPlayer().getName() +
+                ", Step: " + getStep() +
+                ", Total Moves:" + getTotalMoves();
+    }
+    public int getTotalMoves() {
+        return totalMoves;
+    }
 
-        return "";
+    public void setTotalMoves(int totalMoves) {
+        this.totalMoves = totalMoves;
     }
 }
