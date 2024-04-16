@@ -69,6 +69,10 @@ public class    Board extends Subject {
         this.stepMode = false;
     }
 
+    public List<Player> getPlayers() {
+        return players;
+    }
+
     public Integer getGameId() {
         return gameId;
     }

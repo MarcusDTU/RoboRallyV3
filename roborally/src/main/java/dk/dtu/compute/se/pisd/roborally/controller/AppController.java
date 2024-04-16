@@ -21,6 +21,7 @@
  */
 package dk.dtu.compute.se.pisd.roborally.controller;
 
+import com.google.gson.GsonBuilder;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Observer;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 
@@ -29,6 +30,7 @@ import dk.dtu.compute.se.pisd.roborally.RoboRally;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 
+import dk.dtu.compute.se.pisd.roborally.model.PlayerData;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -36,10 +38,13 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-
+import com.google.gson.Gson;
 /**
  * ...
  *
@@ -94,16 +99,35 @@ public class AppController implements Observer {
     }
 
     public void saveGame() {
-        // XXX needs to be implemented eventually
+        if (gameController != null && gameController.board != null) {
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            List<PlayerData> playersData = new ArrayList<>();
+            for (Player player : gameController.board.getPlayers()) {
+                if (player != null && player.getSpace() != null) {
+                    playersData.add(new PlayerData(
+                            player.getName(),
+                            player.getSpace().x,
+                            player.getSpace().y,
+                            player.getColor()
+                    ));
+                }
+            }
+
+            try (FileWriter writer = new FileWriter("gameSave.json")) {
+                gson.toJson(playersData, writer);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void loadGame() {
-        // XXX needs to be implemented eventually
-        // for now, we just create a new game
-        if (gameController == null) {
-            newGame();
+            // XXX needs to be implemented eventually
+            // for now, we just create a new game
+            if (gameController == null) {
+                newGame();
+            }
         }
-    }
 
     /**
      * Stop playing the current game, giving the user the option to save
