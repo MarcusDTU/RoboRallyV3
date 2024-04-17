@@ -214,7 +214,7 @@ public class GameController {
                     break;
                 case FAST_FAST_FORWARD:
                     this.fastForward(player);
-                    this.fastForward(player);
+                    this.moveForward(player);
                     break;
                 case U_TURN:
                     this.turnRight(player);
