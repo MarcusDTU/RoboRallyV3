@@ -220,6 +220,12 @@ public class GameController {
                     this.turnRight(player);
                     this.turnRight(player);
                     break;
+                case AGAIN:
+                    // DO NOTHING (for now)
+                    break;
+                case POWER_UP:
+                    // DO NOTHING (for now)
+                    break;
                 default:
                     // DO NOTHING (for now)
             }
