@@ -34,7 +34,7 @@ public class GameController {
 
     final public Board board;
 
-    private DiscardPile discardPile;
+    private DiscardPile discardPile = new DiscardPile();
 
     public GameController(Board board) {
         this.board = board;
@@ -209,30 +209,20 @@ public class GameController {
                     break;
                 case RIGHT:
                     this.turnRight(player);
-                    discardPile.pile.add(command);
-                    System.out.println(discardPile.pile);
                     break;
                 case LEFT:
                     this.turnLeft(player);
-                    discardPile.pile.add(command);
-                    System.out.println(discardPile.pile);
                     break;
                 case FAST_FORWARD:
                     this.fastForward(player);
-                    discardPile.pile.add(command);
-                    System.out.println(discardPile.pile);
                     break;
                 case FAST_FAST_FORWARD:
                     this.fastForward(player);
                     this.moveForward(player);
-                    discardPile.pile.add(command);
-                    System.out.println(discardPile.pile);
                     break;
                 case U_TURN:
                     this.turnRight(player);
                     this.turnRight(player);
-                    discardPile.pile.add(command);
-                    System.out.println(discardPile.pile);
                     break;
                 case AGAIN:
                     // DO NOTHING (for now)
@@ -243,6 +233,8 @@ public class GameController {
                 default:
                     // DO NOTHING (for now)
             }
+            discardPile.pile.add(command);
+            System.out.println(discardPile.pile);
         }
     }
 
