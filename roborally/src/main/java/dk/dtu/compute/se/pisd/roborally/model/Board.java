@@ -39,7 +39,8 @@ public class    Board extends Subject {
 
     public final int width;
 
-    private int totalNumberOfCards = 50;
+    private final int MAX_NUMBER_OF_CARDS = getPlayersNumber() * 9;
+    private int currentNumberOfCards = MAX_NUMBER_OF_CARDS;
     private int totalMoves = 0;
     public final int height;
 
@@ -83,13 +84,16 @@ public class    Board extends Subject {
             }
         }
     }
-    public int getTotalNumberOfCards() {
-        return totalNumberOfCards;
+    public int getCurrentNumberOfCards() {
+        return currentNumberOfCards;
     }
     public void useCard() {
-        totalNumberOfCards--;
+        currentNumberOfCards--;
     }
 
+    public void resetCards() {
+        currentNumberOfCards = MAX_NUMBER_OF_CARDS;
+    }
     public Space getSpace(int x, int y) {
         if (x >= 0 && x < width &&
                 y >= 0 && y < height) {

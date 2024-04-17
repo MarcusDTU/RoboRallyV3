@@ -233,6 +233,8 @@ public class GameController {
             }
             player.discardedPile.pile.add(command);
             System.out.println(player.getName()+player.discardedPile.pile);
+            board.useCard();
+            System.out.println(board.getCurrentNumberOfCards());
         }
     }
 
@@ -253,6 +255,15 @@ public class GameController {
         board.setPhase(Phase.PROGRAMMING);
         board.setCurrentPlayer(board.getPlayer(0));
         board.setStep(0);
+
+        if(board.getCurrentNumberOfCards() <= 0){
+            for(int i = 0; i < board.getPlayersNumber(); i++){
+                Player player = board.getPlayer(i);
+                player.discardedPile.pile.clear();
+
+            }
+            board.resetCards();
+        }
 
         for (int i = 0; i < board.getPlayersNumber(); i++) {
             Player player = board.getPlayer(i);
