@@ -22,6 +22,7 @@
 package dk.dtu.compute.se.pisd.roborally.controller;
 
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Observer;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 
@@ -31,6 +32,7 @@ import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 
 import dk.dtu.compute.se.pisd.roborally.model.PlayerData;
+import dk.dtu.compute.se.pisd.roborally.model.Space;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -38,8 +40,10 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -120,7 +124,7 @@ public class AppController implements Observer {
             }
         }
     }
-
+/*
     public void loadGame() {
             // XXX needs to be implemented eventually
             // for now, we just create a new game
@@ -128,6 +132,42 @@ public class AppController implements Observer {
                 newGame();
             }
         }
+*/
+    // Load the player's state from a JSON file and update the game state
+    public void loadGame() {
+        Gson gson = new Gson();
+        Type playersListType = new TypeToken<ArrayList<PlayerData>>(){}.getType();
+        try (FileReader reader = new FileReader("gameSave.json")) {
+            List<PlayerData> playersData = gson.fromJson(reader, playersListType);
+            if (!playersData.isEmpty()) {
+                if (gameController != null) {
+                    if (!stopGame()) {
+                        return;
+                    }
+                }
+
+                Board board = new Board(8,8);
+                gameController = new GameController(board);
+
+                for (PlayerData playerData : playersData) {
+                    Space space = board.getSpace(playerData.getX(), playerData.getY());
+                    Player player = new Player(board, playerData.getColor(), playerData.getName());
+                    player.setSpace(space);
+                    board.addPlayer(player);
+                }
+                gameController.startProgrammingPhase();
+                roboRally.createBoardView(gameController);
+
+                if (!board.getPlayers().isEmpty()) {
+                    board.setCurrentPlayer(board.getPlayers().get(0));
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
     /**
      * Stop playing the current game, giving the user the option to save
