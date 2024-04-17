@@ -34,6 +34,8 @@ public class GameController {
 
     final public Board board;
 
+    private DiscardPile discardPile;
+
     public GameController(Board board) {
         this.board = board;
     }
@@ -202,23 +204,35 @@ public class GameController {
             switch (command) {
                 case FORWARD:
                     this.moveForward(player);
+                    discardPile.pile.add(command);
+                    System.out.println(discardPile.pile);
                     break;
                 case RIGHT:
                     this.turnRight(player);
+                    discardPile.pile.add(command);
+                    System.out.println(discardPile.pile);
                     break;
                 case LEFT:
                     this.turnLeft(player);
+                    discardPile.pile.add(command);
+                    System.out.println(discardPile.pile);
                     break;
                 case FAST_FORWARD:
                     this.fastForward(player);
+                    discardPile.pile.add(command);
+                    System.out.println(discardPile.pile);
                     break;
                 case FAST_FAST_FORWARD:
                     this.fastForward(player);
                     this.moveForward(player);
+                    discardPile.pile.add(command);
+                    System.out.println(discardPile.pile);
                     break;
                 case U_TURN:
                     this.turnRight(player);
                     this.turnRight(player);
+                    discardPile.pile.add(command);
+                    System.out.println(discardPile.pile);
                     break;
                 case AGAIN:
                     // DO NOTHING (for now)
