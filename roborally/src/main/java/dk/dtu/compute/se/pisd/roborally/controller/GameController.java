@@ -34,7 +34,7 @@ public class GameController {
 
     final public Board board;
 
-    private DiscardPile discardPile = new DiscardPile();
+    //private DiscardPile discardPile = new DiscardPile();
 
     public GameController(Board board) {
         this.board = board;
@@ -231,8 +231,10 @@ public class GameController {
                 default:
                     // DO NOTHING (for now)
             }
-            discardPile.pile.add(command);
-            System.out.println(discardPile.pile);
+            player.discardedPile.pile.add(command);
+            System.out.println(player.discardedPile.pile);
+            //discardPile.pile.add(command);
+            //System.out.println(discardPile.pile);
         }
     }
 

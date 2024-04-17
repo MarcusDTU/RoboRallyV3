@@ -38,7 +38,7 @@ public class Player extends Subject {
     final public static int NO_CARDS = 8;
 
     final public Board board;
-
+    public DiscardPile discardedPile = new DiscardPile();
     private String name;
     private String color;
 
