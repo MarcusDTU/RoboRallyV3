@@ -39,6 +39,7 @@ public class    Board extends Subject {
 
     public final int width;
 
+    private int totalNumberOfCards = 50;
     private int totalMoves = 0;
     public final int height;
 
@@ -81,6 +82,12 @@ public class    Board extends Subject {
                 throw new IllegalStateException("A game with a set id may not be assigned a new id!");
             }
         }
+    }
+    public int getTotalNumberOfCards() {
+        return totalNumberOfCards;
+    }
+    public void useCard() {
+        totalNumberOfCards--;
     }
 
     public Space getSpace(int x, int y) {

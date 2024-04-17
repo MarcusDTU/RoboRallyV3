@@ -232,9 +232,7 @@ public class GameController {
                     // DO NOTHING (for now)
             }
             player.discardedPile.pile.add(command);
-            System.out.println(player.discardedPile.pile);
-            //discardPile.pile.add(command);
-            //System.out.println(discardPile.pile);
+            System.out.println(player.getName()+player.discardedPile.pile);
         }
     }
 
