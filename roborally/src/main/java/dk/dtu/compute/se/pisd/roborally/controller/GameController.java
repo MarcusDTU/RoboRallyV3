@@ -204,8 +204,6 @@ public class GameController {
             switch (command) {
                 case FORWARD:
                     this.moveForward(player);
-                    discardPile.pile.add(command);
-                    System.out.println(discardPile.pile);
                     break;
                 case RIGHT:
                     this.turnRight(player);
