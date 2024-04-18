@@ -22,17 +22,16 @@
 package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.roborally.controller.AppController;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
+import javafx.stage.FileChooser;
 
+import java.io.File;
 import java.io.IOException;
 
 /**
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public class RoboRallyMenuBar extends MenuBar {
 
@@ -57,7 +56,7 @@ public class RoboRallyMenuBar extends MenuBar {
         this.getMenus().add(controlMenu);
 
         newGame = new MenuItem("New Game");
-        newGame.setOnAction( e -> {
+        newGame.setOnAction(e -> {
             try {
                 this.appController.newGame();
             } catch (IOException ex) {
@@ -67,7 +66,7 @@ public class RoboRallyMenuBar extends MenuBar {
         controlMenu.getItems().add(newGame);
 
         stopGame = new MenuItem("Stop Game");
-        stopGame.setOnAction( e -> {
+        stopGame.setOnAction(e -> {
             try {
                 this.appController.stopGame();
             } catch (IOException ex) {
@@ -77,9 +76,17 @@ public class RoboRallyMenuBar extends MenuBar {
         controlMenu.getItems().add(stopGame);
 
         saveGame = new MenuItem("Save Game");
-        saveGame.setOnAction( e -> {
+        saveGame.setOnAction(e -> {
             try {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Game Saved");
+                alert.setHeaderText(null);
+                alert.setContentText("The game has been saved successfully!");
+
+                // Show the alert
+                alert.showAndWait();
                 this.appController.saveGame();
+
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -87,9 +94,14 @@ public class RoboRallyMenuBar extends MenuBar {
         controlMenu.getItems().add(saveGame);
 
         loadGame = new MenuItem("Load Game");
-        loadGame.setOnAction( e -> {
+        loadGame.setOnAction(e -> {
             try {
-                this.appController.loadGame();
+                FileChooser fileChooser = new FileChooser();
+                fileChooser.setTitle("Open Resource File");
+                fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+                fileChooser.getExtensionFilters().add(
+                        new FileChooser.ExtensionFilter("JSON Files", "*.json"));
+                this.appController.loadGame(fileChooser.showOpenDialog(null).getAbsolutePath());
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -97,7 +109,7 @@ public class RoboRallyMenuBar extends MenuBar {
         controlMenu.getItems().add(loadGame);
 
         exitApp = new MenuItem("Exit");
-        exitApp.setOnAction( e -> {
+        exitApp.setOnAction(e -> {
             try {
                 this.appController.exit();
             } catch (IOException ex) {

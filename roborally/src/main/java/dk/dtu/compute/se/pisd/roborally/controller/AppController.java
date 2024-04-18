@@ -38,12 +38,10 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -103,18 +101,23 @@ public class AppController implements Observer {
     public void saveGame() throws IOException {
         Board board = gameController.board;
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-        FileWriter fileWriter = new FileWriter("gameData.json");
+        String homeFolder = System.getProperty("user.home");
+        FileWriter fileWriter = new FileWriter(homeFolder + "\\gameData.json");
         if (board != null) {
             fileWriter.append(gson.toJson(board));
         }
         fileWriter.close();
     }
 
-    public void loadGame() throws IOException {
+    public void loadGame(String path) throws IOException {
         Gson gson = new Gson();
-        Path data = Path.of("gameData.json");
+        Path data = Path.of(path);
 
         Board board = gson.fromJson(Files.readString(data), Board.class);
+        gameController = new GameController(board);
+        //add if statements here later when other phases are added
+        gameController.startProgrammingPhase();
+        roboRally.createBoardView(gameController);
     }
 
     /**
