@@ -21,6 +21,7 @@
  */
 package dk.dtu.compute.se.pisd.roborally.model;
 
+import com.google.gson.annotations.Expose;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import org.jetbrains.annotations.NotNull;
 
@@ -34,18 +35,26 @@ import static dk.dtu.compute.se.pisd.roborally.model.Heading.SOUTH;
  */
 public class Player extends Subject {
 
+    @Expose
     final public static int NO_REGISTERS = 5;
+    @Expose
     final public static int NO_CARDS = 8;
 
     final public Board board;
 
+    @Expose
     private String name;
+    @Expose
     private String color;
 
+    @Expose
     private Space space;
+    @Expose
     private Heading heading = SOUTH;
 
+    @Expose
     private CommandCardField[] program;
+    @Expose
     private CommandCardField[] cards;
 
     public Player(@NotNull Board board, String color, @NotNull String name) {

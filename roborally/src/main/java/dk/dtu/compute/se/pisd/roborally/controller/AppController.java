@@ -21,6 +21,8 @@
  */
 package dk.dtu.compute.se.pisd.roborally.controller;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Observer;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 
@@ -36,6 +38,12 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -44,7 +52,6 @@ import java.util.Optional;
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public class AppController implements Observer {
 
@@ -59,7 +66,7 @@ public class AppController implements Observer {
         this.roboRally = roboRally;
     }
 
-    public void newGame() {
+    public void newGame() throws IOException {
         ChoiceDialog<Integer> dialog = new ChoiceDialog<>(PLAYER_NUMBER_OPTIONS.get(0), PLAYER_NUMBER_OPTIONS);
         dialog.setTitle("Player number");
         dialog.setHeaderText("Select number of players");
@@ -76,7 +83,7 @@ public class AppController implements Observer {
 
             // XXX the board should eventually be created programmatically or loaded from a file
             //     here we just create an empty board with the required number of players.
-            Board board = new Board(8,8);
+            Board board = new Board(8, 8);
             gameController = new GameController(board);
             int no = result.get();
             for (int i = 0; i < no; i++) {
@@ -93,16 +100,21 @@ public class AppController implements Observer {
         }
     }
 
-    public void saveGame() {
-        // XXX needs to be implemented eventually
+    public void saveGame() throws IOException {
+        Board board = gameController.board;
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+        FileWriter fileWriter = new FileWriter("gameData.json");
+        if (board != null) {
+            fileWriter.append(gson.toJson(board));
+        }
+        fileWriter.close();
     }
 
-    public void loadGame() {
-        // XXX needs to be implemented eventually
-        // for now, we just create a new game
-        if (gameController == null) {
-            newGame();
-        }
+    public void loadGame() throws IOException {
+        Gson gson = new Gson();
+        Path data = Path.of("gameData.json");
+
+        Board board = gson.fromJson(Files.readString(data), Board.class);
     }
 
     /**
@@ -114,7 +126,7 @@ public class AppController implements Observer {
      *
      * @return true if the current game was stopped, false otherwise
      */
-    public boolean stopGame() {
+    public boolean stopGame() throws IOException {
         if (gameController != null) {
 
             // here we save the game (without asking the user).
@@ -127,7 +139,7 @@ public class AppController implements Observer {
         return false;
     }
 
-    public void exit() {
+    public void exit() throws IOException {
         if (gameController != null) {
             Alert alert = new Alert(AlertType.CONFIRMATION);
             alert.setTitle("Exit RoboRally?");

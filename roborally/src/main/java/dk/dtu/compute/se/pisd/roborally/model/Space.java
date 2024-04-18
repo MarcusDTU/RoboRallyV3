@@ -21,6 +21,7 @@
  */
 package dk.dtu.compute.se.pisd.roborally.model;
 
+import com.google.gson.annotations.Expose;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 
@@ -42,7 +43,9 @@ public class Space extends Subject {
 
     public final Board board;
 
+    @Expose
     public final int x;
+    @Expose
     public final int y;
 
     public Space(Board board, int x, int y) {

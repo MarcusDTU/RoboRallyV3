@@ -21,6 +21,7 @@
  */
 package dk.dtu.compute.se.pisd.roborally.model;
 
+import com.google.gson.annotations.Expose;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import org.jetbrains.annotations.NotNull;
 
@@ -37,23 +38,32 @@ import static dk.dtu.compute.se.pisd.roborally.model.Phase.INITIALISATION;
  */
 public class    Board extends Subject {
 
+    @Expose
     public final int width;
 
+    @Expose
     private int totalMoves = 0;
+    @Expose
     public final int height;
 
+    @Expose
     private Integer gameId;
 
     private final Space[][] spaces;
 
+    @Expose
     private final List<Player> players = new ArrayList<>();
 
+    @Expose
     private Player current;
 
+    @Expose
     private Phase phase = INITIALISATION;
 
+    @Expose
     private int step = 0;
 
+    @Expose
     private boolean stepMode;
 
     public Board(int width, int height) {
