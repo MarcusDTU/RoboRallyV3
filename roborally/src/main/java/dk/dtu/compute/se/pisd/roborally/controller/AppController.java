@@ -38,6 +38,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -102,7 +103,7 @@ public class AppController implements Observer {
         Board board = gameController.board;
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         String homeFolder = System.getProperty("user.home");
-        FileWriter fileWriter = new FileWriter(homeFolder + "\\gameData.json");
+        FileWriter fileWriter = new FileWriter(homeFolder + File.separator + "gameData.json");
         if (board != null) {
             fileWriter.append(gson.toJson(board));
         }
