@@ -234,4 +234,8 @@ public class    Board extends Subject {
     public void setTotalMoves(int totalMoves) {
         this.totalMoves = totalMoves;
     }
+
+    public Player[] getPlayers() {
+        return players.toArray(new Player[0]);
+    }
 }

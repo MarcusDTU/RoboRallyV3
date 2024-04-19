@@ -114,6 +114,18 @@ public class AppController implements Observer {
         Path data = Path.of(path);
 
         Board board = gson.fromJson(Files.readString(data), Board.class);
+
+        for (Player player : board.getPlayers()) {
+            player.attach(this);
+            for (int i = 0; i < Player.NO_REGISTERS; i++) {
+                player.getProgramField(i).attach(this);
+            }
+            for (int i = 0; i < Player.NO_CARDS; i++) {
+                player.getCardField(i).attach(this);
+            }
+        }
+        board.attach(this);
+
         gameController = new GameController(board);
         //add if statements here later when other phases are added
         gameController.startProgrammingPhase();
