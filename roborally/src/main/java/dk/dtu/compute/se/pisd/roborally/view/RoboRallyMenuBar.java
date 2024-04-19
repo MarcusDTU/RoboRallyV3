@@ -102,6 +102,15 @@ public class RoboRallyMenuBar extends MenuBar {
                 fileChooser.getExtensionFilters().add(
                         new FileChooser.ExtensionFilter("JSON Files", "*.json"));
                 this.appController.loadGame(fileChooser.showOpenDialog(null).getAbsolutePath());
+                if (this.appController.isGameRunning()) {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Game Loaded");
+                    alert.setHeaderText(null);
+                    alert.setContentText("The game has been loaded successfully!");
+
+                    // Show the alert
+                    alert.showAndWait();
+                }
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
