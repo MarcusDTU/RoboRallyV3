@@ -40,7 +40,7 @@ public class Player extends Subject {
     @Expose
     final public static int NO_CARDS = 8;
 
-    final public Board board;
+    public Board board;
 
     @Expose
     private String name;

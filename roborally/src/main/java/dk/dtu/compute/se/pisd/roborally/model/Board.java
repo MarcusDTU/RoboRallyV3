@@ -49,6 +49,7 @@ public class    Board extends Subject {
     @Expose
     private Integer gameId;
 
+    @Expose
     private final Space[][] spaces;
 
     @Expose
@@ -237,5 +238,9 @@ public class    Board extends Subject {
 
     public Player[] getPlayers() {
         return players.toArray(new Player[0]);
+    }
+
+    public Space[][] getSpaces() {
+        return spaces;
     }
 }

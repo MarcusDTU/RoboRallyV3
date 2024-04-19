@@ -38,10 +38,12 @@ public class Space extends Subject {
 
     private Player player;
 
+    @Expose
     private List<Heading> walls = new ArrayList<>();
+    @Expose
     private List<FieldAction> actions = new ArrayList<>();
 
-    public final Board board;
+    public Board board;
 
     @Expose
     public final int x;

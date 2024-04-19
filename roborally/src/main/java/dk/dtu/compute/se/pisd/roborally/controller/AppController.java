@@ -31,6 +31,7 @@ import dk.dtu.compute.se.pisd.roborally.RoboRally;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 
+import dk.dtu.compute.se.pisd.roborally.model.Space;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -117,6 +118,15 @@ public class AppController implements Observer {
         Board board = gson.fromJson(Files.readString(data), Board.class);
 
         for (Player player : board.getPlayers()) {
+            for (Space[] space: board.getSpaces()) {
+                for (Space s : space) {
+                    if (s.getPlayer() == player) {
+                        player.setSpace(s);
+                        s.setPlayer(player);
+                    }
+                }
+            }
+            player.board = board;
             player.attach(this);
             for (int i = 0; i < Player.NO_REGISTERS; i++) {
                 player.getProgramField(i).attach(this);
@@ -125,6 +135,16 @@ public class AppController implements Observer {
                 player.getCardField(i).attach(this);
             }
         }
+
+        for (Space[] space : board.getSpaces()) {
+             for (Space s : space) {
+                 s.board = board;
+                 s.attach(this);
+            }
+        }
+        Player currentPlayer = board.getCurrentPlayer();
+        currentPlayer.board = board;
+        board.setCurrentPlayer(currentPlayer);
         board.attach(this);
 
         gameController = new GameController(board);
