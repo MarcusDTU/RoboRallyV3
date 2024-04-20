@@ -253,6 +253,30 @@ public class GameController {
         }
     }
 
+
+    public void startLoadingPhase() {
+        for (int i = 0; i < board.getPlayersNumber(); i++) { // Reset all cards
+            Player player = board.getPlayer(i); // Get player
+            if (player != null) { // If player exists
+                for (int j = 0; j < Player.NO_REGISTERS; j++) { // Reset all registers
+                    CommandCardField field = player.getProgramField(j); // Get register
+                    if (field.getCard() == null) {  // Only reset card if it's null
+                        field.setCard(null); // Reset card
+                        field.setVisible(true); // Make card visible
+                    }
+                }
+                for (int j = 0; j < Player.NO_CARDS; j++) { // Reset all cards
+                    CommandCardField field = player.getCardField(j); // Get card
+                    if (field.getCard() == null) {  // Only generate new card if there isn't one already
+                        field.setCard(null); // Reset card
+                    }
+                    field.setVisible(true); // Make card visible
+                }
+            }
+        }
+    }
+
+
     private CommandCard generateRandomCommandCard() {
         Command[] commands = Command.values();
         int random = (int) (Math.random() * commands.length);

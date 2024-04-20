@@ -28,11 +28,8 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
 
-import dk.dtu.compute.se.pisd.roborally.model.Board;
-import dk.dtu.compute.se.pisd.roborally.model.Player;
+import dk.dtu.compute.se.pisd.roborally.model.*;
 
-import dk.dtu.compute.se.pisd.roborally.model.PlayerData;
-import dk.dtu.compute.se.pisd.roborally.model.Space;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -40,10 +37,12 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -102,72 +101,107 @@ public class AppController implements Observer {
         }
     }
 
-    public void saveGame() {
-        if (gameController != null && gameController.board != null) {
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            List<PlayerData> playersData = new ArrayList<>();
-            for (Player player : gameController.board.getPlayers()) {
-                if (player != null && player.getSpace() != null) {
-                    playersData.add(new PlayerData(
-                            player.getName(),
-                            player.getSpace().x,
-                            player.getSpace().y,
-                            player.getColor()
-                    ));
-                }
-            }
+    public void saveGame() { // save the game to a file
+        if (gameController != null && gameController.board != null) { // if there is a game running
+            String homeFolder = System.getProperty("user.home"); // get the user's home folder
 
-            try (FileWriter writer = new FileWriter("gameSave.json")) {
-                gson.toJson(playersData, writer);
-            } catch (IOException e) {
-                e.printStackTrace();
+            Gson gson = new GsonBuilder().setPrettyPrinting().create(); // create a Gson object
+
+            List<PlayerData> playersData = new ArrayList<>(); // create a list to store player data
+            for (Player player : gameController.board.getPlayers()) { // for each player in the game
+                List<String> programmingCardIds = new ArrayList<>(); // create a list to store programming card IDs
+                List<String> commandCardIds = new ArrayList<>(); // create a list to store command card IDs
+                for (int i = 0; i < Player.NO_REGISTERS; i++) { // for each register
+                    CommandCardField field = player.getProgramField(i); // get the program field
+                    programmingCardIds.add(field != null && field.getCard() != null ? field.getCard().getName() : null);
+                }// add the card name to the list
+                for (int j = 0; j < Player.NO_CARDS; j++) { // for each card
+                    CommandCardField field = player.getCardField(j); // get the card field
+                    commandCardIds.add(field != null && field.getCard() != null ? field.getCard().getName() : null);
+                } // add the card name to the list
+                playersData.add(new PlayerData( // add the player data to the list
+                        player.getName(), player.getSpace().x, player.getSpace().y, player.getColor(), player.getHeading().name(),
+                        programmingCardIds, commandCardIds, gameController.board.getPhase().name(), gameController.board.getStep()
+                )); // create a new PlayerData object with the player's data
+            }
+            try (FileWriter writer = new FileWriter(homeFolder + File.separator + "gameData.json")) { // try to write to the file
+                gson.toJson(playersData, writer); // write the player data to the file
+                System.out.println("Game Saved"); // print that the game was saved
+            } catch (IOException e) { // catch an IOException
+                e.printStackTrace(); // print the stack trace
             }
         }
     }
-/*
-    public void loadGame() {
-            // XXX needs to be implemented eventually
-            // for now, we just create a new game
-            if (gameController == null) {
-                newGame();
-            }
-        }
-*/
-    // Load the player's state from a JSON file and update the game state
-    public void loadGame() {
-        Gson gson = new Gson();
-        Type playersListType = new TypeToken<ArrayList<PlayerData>>(){}.getType();
-        try (FileReader reader = new FileReader("gameSave.json")) {
-            List<PlayerData> playersData = gson.fromJson(reader, playersListType);
-            if (!playersData.isEmpty()) {
-                if (gameController != null) {
-                    if (!stopGame()) {
-                        return;
+
+    public void loadGame(String path) { // load the game from a file
+        Gson gson = new Gson(); // create a Gson object
+        Path data = Path.of(path); // create a Path object from the path
+        Type playersListType = new TypeToken<ArrayList<PlayerData>>(){}.getType(); // create a Type object for the player data
+        try (FileReader reader = new FileReader(String.valueOf(data))) { // try to read from the file
+            List<PlayerData> playersData = gson.fromJson(reader, playersListType); // read the player data from the file
+            if (!playersData.isEmpty()) { // if the player data is not empty
+                if (gameController != null) { // if there is a game running
+                    if (!stopGame()) { //   stop the game
+                        return; // If stopping the game fails, do not proceed with loading a new game
                     }
                 }
+                // Create a new board with the required number of players
+                Board board = new Board(8, 8); // create a new board
+                gameController = new GameController(board); // create a new GameController object with the board
 
-                Board board = new Board(8,8);
-                gameController = new GameController(board);
+                // Create and place players as per the JSON data
+                for (PlayerData playerData : playersData) { // for each player data
+                    Space space = board.getSpace(playerData.getX(), playerData.getY()); // get the space
+                    Player player = new Player(board, playerData.getColor(), playerData.getName()); // create a new player
+                    player.setSpace(space); // set the player's space
+                    player.setHeading(Heading.valueOf(playerData.getHeading())); // set the player's heading
 
-                for (PlayerData playerData : playersData) {
-                    Space space = board.getSpace(playerData.getX(), playerData.getY());
-                    Player player = new Player(board, playerData.getColor(), playerData.getName());
-                    player.setSpace(space);
-                    board.addPlayer(player);
+                   restorePlayerCards(player, playerData); // restore the player's cards
+
+                    board.addPlayer(player); // add the player to the board
                 }
-                gameController.startProgrammingPhase();
-                roboRally.createBoardView(gameController);
 
-                if (!board.getPlayers().isEmpty()) {
-                    board.setCurrentPlayer(board.getPlayers().get(0));
+                board.setPhase(Phase.valueOf(playersData.get(0).getPhase())); // Assuming all players have the same phase stored
+                board.setStep(playersData.get(0).getStep()); // Assuming all players have the same step stored
+
+
+                if (!board.getPlayers().isEmpty()) { // if there are players
+                    board.setCurrentPlayer(board.getPlayers().get(0)); // set the current player to the first player
                 }
+                gameController.startLoadingPhase(); // start the loading phase
+
+                roboRally.createBoardView(gameController); // create the board view
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException e) { // catch an IOException
+            e.printStackTrace();  // print the stack trace
         }
     }
 
+    private void restorePlayerCards(Player player, PlayerData playerData) { // restore the player's cards
+        for (int i = 0; i < playerData.getProgrammingCards().size(); i++) { // for each programming card
+            String cardName = playerData.getProgrammingCards().get(i); // get the card name
+            CommandCard card = findCommandCardByName(cardName); // find the command card by name
+            player.getProgramField(i).setCard(card); // set the card in the program field
+        }
+        for (int i = 0; i < playerData.getCommandCards().size(); i++) { // for each command card
+            String cardName = playerData.getCommandCards().get(i); // get the card name
+            CommandCard card = findCommandCardByName(cardName); // find the command card by name
+            player.getCardField(i).setCard(card); // set the card in the card field
+        }
+    }
 
+    private CommandCard findCommandCardByName(String cardName) { // find a command card by name
+        if (cardName != null) { //
+            Command command = Arrays.stream(Command.values()) // get the command by name
+                    .filter(c -> c.displayName.equals(cardName)) // filter the command by name
+                    .findFirst() // find the first command
+                    .orElse(null); // return null if no command is found
+            if (command != null) { // if the command is not null
+                return new CommandCard(command); // return a new CommandCard object with the command
+            }
+        }
+        return null; // return null if the card name is null
+    }
 
     /**
      * Stop playing the current game, giving the user the option to save
@@ -182,7 +216,7 @@ public class AppController implements Observer {
         if (gameController != null) {
 
             // here we save the game (without asking the user).
-            saveGame();
+          //  saveGame();
 
             gameController = null;
             roboRally.createBoardView(null);
