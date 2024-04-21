@@ -42,6 +42,7 @@ public class PriorityAntenna extends BoardElement{
                         }
                     }
                 }
+                //How to handle duplicate distance?
             }
             return players;
 
