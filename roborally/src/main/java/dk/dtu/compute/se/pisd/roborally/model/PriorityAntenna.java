@@ -17,45 +17,42 @@ public class PriorityAntenna extends BoardElement{
         public void activate() {
 
         }
-        /**
-         * Determine the priority of the players based on their distance to the antenna
-         * @param board The board to determine the priority on
-         * @return A list of players sorted by their distance to the antenna
-         */
-        public LinkedList<Player> determinePriority(Board board) {
-            LinkedList<Player> players = new LinkedList<>();
-            boolean sameDistance = false; //Used to track if multiple players are at the same distance
-            int[][] distancePlayers = new int[board.getPlayersNumber()][board.getPlayersNumber()+1]; //Used to track which players are at the same distance. Distance is stored at index 0, players are stored at index 1 and onwards
-            for (int i = 0; i < board.getPlayersNumber(); i++){
-                if (players.isEmpty()) { //If the list is empty, add the first player
-                    players.add(board.getPlayer(i));
-                    distancePlayers = updateDistancePlayers(distancePlayers, i, calculateDistance(board.getPlayer(i))); //Update the distancePlayers array
+        
+        public Player[] determinePriority(Board board) {
+            Player[] players = board.getPlayers();
+            return sortPlayers(players);
+        }
+
+    private Player[] sortSameDistance(Player[] players) {
+        for (int i = 0; i < players.length; i++) {
+            int subsetEndIndex = 0;
+            for (int j = 1; j < players.length; j++) {
+                if (calculateDistance(players[i]) < calculateDistance(players[j])) {
+                    break;
                 }
-                else {
-                    for (int j = 0; j < players.size(); j++) {
-                        if (calculateDistance(board.getPlayer(i)) < calculateDistance(players.get(j))) { //If player i is closer than player j, add player i at index j
-                            players.add(j, board.getPlayer(i));
-                            distancePlayers = updateDistancePlayers(distancePlayers, i, calculateDistance(board.getPlayer(i))); //Update the distancePlayers array
-                            break;
-                        }
-                        if (calculateDistance(board.getPlayer(i)) == calculateDistance(players.get(j))) { //If player i is at the same distance as player j, add player i at index j
-                            sameDistance = true; //Set sameDistance to true
-                            players.add(j, board.getPlayer(i));
-                            distancePlayers = updateDistancePlayers(distancePlayers, i, calculateDistance(board.getPlayer(i))); //Update the distancePlayers array
-                            break;
-                        }
-                        else if (j == players.size() - 1) { //If player i is further than all other players, add player i at the end
-                            players.add(board.getPlayer(i));
-                            distancePlayers = updateDistancePlayers(distancePlayers, i, calculateDistance(board.getPlayer(i))); //Update the distancePlayers array
-                            break;
-                        }
-                    }
+                if (calculateDistance(players[i]) == calculateDistance(players[j])) {
+                    subsetEndIndex = j;
                 }
             }
-            //TODO: Implement a way to handle multiple players at the same distance
-            return players;
-
+            if (subsetEndIndex > 0) {
+                players = determineOrder(players, i, subsetEndIndex);
+            }
         }
+        return players;
+    }
+
+    private Player[] determineOrder(Player[] players, int start, int end) {
+        return players;
+    }
+
+    private Player[] sortPlayers(Player[] players) {
+        Arrays.sort(players, (Player p1, Player p2) -> {
+            int distance1 = calculateDistance(p1);
+            int distance2 = calculateDistance(p2);
+            return Integer.compare(distance1, distance2);
+        });
+        return sortSameDistance(players);
+    }
 
         /**
          * Calculate the distance between the antenna and a player
