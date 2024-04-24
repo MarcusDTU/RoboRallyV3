@@ -36,10 +36,10 @@ import javafx.scene.shape.Polygon;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * ...
+ * Handles how a space is displayed on the board.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
+ * @author Daniel Overballe Lerche, s235095@dtu.dk
  */
 public class SpaceView extends StackPane implements ViewObserver {
 
@@ -84,6 +84,7 @@ public class SpaceView extends StackPane implements ViewObserver {
 
     /**
      * Draws the different elements of the space view based on the space's content.
+     * @author Daniel Overballe Lerche, s235095@dtu.dk
      */
     private void updatePlayer() {
 
