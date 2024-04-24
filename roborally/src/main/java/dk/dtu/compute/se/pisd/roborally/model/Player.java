@@ -40,7 +40,7 @@ public class Player extends Subject {
     final public Board board;
 
     private String name;
-    private String color;
+    private int robotId;
 
     private Space space;
     private Heading heading = SOUTH;
@@ -48,10 +48,10 @@ public class Player extends Subject {
     private CommandCardField[] program;
     private CommandCardField[] cards;
 
-    public Player(@NotNull Board board, String color, @NotNull String name) {
+    public Player(@NotNull Board board, int robotId, @NotNull String name) {
         this.board = board;
         this.name = name;
-        this.color = color;
+        this.robotId = robotId;
 
         this.space = null;
 
@@ -80,12 +80,12 @@ public class Player extends Subject {
         }
     }
 
-    public String getColor() {
-        return color;
+    public int getRobotId() {
+        return robotId;
     }
 
-    public void setColor(String color) {
-        this.color = color;
+    public void setRobotId(int robotId) {
+        this.robotId = robotId;
         notifyChange();
         if (space != null) {
             space.playerChanged();

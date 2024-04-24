@@ -22,15 +22,16 @@
 package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.controller.field.ConveyorBelt;
+import dk.dtu.compute.se.pisd.roborally.controller.field.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
+import javafx.geometry.Pos;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
-import javafx.scene.shape.StrokeLineCap;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -46,7 +47,6 @@ public class SpaceView extends StackPane implements ViewObserver {
 
     public final Space space;
 
-
     public SpaceView(@NotNull Space space) {
         this.space = space;
 
@@ -58,6 +58,7 @@ public class SpaceView extends StackPane implements ViewObserver {
         this.setPrefHeight(SPACE_HEIGHT);
         this.setMinHeight(SPACE_HEIGHT);
         this.setMaxHeight(SPACE_HEIGHT);
+
 
         if ((space.x + space.y) % 2 == 0) {
             this.setStyle("-fx-background-color: white;");
@@ -72,24 +73,90 @@ public class SpaceView extends StackPane implements ViewObserver {
         update(space);
     }
 
+    /**
+     * Draws the players on the space.
+     */
     private void updatePlayer() {
+        if((int) Math.floor(Math.random() * 4) == 3) {
+            ConveyorBelt belt = new ConveyorBelt();
+            belt.setHeading(Heading.SOUTH);
+            space.getActions().add(belt);
+        }
+
         this.getChildren().clear();
+        addEmpty();
+        addActions();
 
+        addRobot();
+
+        addWalls();
+    }
+
+    /**
+     * Adds a robot to the space view based on the <code>player.getRobotId()<code/>
+     * @author Daniel Overballe Lerche, s235095@dtu.dk
+     */
+    private void addRobot() {
         Player player = space.getPlayer();
-        if (player != null) {
-            Polygon arrow = new Polygon(0.0, 0.0,
-                    10.0, 20.0,
-                    20.0, 0.0 );
-            try {
-                arrow.setFill(Color.valueOf(player.getColor()));
-            } catch (Exception e) {
-                arrow.setFill(Color.MEDIUMPURPLE);
-            }
+        if(player == null) return;
+        ImageView robotImage = new ImageView("robots/r" + player.getRobotId() + ".png");
+        robotImage.setFitWidth(SPACE_WIDTH);
+        robotImage.setFitHeight(SPACE_HEIGHT);
+        robotImage.setRotate(90 * player.getHeading().ordinal());
+        this.getChildren().add(robotImage);
+    }
 
-            arrow.setRotate((90*player.getHeading().ordinal())%360);
-            this.getChildren().add(arrow);
+    /**
+     * Adds actions to the space view, if there is any.
+     * @author Daniel Overballe Lerche, s235095@dtu.dk
+     */
+    private void addActions() {
+        if(space.getActions().isEmpty()) return;
+        for (FieldAction action : space.getActions()) {
+            if(action instanceof ConveyorBelt conveyorBelt) {
+                ImageView conveyorBeltImage = new ImageView("conveyor_belts/blue/blue_belt_forward.png");
+                conveyorBeltImage.setFitWidth(SPACE_WIDTH);
+                conveyorBeltImage.setFitHeight(SPACE_HEIGHT);
+                this.getChildren().add(conveyorBeltImage);
+                Heading heading = conveyorBelt.getHeading();
+                conveyorBeltImage.rotateProperty().set(90 * heading.ordinal() - 180);
+            }
         }
     }
+
+    /**
+     * Adds an empty space to the space view, if there is no actions on the space.
+     * @author Daniel Overballe Lerche, s235095@dtu.dk
+     */
+    private void addEmpty() {
+        if(!space.getActions().isEmpty()) return;
+        ImageView empty = new ImageView("board_elements/images/empty.png");
+        empty.setFitWidth(SPACE_WIDTH);
+        empty.setFitHeight(SPACE_HEIGHT);
+        this.getChildren().add(empty);
+    }
+
+    /**
+     * Adds walls to the space view, if there is any.
+     * @author Daniel Overballe Lerche, s235095@dtu.dk
+     */
+    private void addWalls() {
+        if(!space.getWalls().isEmpty()) {
+            for (Heading wall : space.getWalls()) {
+                StackPane group = new StackPane();
+                ImageView wallImage = new ImageView("board_elements/images/wall.png");
+                group.getChildren().add(wallImage);
+
+                wallImage.setFitWidth((double) SPACE_WIDTH /8);
+                wallImage.setFitHeight(SPACE_HEIGHT);
+                group.alignmentProperty().set(Pos.CENTER_LEFT);
+                group.rotateProperty().set(90 * wall.ordinal() - 90);
+
+                this.getChildren().add(group);
+            }
+        }
+    }
+
 
     @Override
     public void updateView(Subject subject) {
