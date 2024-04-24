@@ -22,6 +22,7 @@
 package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.controller.field.Checkpoint;
 import dk.dtu.compute.se.pisd.roborally.controller.field.ConveyorBelt;
 import dk.dtu.compute.se.pisd.roborally.controller.field.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
@@ -59,12 +60,20 @@ public class SpaceView extends StackPane implements ViewObserver {
         this.setMinHeight(SPACE_HEIGHT);
         this.setMaxHeight(SPACE_HEIGHT);
 
-
-        if ((space.x + space.y) % 2 == 0) {
-            this.setStyle("-fx-background-color: white;");
-        } else {
-            this.setStyle("-fx-background-color: black;");
+        if ((int) Math.floor(Math.random() * 4) == 1) {
+            Checkpoint checkpoint = new Checkpoint();
+            checkpoint.setOrderNumber((int) Math.floor(Math.random() * 5) + 1);
+            space.getActions().add(checkpoint);
         }
+
+        if((int) Math.floor(Math.random() * 4) == 3) {
+            ConveyorBelt belt = new ConveyorBelt();
+            belt.setHeading(Heading.SOUTH);
+            space.getActions().add(belt);
+        }
+
+        space.getWalls().add(Heading.values()[(int) Math.floor(Math.random() * 4)]);
+
 
         // updatePlayer();
 
@@ -74,14 +83,9 @@ public class SpaceView extends StackPane implements ViewObserver {
     }
 
     /**
-     * Draws the players on the space.
+     * Draws the different elements of the space view based on the space's content.
      */
     private void updatePlayer() {
-        if((int) Math.floor(Math.random() * 4) == 3) {
-            ConveyorBelt belt = new ConveyorBelt();
-            belt.setHeading(Heading.SOUTH);
-            space.getActions().add(belt);
-        }
 
         this.getChildren().clear();
         addEmpty();
@@ -120,6 +124,12 @@ public class SpaceView extends StackPane implements ViewObserver {
                 this.getChildren().add(conveyorBeltImage);
                 Heading heading = conveyorBelt.getHeading();
                 conveyorBeltImage.rotateProperty().set(90 * heading.ordinal() - 180);
+            }
+            if (action instanceof Checkpoint checkpoint) {
+                ImageView checkpointImage = new ImageView("checkpoints/checkpoint" + checkpoint.getOrderNumber() + ".png");
+                checkpointImage.setFitWidth(SPACE_WIDTH);
+                checkpointImage.setFitHeight(SPACE_HEIGHT);
+                this.getChildren().add(checkpointImage);
             }
         }
     }
