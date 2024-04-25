@@ -34,11 +34,12 @@ import org.jetbrains.annotations.NotNull;
 public class CommandCard extends Subject {
 
     @Expose
-    final public Command command;
+    public Command command;
 
     public CommandCard(@NotNull Command command) {
         this.command = command;
     }
+    public CommandCard(){}
 
     public String getName() {
         return command.displayName;

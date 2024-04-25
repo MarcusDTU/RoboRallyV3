@@ -39,18 +39,18 @@ import static dk.dtu.compute.se.pisd.roborally.model.Phase.INITIALISATION;
 public class    Board extends Subject {
 
     @Expose
-    public final int width;
+    public int width;
 
     @Expose
     private int totalMoves = 0;
     @Expose
-    public final int height;
+    public int height;
 
     @Expose
     private Integer gameId;
 
     @Expose
-    private final Space[][] spaces;
+    private Space[][] spaces;
 
     @Expose
     private final List<Player> players = new ArrayList<>();
@@ -79,6 +79,8 @@ public class    Board extends Subject {
         }
         this.stepMode = false;
     }
+
+    public Board(){}
 
     public Integer getGameId() {
         return gameId;

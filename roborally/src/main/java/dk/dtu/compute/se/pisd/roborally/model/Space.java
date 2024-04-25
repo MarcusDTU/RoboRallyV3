@@ -46,9 +46,11 @@ public class Space extends Subject {
     public Board board;
 
     @Expose
-    public final int x;
+    public int x;
     @Expose
-    public final int y;
+    public int y;
+
+    public Space(){}
 
     public Space(Board board, int x, int y) {
         this.board = board;

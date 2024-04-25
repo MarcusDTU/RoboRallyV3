@@ -127,25 +127,15 @@ public class AppController implements Observer {
                 }
             }
             player.board = board;
-            player.attach(this);
-            for (int i = 0; i < Player.NO_REGISTERS; i++) {
-                player.getProgramField(i).attach(this);
-            }
-            for (int i = 0; i < Player.NO_CARDS; i++) {
-                player.getCardField(i).attach(this);
-            }
         }
 
         for (Space[] space : board.getSpaces()) {
              for (Space s : space) {
                  s.board = board;
-                 s.attach(this);
             }
         }
         Player currentPlayer = board.getCurrentPlayer();
         currentPlayer.board = board;
-        board.setCurrentPlayer(currentPlayer);
-        board.attach(this);
 
         gameController = new GameController(board);
         //add if statements here later when other phases are added

@@ -32,7 +32,7 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
  */
 public class CommandCardField extends Subject {
 
-    final public Player player;
+    public Player player;
 
     @Expose
     private CommandCard card;
@@ -44,6 +44,9 @@ public class CommandCardField extends Subject {
         this.player = player;
         this.card = null;
         this.visible = true;
+    }
+
+    public CommandCardField(){
     }
 
     public CommandCard getCard() {

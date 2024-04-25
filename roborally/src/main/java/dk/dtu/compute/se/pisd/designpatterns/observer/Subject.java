@@ -52,10 +52,6 @@ public abstract class Subject {
 	 * @param observer the observer who registers
 	 */
 	final public void attach(Observer observer) {
-		if (observers == null) {
-			System.out.println("Observers set is unexpectedly null.");
-			observers = Collections.newSetFromMap(new WeakHashMap<>());
-		}
 		observers.add(observer);
 	}
 	

@@ -57,6 +57,8 @@ public class Player extends Subject {
     @Expose
     private CommandCardField[] cards;
 
+    public Player(){}
+
     public Player(@NotNull Board board, String color, @NotNull String name) {
         this.board = board;
         this.name = name;
