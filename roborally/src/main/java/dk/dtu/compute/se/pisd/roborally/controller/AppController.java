@@ -120,9 +120,8 @@ public class AppController implements Observer {
         for (Player player : board.getPlayers()) {
             for (Space[] space: board.getSpaces()) {
                 for (Space s : space) {
-                    if (s.getPlayer() == player) {
+                    if (player.getSpace() != null && player.getSpace().x == s.x && player.getSpace().y == s.y){
                         player.setSpace(s);
-                        s.setPlayer(player);
                     }
                 }
             }
