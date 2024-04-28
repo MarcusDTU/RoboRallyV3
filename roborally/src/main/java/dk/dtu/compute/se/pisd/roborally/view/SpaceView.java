@@ -60,21 +60,6 @@ public class SpaceView extends StackPane implements ViewObserver {
         this.setMinHeight(SPACE_HEIGHT);
         this.setMaxHeight(SPACE_HEIGHT);
 
-        if ((int) Math.floor(Math.random() * 4) == 1) {
-            Checkpoint checkpoint = new Checkpoint();
-            checkpoint.setOrderNumber((int) Math.floor(Math.random() * 5) + 1);
-            space.getActions().add(checkpoint);
-        }
-
-        if((int) Math.floor(Math.random() * 4) == 3) {
-            ConveyorBelt belt = new ConveyorBelt();
-            belt.setHeading(Heading.SOUTH);
-            space.getActions().add(belt);
-        }
-
-        space.getWalls().add(Heading.values()[(int) Math.floor(Math.random() * 4)]);
-
-
         // updatePlayer();
 
         // This space view should listen to changes of the space
@@ -91,9 +76,7 @@ public class SpaceView extends StackPane implements ViewObserver {
         this.getChildren().clear();
         addEmpty();
         addActions();
-
         addRobot();
-
         addWalls();
     }
 
@@ -167,7 +150,6 @@ public class SpaceView extends StackPane implements ViewObserver {
             }
         }
     }
-
 
     @Override
     public void updateView(Subject subject) {
