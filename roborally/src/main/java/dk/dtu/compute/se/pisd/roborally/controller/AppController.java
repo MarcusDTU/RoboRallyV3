@@ -108,7 +108,7 @@ public class AppController implements Observer {
             Gson gson = new GsonBuilder().setPrettyPrinting().create(); // create a Gson object
 
             List<PlayerData> playersData = new ArrayList<>(); // create a list to store player data
-            for (Player player : gameController.board.getPlayers()) { // for each player in the game
+            for (Player player : gameController.board.getAllPlayers()) { // for each player in the game
                 List<String> programmingCardIds = new ArrayList<>(); // create a list to store programming card IDs
                 List<String> commandCardIds = new ArrayList<>(); // create a list to store command card IDs
                 for (int i = 0; i < Player.NO_REGISTERS; i++) { // for each register
@@ -120,7 +120,7 @@ public class AppController implements Observer {
                     commandCardIds.add(field != null && field.getCard() != null ? field.getCard().getName() : null);
                 } // add the card name to the list
                 playersData.add(new PlayerData( // add the player data to the list
-                        player.getName(), player.getSpace().x, player.getSpace().y, player.getColor(), player.getHeading().name(),
+                        player.getName(), player.getSpace().x, player.getSpace().y, player.getRobotId(), player.getHeading().name(),
                         programmingCardIds, commandCardIds, gameController.board.getPhase().name(), gameController.board.getStep()
                 )); // create a new PlayerData object with the player's data
             }
@@ -152,7 +152,7 @@ public class AppController implements Observer {
                 // Create and place players as per the JSON data
                 for (PlayerData playerData : playersData) { // for each player data
                     Space space = board.getSpace(playerData.getX(), playerData.getY()); // get the space
-                    Player player = new Player(board, playerData.getColor(), playerData.getName()); // create a new player
+                    Player player = new Player(board, playerData.getRobotId(), playerData.getName()); // create a new player
                     player.setSpace(space); // set the player's space
                     player.setHeading(Heading.valueOf(playerData.getHeading())); // set the player's heading
 
@@ -165,8 +165,8 @@ public class AppController implements Observer {
                 board.setStep(playersData.get(0).getStep()); // Assuming all players have the same step stored
 
 
-                if (!board.getPlayers().isEmpty()) { // if there are players
-                    board.setCurrentPlayer(board.getPlayers().get(0)); // set the current player to the first player
+                if (!board.getAllPlayers().isEmpty()) { // if there are players
+                    board.setCurrentPlayer(board.getAllPlayers().get(0)); // set the current player to the first player
                 }
                 gameController.startLoadingPhase(); // start the loading phase
 

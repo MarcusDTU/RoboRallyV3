@@ -73,9 +73,7 @@ public class    Board extends Subject {
         this.currentNumberOfCards = MAX_NUMBER_OF_CARDS;
     }
 
-    public List<Player> getPlayers() {
-        return players;
-    }
+
 
     public Integer getGameId() {
         return gameId;
@@ -127,6 +125,11 @@ public class    Board extends Subject {
             return null;
         }
     }
+
+    public List<Player> getAllPlayers() {
+        return players;
+    }
+
 
     public Player[] getPlayers() {
         return players.toArray(new Player[0]);

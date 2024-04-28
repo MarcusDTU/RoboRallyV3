@@ -6,7 +6,7 @@ public class PlayerData {
     private String name;
     private int x;
     private int y;
-    private String color;
+    private int robotId;
 
     private String heading; // For storing the player's heading
     private List<String> programmingCards; // For storing the player's programming cards
@@ -18,12 +18,12 @@ public class PlayerData {
     // Default constructor needed for Gson
     public PlayerData() {
     }
-    public PlayerData(String name, int x, int y, String color, String heading,
+    public PlayerData(String name, int x, int y, int robotId, String heading,
                       List<String> programmingCards, List<String> commandCards, String phase, int step) {
         this.name = name;
         this.x = x;
         this.y = y;
-        this.color = color;
+        this.robotId = robotId;
         this.heading = heading;
         this.programmingCards = programmingCards;
         this.commandCards = commandCards;
@@ -80,15 +80,15 @@ public class PlayerData {
         this.y = y;
     }
 
-    public String getColor() {
-        return color;
+    public int getRobotId() {
+        return robotId;
     }
 
     public String getHeading() {
         return heading;
     }
 
-    public void setColor(String color) {
-        this.color = color;
+    public void setRobotId(int robotId) {
+        this.robotId = robotId;
     }
 }
