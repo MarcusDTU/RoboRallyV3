@@ -43,8 +43,6 @@ public class Player extends Subject {
     public Board board;
 
     @Expose
-    final public Board board;
-    @Expose
     public DiscardPile discardedPile = new DiscardPile();
     @Expose
     private String name;
