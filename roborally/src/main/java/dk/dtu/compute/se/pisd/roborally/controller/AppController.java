@@ -29,6 +29,7 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
 
 import dk.dtu.compute.se.pisd.roborally.model.Board;
+import dk.dtu.compute.se.pisd.roborally.model.CommandCardField;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 
 import dk.dtu.compute.se.pisd.roborally.model.Space;
@@ -125,6 +126,25 @@ public class AppController implements Observer {
                     }
                 }
             }
+            Player currentPlayer = board.getCurrentPlayer();
+            for (CommandCardField card : player.getProgram()) {
+                card.player = player;
+                if (currentPlayer.getName().equals(player.getName())) {
+                    for (CommandCardField card2 : currentPlayer.getProgram()) {
+                        card2.player = currentPlayer;
+                        card2.setCard(card.getCard());
+                    }
+                }
+            }
+
+            for (CommandCardField card: player.getCards()){
+                card.player = player;
+                if(currentPlayer.getName().equals(player.getName())){
+                    for (CommandCardField card2: currentPlayer.getCards()){
+                        card2.player = currentPlayer;
+                    }
+                }
+            }
             player.board = board;
         }
 
@@ -138,7 +158,11 @@ public class AppController implements Observer {
 
         gameController = new GameController(board);
         //add if statements here later when other phases are added
-        gameController.startProgrammingPhase();
+        if(board.getPhase().name().equals("ACTIVATION")){
+            gameController.startActivationPhase(board.getStep());
+        } else {
+            gameController.startProgrammingPhase();
+        }
         roboRally.createBoardView(gameController);
     }
 

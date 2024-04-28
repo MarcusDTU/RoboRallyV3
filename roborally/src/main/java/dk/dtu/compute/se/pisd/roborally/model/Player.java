@@ -54,6 +54,7 @@ public class Player extends Subject {
     @Expose
     private Heading heading = SOUTH;
 
+
     @Expose
     private CommandCardField[] program;
     @Expose
@@ -136,6 +137,24 @@ public class Player extends Subject {
                 space.playerChanged();
             }
         }
+    }
+
+    public CommandCardField[] getProgram() {
+        return program;
+    }
+
+    public CommandCardField[] getCards() {
+        return cards;
+    }
+
+    public CommandCardField[] setProgram(CommandCardField[] program) {
+        this.program = program;
+        return program;
+    }
+
+    public CommandCardField[] setCards(CommandCardField[] cards) {
+        this.cards = cards;
+        return cards;
     }
 
     public CommandCardField getProgramField(int i) {
