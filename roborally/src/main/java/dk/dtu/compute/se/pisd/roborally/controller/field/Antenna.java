@@ -5,11 +5,20 @@ import dk.dtu.compute.se.pisd.roborally.model.Space;
 
 public class Antenna extends FieldAction {
 
+    private Heading heading;
+
+    public Heading getHeading() {
+        return heading;
+    }
+
+    public void setHeading(Heading heading) {
+        this.heading = heading;
+    }
+
     @Override
     public boolean doAction(@NotNull GameController gameController, @NotNull Space space) {
 
-        Player[] players = determinePriority(gameController, space);
-        //WHAT DO TO WITH ARRAY?
+        gameController.playersOrder = determinePriority(gameController, space);
         return true;
     }
 
@@ -23,7 +32,7 @@ public class Antenna extends FieldAction {
      */
     private Player[] determinePriority(GameController gameController, Space space) {
         Player[] players = gameController.board.getPlayers();
-        return sortPlayers(players);
+        return sortPlayers(players, space);
     }
 
     /**
@@ -32,14 +41,14 @@ public class Antenna extends FieldAction {
      * @return The sorted players
      * @Author Nikolaj Schæbel s220471
      */
-    private Player[] sortPlayers(Player[] players) {
+    private Player[] sortPlayers(Player[] players, Space space) {
         //sort array by distance to antenna
         Arrays.sort(players, (Player p1, Player p2) -> {
-            int distance1 = calculateDistance(p1);
-            int distance2 = calculateDistance(p2);
+            int distance1 = calculateDistance(p1, space);
+            int distance2 = calculateDistance(p2, space);
             return Integer.compare(distance1, distance2);
         });
-        return sortSameDistance(players);
+        return sortSameDistance(players, space);
     }
 
     /**
@@ -48,24 +57,24 @@ public class Antenna extends FieldAction {
      * @return The sorted players
      * @Author Nikolaj Schæbel s220471
      */
-    private Player[] sortSameDistance(Player[] players) {
+    private Player[] sortSameDistance(Player[] players, Space space) {
         for (int i = 0; i < players.length; i++) {
             //find subset of players with same distance
             int subsetEndIndex = 0;
             for (int j = 1; j < players.length; j++) {
                 //break if the distance is not the same
-                if (calculateDistance(players[i]) < calculateDistance(players[j])) {
+                if (calculateDistance(players[i], space) < calculateDistance(players[j], space)) {
                     break;
                 }
                 //set end index if the distance is the same
-                if (calculateDistance(players[i]) == calculateDistance(players[j])) {
+                if (calculateDistance(players[i]) == calculateDistance(players[j], space)) {
                     subsetEndIndex = j+1; //non-inclusive end index
                 }
             }
             //If subsetEndIndex is greater than 0, multiple players have the same distance
             if (subsetEndIndex > 0) {
                 //sort subset of players based on their position
-                players = determineOrder(players, i, subsetEndIndex);
+                players = determineOrder(players, i, subsetEndIndex, space);
                 //skip the subset of players for the following iterations
                 i = subsetEndIndex-1;
             }
@@ -81,7 +90,7 @@ public class Antenna extends FieldAction {
      * @return The players sorted by order
      * @Author Nikolaj Schæbel s220471
      */
-    private Player[] determineOrder(Player[] players, int start, int end) {
+    private Player[] determineOrder(Player[] players, int start, int end, Space space) {
         //Create an array of the subset of players with the same distance
         Player[] subset = Arrays.copyOfRange(players, start, end);
         //track the correct order of the subset
@@ -89,25 +98,25 @@ public class Antenna extends FieldAction {
         for (int i = 0; i < subset.length; i++) {
             for (int j = 0; j < subset.length; j++) {
                 //if the player is on the same row as the antenna, they are first
-                if(subset[i].getSpace().y == this.y) {
+                if(subset[i].getSpace().y == space.y) {
                     continue;
                 }
                 if(i != j) {
                     //if player j is in the same row as the antenna, increment the order of player i
-                    if (subset[j].getSpace().y == this.y) {
+                    if (subset[j].getSpace().y == space.y) {
                         order[i]++;
                     }
                     //if player i is above the antenna row, by index
-                    else if(subset[i].getSpace().y > this.y) {
+                    else if(subset[i].getSpace().y > space.y) {
                         //if player j is above the antenna by index, and the player i.x < player j.x, increment the order of player i
-                        if(subset[i].getSpace().y < subset[j].getSpace().y && subset[j].getSpace().y > this.y && subset[i].getSpace().x < subset[j].getSpace().x) {
+                        if(subset[i].getSpace().y < subset[j].getSpace().y && subset[j].getSpace().y > space.y && subset[i].getSpace().x < subset[j].getSpace().x) {
                             order[i]++;
                         }
                     }
                     //if player i is below the antenna row, by index
                     else {
                         //if player j is above the antenna by index, or if player j is below the antenna by index and player i.x > player j.x, increment the order of player i
-                        if(subset[j].getSpace().y > this.y || subset[j].getSpace().y > this.y && subset[i].getSpace().x > subset[j].getSpace().x) {
+                        if(subset[j].getSpace().y > space.y || subset[j].getSpace().y > space.y && subset[i].getSpace().x > subset[j].getSpace().x) {
                             order[i]++;
                         }
                     }
@@ -132,7 +141,7 @@ public class Antenna extends FieldAction {
      * @return The distance between the antenna and the player
      * @Author Nikolaj Schæbel s220471
      */
-    private int calculateDistance(Player player) {
-        return Math.abs(player.getSpace().x - this.x) + Math.abs(player.getSpace().y - this.y);
+    private int calculateDistance(Player player, Space space) {
+        return Math.abs(player.getSpace().x - space.x) + Math.abs(player.getSpace().y - space.y);
     }
 }
