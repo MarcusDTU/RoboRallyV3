@@ -39,6 +39,8 @@ public class    Board extends Subject {
 
     public final int width;
 
+    private final int MAX_NUMBER_OF_CARDS;
+    private int currentNumberOfCards;
     private int totalMoves = 0;
     public final int height;
 
@@ -67,6 +69,8 @@ public class    Board extends Subject {
             }
         }
         this.stepMode = false;
+        this.MAX_NUMBER_OF_CARDS =  getPlayersNumber() * 9;
+        this.currentNumberOfCards = MAX_NUMBER_OF_CARDS;
     }
 
     public List<Player> getPlayers() {
@@ -86,7 +90,16 @@ public class    Board extends Subject {
             }
         }
     }
+    public int getCurrentNumberOfCards() {
+        return currentNumberOfCards;
+    }
+    public void useCard() {
+        currentNumberOfCards--;
+    }
 
+    public void resetCards() {
+        currentNumberOfCards = MAX_NUMBER_OF_CARDS;
+    }
     public Space getSpace(int x, int y) {
         if (x >= 0 && x < width &&
                 y >= 0 && y < height) {
@@ -113,6 +126,10 @@ public class    Board extends Subject {
         } else {
             return null;
         }
+    }
+
+    public Player[] getPlayers() {
+        return players.toArray(new Player[0]);
     }
 
     public Player getCurrentPlayer() {
