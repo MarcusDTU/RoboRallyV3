@@ -259,13 +259,21 @@ public class GameController {
         if(board.getCurrentNumberOfCards() <= 0){
             for(int i = 0; i < board.getPlayersNumber(); i++){
                 Player player = board.getPlayer(i);
-                player.getDiscardedPile().getPile().pile.clear();
+                DeckField currentDeck = player.getCurrentDeck();
+
+                if(currentDeck.getDeck().initDeck.size() < 9){
+                    for(int j = 0; j < player.getDiscardedPile().getPile().pile.size(); j++){
+                        currentDeck.getDeck().initDeck.add(player.getDiscardedPile().getPile().pile.get(j));
+                    }
+                    player.getDiscardedPile().getPile().pile.clear();
+                }
             }
             board.resetCards();
         }
 
         for (int i = 0; i < board.getPlayersNumber(); i++) {
             Player player = board.getPlayer(i);
+            DeckField currentDeck = player.getCurrentDeck();
             if (player != null) {
                 for (int j = 0; j < Player.NO_REGISTERS; j++) {
                     CommandCardField field = player.getProgramField(j);
@@ -274,7 +282,8 @@ public class GameController {
                 }
                 for (int j = 0; j < Player.NO_CARDS; j++) {
                     CommandCardField field = player.getCardField(j);
-                    field.setCard(generateRandomCommandCard());
+                    field.setCard(new CommandCard(currentDeck.getDeck().initDeck.get(0)));
+                    currentDeck.getDeck().initDeck.remove(0);
                     field.setVisible(true);
                 }
                 for(int j = 0; j <= player.getDiscardedPile().getPile().pile.size(); j++){

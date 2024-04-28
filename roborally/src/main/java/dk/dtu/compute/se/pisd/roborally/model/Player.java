@@ -39,6 +39,7 @@ public class Player extends Subject {
 
     final public Board board;
     private DiscardPileField discardedPile;
+    private DeckField deck;
     private String name;
     private int robotId;
 
@@ -66,6 +67,8 @@ public class Player extends Subject {
         }
 
         discardedPile = new DiscardPileField(this);
+
+        deck = new DeckField(this);
     }
 
     public String getName() {
@@ -138,4 +141,6 @@ public class Player extends Subject {
     public DiscardPileField getDiscardedPile() {
         return discardedPile;
     }
+
+    public DeckField getCurrentDeck(){ return deck; }
 }
