@@ -38,7 +38,7 @@ public class Player extends Subject {
     final public static int NO_CARDS = 8;
 
     final public Board board;
-    public DiscardPile discardedPile = new DiscardPile();
+    private DiscardPileField discardedPile;
     private String name;
     private int robotId;
 
@@ -64,6 +64,8 @@ public class Player extends Subject {
         for (int i = 0; i < cards.length; i++) {
             cards[i] = new CommandCardField(this);
         }
+
+        discardedPile = new DiscardPileField(this);
     }
 
     public String getName() {
@@ -133,4 +135,7 @@ public class Player extends Subject {
         return cards[i];
     }
 
+    public DiscardPileField getDiscardedPile() {
+        return discardedPile;
+    }
 }

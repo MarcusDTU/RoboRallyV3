@@ -231,8 +231,8 @@ public class GameController {
                 default:
                     // DO NOTHING (for now)
             }
-            player.discardedPile.pile.add(command);
-            System.out.println(player.getName()+player.discardedPile.pile);
+            player.getDiscardedPile().getPile().pile.add(command);
+            System.out.println(player.getName()+player.getDiscardedPile().getPile().pile);
             board.useCard();
             System.out.println(board.getCurrentNumberOfCards());
         }
@@ -259,8 +259,7 @@ public class GameController {
         if(board.getCurrentNumberOfCards() <= 0){
             for(int i = 0; i < board.getPlayersNumber(); i++){
                 Player player = board.getPlayer(i);
-                player.discardedPile.pile.clear();
-
+                player.getDiscardedPile().getPile().pile.clear();
             }
             board.resetCards();
         }
@@ -277,6 +276,11 @@ public class GameController {
                     CommandCardField field = player.getCardField(j);
                     field.setCard(generateRandomCommandCard());
                     field.setVisible(true);
+                }
+                for(int j = 0; j <= player.getDiscardedPile().getPile().pile.size(); j++){
+                    DiscardPileField pile = player.getDiscardedPile();
+                    pile.setPile(player.getDiscardedPile().getPile());
+                    pile.setVisible(true);
                 }
             }
         }
