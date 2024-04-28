@@ -111,6 +111,10 @@ public class    Board extends Subject {
         }
     }
 
+    public Player[] getPlayers() {
+        return players.toArray(new Player[0]);
+    }
+
     public Player getCurrentPlayer() {
         return current;
     }
