@@ -22,10 +22,7 @@
 package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
-import dk.dtu.compute.se.pisd.roborally.controller.field.Antenna;
-import dk.dtu.compute.se.pisd.roborally.controller.field.Checkpoint;
-import dk.dtu.compute.se.pisd.roborally.controller.field.ConveyorBelt;
-import dk.dtu.compute.se.pisd.roborally.controller.field.FieldAction;
+import dk.dtu.compute.se.pisd.roborally.controller.field.*;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
@@ -120,6 +117,12 @@ public class SpaceView extends StackPane implements ViewObserver {
                 antennaImage.setFitWidth(SPACE_WIDTH);
                 antennaImage.setFitHeight(SPACE_HEIGHT);
                 this.getChildren().add(antennaImage);
+            }
+            if(action instanceof StartField startField) {
+                ImageView startFieldImage = new ImageView("board_elements/images/startField.png");
+                startFieldImage.setFitWidth(SPACE_WIDTH);
+                startFieldImage.setFitHeight(SPACE_HEIGHT);
+                this.getChildren().add(startFieldImage);
             }
         }
     }
