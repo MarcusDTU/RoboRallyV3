@@ -180,6 +180,12 @@ public class    Board extends Subject {
         }
     }
 
+    public void setPlayers(List<Player> players) {
+        this.players.clear();
+        this.players.addAll(players);
+        notifyChange();
+    }
+
     /**
      * Returns the neighbour of the given space of the board in the given heading.
      * The neighbour is returned only, if it can be reached from the given space

@@ -7,6 +7,7 @@ import dk.dtu.compute.se.pisd.roborally.model.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class Antenna extends FieldAction {
 
@@ -20,20 +21,26 @@ public class Antenna extends FieldAction {
         this.heading = heading;
     }
 
+    /**
+     * Activate the antenna
+     * @param gameController The game controller to determine the priority on
+     * @param space The space of the antenna
+     * @return True if the action was successful, false otherwise
+     * @author Daniel Overballe Lerche, s235095@dtu.dk
+     * @author Nikolaj Schæbel, s220471@dtu.dk
+     */
     @Override
     public boolean doAction(@NotNull GameController gameController, @NotNull Space space) {
-
-        gameController.playersOrder = determinePriority(gameController, space);
+        gameController.board.setPlayers(List.of(determinePriority(gameController, space)));
         return true;
     }
 
-
-    //TODO Find out how to get Antenna position
     /**
      * Determine the priority of the players based on the distance to the antenna
-     * @param board The board to determine the priority on
+     * @param gameController The game controller to determine the priority on
+     * @param space The space of the antenna
      * @return The players sorted by priority
-     * @Author Nikolaj Schæbel s220471
+     * @author Nikolaj Schæbel s220471
      */
     private Player[] determinePriority(GameController gameController, Space space) {
         Player[] players = gameController.board.getPlayers();
@@ -43,8 +50,9 @@ public class Antenna extends FieldAction {
     /**
      * Sort the players based on the distance to the antenna
      * @param players The players to sort
+     * @param space The space of the antenna
      * @return The sorted players
-     * @Author Nikolaj Schæbel s220471
+     * @author Nikolaj Schæbel s220471
      */
     private Player[] sortPlayers(Player[] players, Space space) {
         //sort array by distance to antenna
@@ -59,8 +67,9 @@ public class Antenna extends FieldAction {
     /**
      * Sort the players that have the same distance to the antenna
      * @param players The players to sort
+     * @param space The space of the antenna
      * @return The sorted players
-     * @Author Nikolaj Schæbel s220471
+     * @author Nikolaj Schæbel s220471
      */
     private Player[] sortSameDistance(Player[] players, Space space) {
         for (int i = 0; i < players.length; i++) {
@@ -92,8 +101,9 @@ public class Antenna extends FieldAction {
      * @param players The players to determine the order of
      * @param start The start index of the subset
      * @param end The end index of the subset
+     * @param space The space of the antenna
      * @return The players sorted by order
-     * @Author Nikolaj Schæbel s220471
+     * @author Nikolaj Schæbel s220471
      */
     private Player[] determineOrder(Player[] players, int start, int end, Space space) {
         //Create an array of the subset of players with the same distance
@@ -143,8 +153,9 @@ public class Antenna extends FieldAction {
     /**
      * Calculate the distance between the antenna and a player
      * @param player The player to calculate the distance to
+     * @param space The space of the antenna
      * @return The distance between the antenna and the player
-     * @Author Nikolaj Schæbel s220471
+     * @author Nikolaj Schæbel s220471
      */
     private int calculateDistance(Player player, Space space) {
         return Math.abs(player.getSpace().x - space.x) + Math.abs(player.getSpace().y - space.y);
