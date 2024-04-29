@@ -50,6 +50,9 @@ public class Player extends Subject {
     private int robotId;
 
     @Expose
+    private int checkpointCollected = 0;
+
+    @Expose
     private Space space;
     @Expose
     private Heading heading = SOUTH;
@@ -137,6 +140,15 @@ public class Player extends Subject {
                 space.playerChanged();
             }
         }
+    }
+
+    public void setCheckpoint(int checkpointCollected) {
+        this.checkpointCollected = checkpointCollected;
+        notifyChange();
+    }
+
+    public int getCheckpointCollected() {
+        return checkpointCollected;
     }
 
     public CommandCardField[] getProgram() {

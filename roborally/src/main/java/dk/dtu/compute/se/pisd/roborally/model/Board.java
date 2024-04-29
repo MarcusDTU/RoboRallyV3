@@ -23,6 +23,7 @@ package dk.dtu.compute.se.pisd.roborally.model;
 
 import com.google.gson.annotations.Expose;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.controller.field.Antenna;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -69,6 +70,9 @@ public class Board extends Subject {
     private Phase phase = INITIALISATION;
 
     @Expose
+    private Space antennaSpace;
+
+    @Expose
     private int step = 0;
 
     @Expose
@@ -104,6 +108,27 @@ public class Board extends Subject {
             }
         }
     }
+
+    /**
+     * Returns the space which holds the antenna.
+     * @return the space which holds the antenna
+     * @author Daniel Overballe Lerche, s235095@dtu.dk
+     * @author Nikolaj Schæbel, s220471@dtu.dk
+     */
+    public Space getAntennaSpace() {
+        return antennaSpace;
+    }
+
+    /**
+     * Sets the space which holds the antenna.
+     * @param antennaSpace the space which holds the antenna
+     * @author Daniel Overballe Lerche, s235095@dtu.dk
+     * @author Nikolaj Schæbel, s220471@dtu.dk
+     */
+    public void setAntennaSpace(Space antennaSpace) {
+        this.antennaSpace = antennaSpace;
+    }
+
     public int getCurrentNumberOfCards() {
         return currentNumberOfCards;
     }
@@ -192,6 +217,12 @@ public class Board extends Subject {
         } else {
             return -1;
         }
+    }
+
+    public void setPlayers(List<Player> players) {
+        this.players.clear();
+        this.players.addAll(players);
+        notifyChange();
     }
 
     /**
