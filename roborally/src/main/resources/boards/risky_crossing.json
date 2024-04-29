@@ -160,14 +160,7 @@
       "walls": [
         "NORTH"
       ],
-      "actions": [
-        {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.ConveyorBelt",
-          "INSTANCE": {
-            "heading": "NORTH"
-          }
-        }
-      ],
+      "actions": [],
       "x": 1,
       "y": 2
     },
@@ -340,9 +333,7 @@
       "walls": [
         "EAST"
       ],
-      "actions": [
-        {}
-      ],
+      "actions": [],
       "x": 2,
       "y": 4
     },
@@ -400,9 +391,7 @@
       "walls": [
         "EAST"
       ],
-      "actions": [
-        {}
-      ],
+      "actions": [],
       "x": 2,
       "y": 5
     },
@@ -538,9 +527,7 @@
       "walls": [
         "SOUTH"
       ],
-      "actions": [
-        {}
-      ],
+      "actions": [],
       "x": 1,
       "y": 7
     },
