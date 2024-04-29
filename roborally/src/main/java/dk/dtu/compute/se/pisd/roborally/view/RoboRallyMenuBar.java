@@ -27,6 +27,9 @@ import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * ...
@@ -58,7 +61,11 @@ public class RoboRallyMenuBar extends MenuBar {
         newGame = new MenuItem("New Game");
         newGame.setOnAction(e -> {
             try {
-                this.appController.newGame();
+                final List<Integer> PLAYER_NUMBER_OPTIONS = Arrays.asList(2, 3, 4, 5, 6);
+                ChoiceDialog<Integer> dialog = new ChoiceDialog<>(PLAYER_NUMBER_OPTIONS.get(0), PLAYER_NUMBER_OPTIONS);
+                dialog.setTitle("Player number");
+                dialog.setHeaderText("Select number of players");
+                this.appController.newGame(dialog.showAndWait());
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }

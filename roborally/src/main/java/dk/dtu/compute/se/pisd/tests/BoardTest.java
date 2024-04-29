@@ -1,4 +1,4 @@
-package testing;
+package dk.dtu.compute.se.pisd.tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
