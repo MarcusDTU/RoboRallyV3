@@ -234,7 +234,7 @@ public class GameController {
                 default:
                     // DO NOTHING (for now)
             }
-            player.getDiscardedPile().getPile().pile.add(command);
+            //player.getDiscardedPile().getPile().pile.add(command);
             System.out.println(player.getName()+player.getDiscardedPile().getPile().pile);
             board.useCard();
             System.out.println(board.getCurrentNumberOfCards());
@@ -285,10 +285,10 @@ public class GameController {
             Deck currentDeck = player.getDeck();
             //ArrayList<Command> twentySeven = init.initDeck;
             if(currentDeck.initDeck.size() < 9){
-                //System.out.println("discardpile size before "+ player.getDiscardedPile().getPile().pile.size());
+                System.out.println("discardpile size before "+ player.getDiscardedPile().getPile().pile.size());
                 currentDeck.initDeck.addAll(player.getDiscardedPile().getPile().pile);
                 player.getDiscardedPile().getPile().pile.clear();
-                //System.out.println("discardpile size after "+ player.getDiscardedPile().getPile().pile.size());
+                System.out.println("discardpile size after "+ player.getDiscardedPile().getPile().pile.size());
                 currentDeck.shuffleDeck();
             }
             // when discard pile is added currentDeck.shuffleDeck();
@@ -319,6 +319,16 @@ public class GameController {
                 count++;
             }
             System.out.println("number of cards in the deck " + count);
+        }
+
+
+
+        for(int i = 0; i < board.getPlayersNumber(); i++){
+            for(int j =0; j < board.getPlayer(0).NO_CARDS; j++){
+                if(board.getPlayer(i).getCardField(j) != null){
+                    board.getPlayer(i).getDiscardedPile().getPile().pile.add(board.getPlayer(i).getCardField(j).getCard().command);
+                }
+            }
         }
 
     }
