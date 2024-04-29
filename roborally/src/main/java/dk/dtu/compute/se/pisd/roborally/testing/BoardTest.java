@@ -15,8 +15,8 @@ class BoardTest {
 
     @Test
     void testBoardInitialization() {
-       assertEquals(8, board.getWidth(), "Board width should be initialized to 8.");
-       assertEquals(8, board.getHeight(), "Board height should be initialized to 8.");
+        assertEquals(8, board.getWidth(), "Board width should be initialized to 8.");
+        assertEquals(8, board.getHeight(), "Board height should be initialized to 8.");
         assertNotNull(board.getSpace(0, 0), "Space at (0,0) should not be null.");
     }
 
