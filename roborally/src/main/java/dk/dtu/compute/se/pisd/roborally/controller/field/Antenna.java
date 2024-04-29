@@ -1,7 +1,12 @@
 package dk.dtu.compute.se.pisd.roborally.controller.field;
 
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
+import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
+import dk.dtu.compute.se.pisd.roborally.model.Player;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Arrays;
 
 public class Antenna extends FieldAction {
 
@@ -67,7 +72,7 @@ public class Antenna extends FieldAction {
                     break;
                 }
                 //set end index if the distance is the same
-                if (calculateDistance(players[i]) == calculateDistance(players[j], space)) {
+                if (calculateDistance(players[i], space) == calculateDistance(players[j], space)) {
                     subsetEndIndex = j+1; //non-inclusive end index
                 }
             }
