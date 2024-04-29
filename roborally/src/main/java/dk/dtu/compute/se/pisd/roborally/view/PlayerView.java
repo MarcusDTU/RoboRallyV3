@@ -141,9 +141,9 @@ public class PlayerView extends Tab implements ViewObserver {
                     if (player.board.getPhase() == Phase.PROGRAMMING ) {
                         cardFieldView.setBackground(CardFieldView.BG_DEFAULT);
                     } else {
-                        if (i < player.board.getStep()) {
+                        if (i < player.getStep()) {
                             cardFieldView.setBackground(CardFieldView.BG_DONE);
-                        } else if (i == player.board.getStep()) {
+                        } else if (i == player.getStep()) {
                             if (player.board.getCurrentPlayer() == player) {
                                 cardFieldView.setBackground(CardFieldView.BG_ACTIVE);
                             } else if (player.board.getPlayerNumber(player.board.getCurrentPlayer()) > player.board.getPlayerNumber(player)) {

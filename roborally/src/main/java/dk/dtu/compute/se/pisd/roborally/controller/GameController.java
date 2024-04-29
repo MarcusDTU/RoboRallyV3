@@ -143,12 +143,14 @@ public class GameController {
         makeProgramFieldsVisible(0);
         board.setPhase(Phase.ACTIVATION);
         board.setCurrentPlayer(board.getPlayer(0));
-        board.setStep(0);
+        for (Player player : board.getPlayers()) {
+            player.setStep(0);
+        }
     }
 
-    public void startActivationPhase(int steps) { // start the activation phase
+    public void startActivationPhase() { // start the activation phase
         makeProgramFieldsInvisible(); // make the program fields invisible
-        for (int i = 0; i <= steps; i++) { // for each step
+        for (int i = 0; i <= board.getCurrentPlayer().getStep(); i++) { // for each step
             makeProgramFieldsVisible(i); // make the program fields visible
         }
         board.setPhase(Phase.ACTIVATION); // set the board's phase to "ACTIVATION"
@@ -173,7 +175,7 @@ public class GameController {
     private void executeNextStep() {
         Player currentPlayer = board.getCurrentPlayer();
         if (board.getPhase() == Phase.ACTIVATION && currentPlayer != null) {
-            int step = board.getStep();
+            int step = currentPlayer.getStep();
             if (step >= 0 && step < Player.NO_REGISTERS) {
                 CommandCard card = currentPlayer.getProgramField(step).getCard();
                 if (card != null) {
@@ -187,7 +189,9 @@ public class GameController {
                     step++;
                     if (step < Player.NO_REGISTERS) {
                         makeProgramFieldsVisible(step);
-                        board.setStep(step);
+                        for (Player player : board.getPlayers()) {
+                            player.setStep(step);
+                        }
                         board.setCurrentPlayer(board.getPlayer(0));
                     } else {
                         startProgrammingPhase();
@@ -262,7 +266,9 @@ public class GameController {
     public void startProgrammingPhase() {
         board.setPhase(Phase.PROGRAMMING);
         board.setCurrentPlayer(board.getPlayer(0));
-        board.setStep(0);
+        for (Player player : board.getPlayers()) {
+            player.setStep(0);
+        }
 
         if(board.getCurrentNumberOfCards() <= 0){
             for(int i = 0; i < board.getPlayersNumber(); i++){
