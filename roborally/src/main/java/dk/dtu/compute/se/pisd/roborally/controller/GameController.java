@@ -239,10 +239,7 @@ public class GameController {
             board.useCard();
             System.out.println(board.getCurrentNumberOfCards());
 
-            for(Command element : player.getCurrentDeck().getDeck().initDeck){
-                player.getCurrentDeck().shuffleDeck(new Deck());
-                System.out.println(element);
-            }
+
         }
     }
 
@@ -262,31 +259,39 @@ public class GameController {
     public void startProgrammingPhase() {
         board.setPhase(Phase.PROGRAMMING);
         board.setCurrentPlayer(board.getPlayer(0));
-        board.getPlayer(0).getCurrentDeck().setDeck(new Deck());
         board.setStep(0);
 
         if(board.getCurrentNumberOfCards() <= 0){
             for(int i = 0; i < board.getPlayersNumber(); i++){
                 Player player = board.getPlayer(i);
-                DeckField currentDeck = player.getCurrentDeck();
+                Deck currentDeck = player.getDeck();
+/*
 
-                if(currentDeck.getDeck().initDeck.size() < 9){
+
+                if(currentDeck.initDeck.size() < 9){
                     for(int j = 0; j < player.getDiscardedPile().getPile().pile.size(); j++){
-                        currentDeck.getDeck().initDeck.add(player.getDiscardedPile().getPile().pile.get(j));
+                        currentDeck.initDeck.add(player.getDiscardedPile().getPile().pile.get(j));
                     }
                     player.getDiscardedPile().getPile().pile.clear();
                 }
+                */
+
             }
-            board.resetCards();
+            //board.resetCards();
         }
 
         for (int i = 0; i < board.getPlayersNumber(); i++) {
             Player player = board.getPlayer(i);
-            DeckField currentDeck = player.getCurrentDeck();
-            currentDeck.setDeck(new Deck());
-            Deck init = currentDeck.getDeck();
+            Deck currentDeck = player.getDeck();
             //ArrayList<Command> twentySeven = init.initDeck;
-            currentDeck.shuffleDeck(init);
+            if(currentDeck.initDeck.size() < 9){
+                //System.out.println("discardpile size before "+ player.getDiscardedPile().getPile().pile.size());
+                currentDeck.initDeck.addAll(player.getDiscardedPile().getPile().pile);
+                player.getDiscardedPile().getPile().pile.clear();
+                //System.out.println("discardpile size after "+ player.getDiscardedPile().getPile().pile.size());
+                currentDeck.shuffleDeck();
+            }
+            // when discard pile is added currentDeck.shuffleDeck();
 
             if (player != null) {
                 for (int j = 0; j < Player.NO_REGISTERS; j++) {
@@ -296,8 +301,8 @@ public class GameController {
                 }
                 for (int j = 0; j < Player.NO_CARDS; j++) {
                     CommandCardField field = player.getCardField(j);
-                    field.setCard(new CommandCard(init.initDeck.get(0)));
-                    init.initDeck.remove(0);
+                    field.setCard(new CommandCard(currentDeck.initDeck.get(0)));
+                    currentDeck.initDeck.remove(0);
                     field.setVisible(true);
                 }
                 for(int j = 0; j <= player.getDiscardedPile().getPile().pile.size(); j++){
@@ -308,12 +313,12 @@ public class GameController {
             }
 
             int count = 0;
-            for(Command element : init.initDeck){
-                System.out.println(player.getName());
+            System.out.println(player.getName());
+            for(Command element : currentDeck.initDeck){
                 System.out.println(element);
                 count++;
             }
-            System.out.println(count);
+            System.out.println("number of cards in the deck " + count);
         }
 
     }
