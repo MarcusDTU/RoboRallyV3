@@ -23,6 +23,7 @@ package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import org.jetbrains.annotations.NotNull;
+import java.util.List;
 
 /**
  * ...
@@ -82,6 +83,14 @@ public class GameController {
         if (other != null){
             Space target = board.getNeighbour(space, heading);
             if (target != null) {
+                List<Heading> targetWalls = target.getWalls();
+                List<Heading> sourceWalls = space.getWalls();
+                // Movement is not possible to target if there is a wall in the way
+                if (!targetWalls.contains(heading.opposite()) && !sourceWalls.contains(heading)) {
+                    moveToSpace(other, target, heading);
+                } else {
+                    throw new ImpossibleMoveException(player, space, heading);
+                }
                 // XXX Note that there might be additional problems with
                 //     infinite recursion here (in some special cases)!
                 //     We will come back to that!
