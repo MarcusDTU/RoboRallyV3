@@ -39,7 +39,7 @@ public class Player extends Subject {
 
     final public Board board;
     private DiscardPileField discardedPile;
-    private DeckField deck;
+    public DeckField deck;
     private String name;
     private int robotId;
 
