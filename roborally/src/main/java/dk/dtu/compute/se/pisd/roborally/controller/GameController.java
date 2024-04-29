@@ -146,6 +146,14 @@ public class GameController {
         board.setStep(0);
     }
 
+    public void startActivationPhase(int steps) { // start the activation phase
+        makeProgramFieldsInvisible(); // make the program fields invisible
+        for (int i = 0; i <= steps; i++) { // for each step
+            makeProgramFieldsVisible(i); // make the program fields visible
+        }
+        board.setPhase(Phase.ACTIVATION); // set the board's phase to "ACTIVATION"
+    }
+
     public void executePrograms() {
         board.setStepMode(false);
         continuePrograms();

@@ -21,6 +21,7 @@
  */
 package dk.dtu.compute.se.pisd.roborally.model;
 
+import com.google.gson.annotations.Expose;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import org.jetbrains.annotations.NotNull;
 
@@ -34,19 +35,32 @@ import static dk.dtu.compute.se.pisd.roborally.model.Heading.SOUTH;
  */
 public class Player extends Subject {
 
+    @Expose
     final public static int NO_REGISTERS = 5;
+    @Expose
     final public static int NO_CARDS = 8;
 
-    final public Board board;
+    public Board board;
+
+    @Expose
     public DiscardPile discardedPile = new DiscardPile();
+    @Expose
     private String name;
+    @Expose
     private int robotId;
 
+    @Expose
     private Space space;
+    @Expose
     private Heading heading = SOUTH;
 
+
+    @Expose
     private CommandCardField[] program;
+    @Expose
     private CommandCardField[] cards;
+
+    public Player(){}
 
     public Player(@NotNull Board board, int robotId, @NotNull String name) {
         this.board = board;
@@ -123,6 +137,24 @@ public class Player extends Subject {
                 space.playerChanged();
             }
         }
+    }
+
+    public CommandCardField[] getProgram() {
+        return program;
+    }
+
+    public CommandCardField[] getCards() {
+        return cards;
+    }
+
+    public CommandCardField[] setProgram(CommandCardField[] program) {
+        this.program = program;
+        return program;
+    }
+
+    public CommandCardField[] setCards(CommandCardField[] cards) {
+        this.cards = cards;
+        return cards;
     }
 
     public CommandCardField getProgramField(int i) {

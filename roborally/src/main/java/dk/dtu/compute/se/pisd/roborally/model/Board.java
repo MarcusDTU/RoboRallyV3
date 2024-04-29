@@ -21,6 +21,7 @@
  */
 package dk.dtu.compute.se.pisd.roborally.model;
 
+import com.google.gson.annotations.Expose;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import org.jetbrains.annotations.NotNull;
 
@@ -35,27 +36,42 @@ import static dk.dtu.compute.se.pisd.roborally.model.Phase.INITIALISATION;
  * @author Ekkart Kindler, ekki@dtu.dk
  *
  */
-public class    Board extends Subject {
+public class Board extends Subject {
 
-    public final int width;
+    @Expose
+    public int width;
 
-    private final int MAX_NUMBER_OF_CARDS;
+    @Expose
+    private int MAX_NUMBER_OF_CARDS;
+
+    @Expose
     private int currentNumberOfCards;
-    private int totalMoves = 0;
-    public final int height;
 
+    @Expose
+    private int totalMoves = 0;
+
+    @Expose
+    public int height;
+
+    @Expose
     private Integer gameId;
 
-    private final Space[][] spaces;
+    @Expose
+    private Space[][] spaces;
 
+    @Expose
     private final List<Player> players = new ArrayList<>();
 
+    @Expose
     private Player current;
 
+    @Expose
     private Phase phase = INITIALISATION;
 
+    @Expose
     private int step = 0;
 
+    @Expose
     private boolean stepMode;
 
     public Board(int width, int height) {
@@ -72,6 +88,8 @@ public class    Board extends Subject {
         this.MAX_NUMBER_OF_CARDS =  getPlayersNumber() * 9;
         this.currentNumberOfCards = MAX_NUMBER_OF_CARDS;
     }
+
+    public Board(){}
 
     public Integer getGameId() {
         return gameId;
@@ -122,10 +140,6 @@ public class    Board extends Subject {
         } else {
             return null;
         }
-    }
-
-    public Player[] getPlayers() {
-        return players.toArray(new Player[0]);
     }
 
     public Player getCurrentPlayer() {
@@ -240,5 +254,13 @@ public class    Board extends Subject {
 
     public void setTotalMoves(int totalMoves) {
         this.totalMoves = totalMoves;
+    }
+
+    public Player[] getPlayers() {
+        return players.toArray(new Player[0]);
+    }
+
+    public Space[][] getSpaces() {
+        return spaces;
     }
 }
