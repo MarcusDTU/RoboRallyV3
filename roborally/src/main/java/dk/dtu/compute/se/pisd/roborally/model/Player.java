@@ -45,6 +45,8 @@ public class Player extends Subject {
     private String name;
     private int robotId;
 
+    private Command currentCommand;
+
     private Space space;
     private Heading heading = SOUTH;
 
@@ -81,6 +83,12 @@ public class Player extends Subject {
 
     public Deck getDeck() {
         return deck;
+    }
+    public Command getCurrentCommand() {
+        return currentCommand;
+    }
+    public void setCurrentCommand(Command command){
+        this.currentCommand = command;
     }
 
     public void setDeck(Deck deck) {

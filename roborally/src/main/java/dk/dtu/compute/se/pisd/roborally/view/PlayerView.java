@@ -199,21 +199,26 @@ public class PlayerView extends Tab implements ViewObserver {
                 playerInteractionPanel.getChildren().clear();
 
                 if (player.board.getCurrentPlayer() == player) {
-                    // TODO Assignment A3: these buttons should be shown only when there is
-                    //      an interactive command card, and the buttons should represent
-                    //      the player's choices of the interactive command card. The
-                    //      following is just a mockup showing two options
-                    Button optionButton = new Button("Option1");
-                    optionButton.setOnAction( e -> gameController.notImplemented());
-                    optionButton.setDisable(false);
-                    playerInteractionPanel.getChildren().add(optionButton);
+                    if(player.getCurrentCommand() == Command.OPTION_LEFT_RIGHT) {
+                        // TODO Assignment A3: these buttons should be shown only when there is
+                        //      an interactive command card, and the buttons should represent
+                        //      the player's choices of the interactive command card. The
+                        //      following is just a mockup showing two options
+                        Button optionButton = new Button("Left");
+                        optionButton.setOnAction(e -> {gameController.turnLeft(player);player.board.setPhase(Phase.ACTIVATION);});
+                        optionButton.setDisable(false);
+                        playerInteractionPanel.getChildren().add(optionButton);
 
-                    optionButton = new Button("Option 2");
-                    optionButton.setOnAction( e -> gameController.notImplemented());
-                    optionButton.setDisable(false);
-                    playerInteractionPanel.getChildren().add(optionButton);
+                        optionButton = new Button("Right");
+                        optionButton.setOnAction(e -> {gameController.turnRight(player);player.board.setPhase(Phase.ACTIVATION);});
+                        optionButton.setDisable(false);
+                        playerInteractionPanel.getChildren().add(optionButton);
+
+
+                    }
                 }
             }
+
         }
     }
 

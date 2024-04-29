@@ -218,7 +218,7 @@ public class GameController {
             // XXX This is a very simplistic way of dealing with some basic cards and
             //     their execution. This should eventually be done in a more elegant way
             //     (this concerns the way cards are modelled as well as the way they are executed).
-
+            player.setCurrentCommand(command);
             switch (command) {
                 case FORWARD:
                     this.moveForward(player);
@@ -249,13 +249,16 @@ public class GameController {
                 case POWER_UP:
                     // DO NOTHING (for now)
                     break;
+                case OPTION_LEFT_RIGHT:
+                    board.setPhase(Phase.PLAYER_INTERACTION);
+
+                    break;
                 default:
                     // DO NOTHING (for now)
             }
             //player.getDiscardedPile().getPile().pile.add(command);
-            System.out.println(player.getName()+player.getDiscardedPile().getPile().pile);
             board.useCard();
-            System.out.println(board.getCurrentNumberOfCards());
+
 
 
         }
@@ -303,10 +306,8 @@ public class GameController {
             Deck currentDeck = player.getDeck();
             //ArrayList<Command> twentySeven = init.initDeck;
             if(currentDeck.initDeck.size() < 9){
-                System.out.println("discardpile size before "+ player.getDiscardedPile().getPile().pile.size());
                 currentDeck.initDeck.addAll(player.getDiscardedPile().getPile().pile);
                 player.getDiscardedPile().getPile().pile.clear();
-                System.out.println("discardpile size after "+ player.getDiscardedPile().getPile().pile.size());
                 currentDeck.shuffleDeck();
             }
             // when discard pile is added currentDeck.shuffleDeck();
@@ -330,13 +331,6 @@ public class GameController {
                 }
             }
 
-            int count = 0;
-            System.out.println(player.getName());
-            for(Command element : currentDeck.initDeck){
-                System.out.println(element);
-                count++;
-            }
-            System.out.println("number of cards in the deck " + count);
         }
 
 
