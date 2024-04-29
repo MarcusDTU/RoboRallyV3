@@ -42,6 +42,8 @@ public class Player extends Subject {
     private String name;
     private int robotId;
 
+    private int checkpointCollected = 0;
+
     private Space space;
     private Heading heading = SOUTH;
 
@@ -123,6 +125,10 @@ public class Player extends Subject {
                 space.playerChanged();
             }
         }
+    }
+
+    public int getCheckpointCollected() {
+        return checkpointCollected;
     }
 
     public CommandCardField getProgramField(int i) {

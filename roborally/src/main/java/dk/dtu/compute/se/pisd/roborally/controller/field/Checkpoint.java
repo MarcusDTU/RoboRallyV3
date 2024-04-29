@@ -16,7 +16,14 @@ public class Checkpoint extends FieldAction {
     }
 
     @Override
-    public boolean doAction(GameController gameController, Space space) {
+    public boolean doAction(@NotNull GameController gameController, @NotNull Space space) {
+
+        for(p: gameController.getPlayers()){
+            if(p.getSpace().equals(space) && p.getCheckpointCollected() == (orderNumber - 1)){
+                p.setCheckpoint(orderNumber);
+                return true;
+            }
+        }
         return false;
     }
 }
