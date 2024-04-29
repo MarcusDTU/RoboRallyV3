@@ -207,6 +207,17 @@
       "walls": [],
       "actions": [
         {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.PowerPlant",
+          "INSTANCE": {}
+        }
+      ],
+      "x": 7,
+      "y": 2
+    },
+    {
+      "walls": [],
+      "actions": [
+        {
           "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.ConveyorBelt",
           "INSTANCE": {
             "heading": "SOUTH"
@@ -367,6 +378,17 @@
       "walls": [],
       "actions": [
         {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.PowerPlant",
+          "INSTANCE": {}
+        }
+      ],
+      "x": 9,
+      "y": 4
+    },
+    {
+      "walls": [],
+      "actions": [
+        {
           "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.ConveyorBelt",
           "INSTANCE": {
             "heading": "NORTH"
@@ -406,6 +428,17 @@
         }
       ],
       "x": 4,
+      "y": 5
+    },
+    {
+      "walls": [],
+      "actions": [
+        {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.PowerPlant",
+          "INSTANCE": {}
+        }
+      ],
+      "x": 6,
       "y": 5
     },
     {
