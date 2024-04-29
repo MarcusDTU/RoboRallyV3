@@ -1,4 +1,4 @@
-package testing;
+package dk.dtu.compute.se.pisd.roborally.testing;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,7 +22,7 @@ class BoardTest {
 
     @Test
     void testAddAndGetPlayer() {
-        Player player = new Player(board, 1, "Player1");
+        Player player = new Player(board, 1, "Player 1");
         board.addPlayer(player);
         assertEquals(1, board.getPlayersNumber(), "Board should have 1 player after adding.");
         assertSame(player, board.getPlayer(0), "Should retrieve the same player added to the board.");
