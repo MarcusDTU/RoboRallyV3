@@ -29,8 +29,6 @@ import dk.dtu.compute.se.pisd.roborally.model.Space;
 import javafx.geometry.Pos;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Polygon;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -99,12 +97,16 @@ public class SpaceView extends StackPane implements ViewObserver {
         if(space.getActions().isEmpty()) return;
         for (FieldAction action : space.getActions()) {
             if(action instanceof ConveyorBelt conveyorBelt) {
-                ImageView conveyorBeltImage = new ImageView("conveyor_belts/blue/blue_belt_forward.png");
+                ImageView conveyorBeltImage = new ImageView("conveyor_belts/blue/belt_forward.png");
                 conveyorBeltImage.setFitWidth(SPACE_WIDTH);
                 conveyorBeltImage.setFitHeight(SPACE_HEIGHT);
                 this.getChildren().add(conveyorBeltImage);
-                Heading heading = conveyorBelt.getHeading();
-                conveyorBeltImage.rotateProperty().set(90 * heading.ordinal() - 180);
+                Heading[] heading = conveyorBelt.getHeadings();
+                StringBuilder conyerbeltPath = new StringBuilder();
+                conyerbeltPath.append("conveyor_belts/");
+                conyerbeltPath.append(conveyorBelt.getColor().toString().toLowerCase());
+                conyerbeltPath.append("/belt_");
+                // TODO add the right conveyor belts
             }
             if (action instanceof Checkpoint checkpoint) {
                 ImageView checkpointImage = new ImageView("checkpoints/checkpoint" + checkpoint.getOrderNumber() + ".png");
@@ -116,6 +118,7 @@ public class SpaceView extends StackPane implements ViewObserver {
                 ImageView antennaImage = new ImageView("board_elements/images/antenna.png");
                 antennaImage.setFitWidth(SPACE_WIDTH);
                 antennaImage.setFitHeight(SPACE_HEIGHT);
+                antennaImage.rotateProperty().set(90 * antenna.getHeading().ordinal() - 180);
                 this.getChildren().add(antennaImage);
             }
             if(action instanceof StartField startField) {
@@ -123,6 +126,19 @@ public class SpaceView extends StackPane implements ViewObserver {
                 startFieldImage.setFitWidth(SPACE_WIDTH);
                 startFieldImage.setFitHeight(SPACE_HEIGHT);
                 this.getChildren().add(startFieldImage);
+            }
+            if(action instanceof RebootField rebootField) {
+                ImageView rebootFieldImage = new ImageView("board_elements/images/respawn.png");
+                rebootFieldImage.setFitWidth(SPACE_WIDTH);
+                rebootFieldImage.setFitHeight(SPACE_HEIGHT);
+                rebootFieldImage.rotateProperty().set(90 * rebootField.getHeading().ordinal() - 180);
+                this.getChildren().add(rebootFieldImage);
+            }
+            if(action instanceof PowerPlant powerPlant) {
+                ImageView powerPlantImage = new ImageView("board_elements/images/energyField.png");
+                powerPlantImage.setFitWidth(SPACE_WIDTH);
+                powerPlantImage.setFitHeight(SPACE_HEIGHT);
+                this.getChildren().add(powerPlantImage);
             }
         }
     }

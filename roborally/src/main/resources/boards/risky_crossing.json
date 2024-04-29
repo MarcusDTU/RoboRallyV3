@@ -47,7 +47,7 @@
         {
           "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.Checkpoint",
           "INSTANCE": {
-            "order": "2"
+            "orderNumber": "2"
           }
         }
       ],
@@ -583,7 +583,7 @@
         {
           "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.Checkpoint",
           "INSTANCE": {
-            "order": "1"
+            "orderNumber": "1"
           }
         }
       ],

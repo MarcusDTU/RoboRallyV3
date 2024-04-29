@@ -77,21 +77,26 @@ public class LoadBoard {
 			    if (space != null) {
                     space.getActions().addAll(spaceTemplate.actions);
                     space.getWalls().addAll(spaceTemplate.walls);
-                    if(space.getActions().contains(new StartField())){
-                        space.getActions().clear(); // Only one start field is allowed if it is there
-                        result.addStartSpace(space);
-                    } else if (space.getActions().contains(new Antenna()) && result.getAntennaSpace() == null) {
-                        if (result.getAntennaSpace() != null) {
-                            throw new IOException("More than one antenna found on the board!");
+                    for (FieldAction action : space.getActions()) {
+                        if(action instanceof StartField){
+                            // TODO - Only one start field is allowed if it is there
+                            result.addStartSpace(space);
+                        } else if(action instanceof Antenna){
+                            if (result.getAntennaSpace() != null) {
+                                throw new IOException("More than one antenna found on the board!");
+                            }
+                            // TODO - Only one antenna is allowed if it is there
+                            result.setAntennaSpace(space);
                         }
-                        space.getActions().clear(); // Only one antenna is allowed if it is there
-                        result.setAntennaSpace(space);
                     }
                 }
             }
+            System.out.println("Here 1");
             if(result.getAntennaSpace() == null){
+                System.out.println("Here 2");
                 throw new IOException("No antenna found on the board!");
             } else if(result.getStartSpaces().size() < 6){
+                System.out.println("Here 3");
                 throw new IOException("Not enough start fields found on the board. There needs to be 6 start fields!");
             }
 			reader.close();

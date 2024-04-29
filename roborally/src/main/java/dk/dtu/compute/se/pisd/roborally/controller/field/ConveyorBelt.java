@@ -34,18 +34,96 @@ import org.jetbrains.annotations.NotNull;
  */
 public class ConveyorBelt extends FieldAction {
 
-    public enum Type {
+    public enum Color {
         BLUE, GREEN;
     }
 
-    private Heading heading;
+    public enum Type {
+        STRAIGHT,
+        CORNER,
+        JUNCTION
+    }
 
-    public Heading getHeading() {
+    private Color color;
+
+    private Type type;
+
+    private Heading[] heading;
+
+    /**
+     * Returns the heading array of the conveyor belt.
+     * @return the heading array of the conveyor belt
+     * @author Daniel Overballe Lerche, s235095@dtu.dk
+     * @author Nikolaj Schæbel, s220471@dtu.dk
+     */
+    public Heading[] getHeadings() {
         return heading;
     }
 
-    public void setHeading(Heading heading) {
+    /**
+     * Sets the heading array of the conveyor belt.
+     * @param heading the heading array to set
+     * @author Daniel Overballe Lerche, s235095@dtu.dk
+     * @author Nikolaj Schæbel, s220471@dtu.dk
+     */
+    public void setHeadings(Heading[] heading) {
+        if(!isValidHeading(heading)) return;
         this.heading = heading;
+    }
+
+    /**
+     * Checks if the heading array contains a valid combination of values.
+     * @return true if the heading array is valid, false otherwise
+     * @author Daniel Overballe Lerche, s235095@dtu.dk
+     * @author Nikolaj Schæbel, s220471@dtu.dk
+     */
+    public static boolean isValidHeading(Heading[] heading) {
+        if(heading.length == 0) return false;
+        if(heading.length == 2) {
+            return (heading[0].ordinal() % 2) != (heading[1].ordinal() % 2);
+        } else if (heading.length == 3) {
+            if(heading[0].ordinal() == heading[1].ordinal()) {
+                return (heading[0].ordinal() % 2) != (heading[2].ordinal() % 2);
+            } else if(heading[0].opposite() == heading[1]) {
+                return (heading[0].ordinal() % 2) != (heading[2].ordinal() % 2);
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Converts an array of headings to a string representation.
+     * @return a string representation of the heading array
+     * @author Daniel Overballe Lerche, s235095@dtu.dk
+     * @author Nikolaj Schæbel, s220471@dtu.dk
+     */
+    public String convertHeadingToString() {
+        StringBuilder headingString = new StringBuilder(switch (heading.length) {
+            case 1 -> "STRAIGHT";
+            case 2 -> "CORNER";
+            case 3 -> "JUNCTION";
+            default -> "";
+        });
+        for (Heading value : heading) {
+            headingString.append("-").append(value.toString());
+        }
+        return headingString.toString();
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
     }
 
     @Override
