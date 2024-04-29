@@ -22,15 +22,16 @@
 package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.roborally.controller.AppController;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
+import javafx.stage.FileChooser;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public class RoboRallyMenuBar extends MenuBar {
 
@@ -55,23 +56,75 @@ public class RoboRallyMenuBar extends MenuBar {
         this.getMenus().add(controlMenu);
 
         newGame = new MenuItem("New Game");
-        newGame.setOnAction( e -> this.appController.newGame());
+        newGame.setOnAction(e -> {
+            try {
+                this.appController.newGame();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
         controlMenu.getItems().add(newGame);
 
         stopGame = new MenuItem("Stop Game");
-        stopGame.setOnAction( e -> this.appController.stopGame());
+        stopGame.setOnAction(e -> {
+            try {
+                this.appController.stopGame();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
         controlMenu.getItems().add(stopGame);
 
         saveGame = new MenuItem("Save Game");
-        saveGame.setOnAction( e -> this.appController.saveGame());
+        saveGame.setOnAction(e -> {
+            try {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Game Saved");
+                alert.setHeaderText(null);
+                alert.setContentText("The game has been saved successfully!");
+
+                // Show the alert
+                alert.showAndWait();
+                this.appController.saveGame();
+
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
         controlMenu.getItems().add(saveGame);
 
         loadGame = new MenuItem("Load Game");
-        loadGame.setOnAction( e -> this.appController.loadGame());
+        loadGame.setOnAction(e -> {
+            try {
+                FileChooser fileChooser = new FileChooser();
+                fileChooser.setTitle("Open Resource File");
+                fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+                fileChooser.getExtensionFilters().add(
+                        new FileChooser.ExtensionFilter("JSON Files", "*.json"));
+                this.appController.loadGame(fileChooser.showOpenDialog(null).getAbsolutePath());
+                if (this.appController.isGameRunning()) {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Game Loaded");
+                    alert.setHeaderText(null);
+                    alert.setContentText("The game has been loaded successfully!");
+
+                    // Show the alert
+                    alert.showAndWait();
+                }
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
         controlMenu.getItems().add(loadGame);
 
         exitApp = new MenuItem("Exit");
-        exitApp.setOnAction( e -> this.appController.exit());
+        exitApp.setOnAction(e -> {
+            try {
+                this.appController.exit();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
         controlMenu.getItems().add(exitApp);
 
         controlMenu.setOnShowing(e -> update());
