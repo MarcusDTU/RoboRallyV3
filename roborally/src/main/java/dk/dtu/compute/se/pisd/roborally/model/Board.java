@@ -22,6 +22,7 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.controller.field.Antenna;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -53,6 +54,8 @@ public class    Board extends Subject {
     private Player current;
 
     private Phase phase = INITIALISATION;
+
+    private Space antennaSpace;
 
     private int step = 0;
 
@@ -86,6 +89,27 @@ public class    Board extends Subject {
             }
         }
     }
+
+    /**
+     * Returns the space which holds the antenna.
+     * @return the space which holds the antenna
+     * @author Daniel Overballe Lerche, s235095@dtu.dk
+     * @author Nikolaj Schæbel, s220471@dtu.dk
+     */
+    public Space getAntennaSpace() {
+        return antennaSpace;
+    }
+
+    /**
+     * Sets the space which holds the antenna.
+     * @param antennaSpace the space which holds the antenna
+     * @author Daniel Overballe Lerche, s235095@dtu.dk
+     * @author Nikolaj Schæbel, s220471@dtu.dk
+     */
+    public void setAntennaSpace(Space antennaSpace) {
+        this.antennaSpace = antennaSpace;
+    }
+
     public int getCurrentNumberOfCards() {
         return currentNumberOfCards;
     }
