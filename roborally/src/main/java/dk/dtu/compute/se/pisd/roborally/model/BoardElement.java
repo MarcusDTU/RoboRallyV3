@@ -10,7 +10,7 @@ public abstract class BoardElement {
 
     abstract public void activate();
 
-    enum Orientation {
+    public enum Orientation {
         NORTH, EAST, SOUTH, WEST
     }
 
