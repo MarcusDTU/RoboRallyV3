@@ -41,10 +41,13 @@ public class Player extends Subject {
     private DiscardPileField discardedPile;
     public DeckField deckField;
 
+    private Command lastCommand = null;
+
     private Deck deck;
     private String name;
     private int robotId;
 
+    private int powerUpCnt = 0;
     private Command currentCommand;
 
     private Space space;
@@ -52,6 +55,9 @@ public class Player extends Subject {
 
     private CommandCardField[] program;
     private CommandCardField[] cards;
+
+    private boolean isButtonPressed = false;
+
 
     public Player(@NotNull Board board, int robotId, @NotNull String name) {
         this.board = board;
@@ -90,11 +96,29 @@ public class Player extends Subject {
     public void setCurrentCommand(Command command){
         this.currentCommand = command;
     }
+    public void oneUpPowerUpCnt() {
+        this.powerUpCnt++;
+    }
+    public int getPowerUpCnt() {
+        return powerUpCnt;
+    }
+    public void setLastCommand(Command lastCommand) {
+        if(lastCommand != Command.AGAIN){
+            this.lastCommand = lastCommand;}
+    }
+    public Command getLastCommand() {
+        return lastCommand;
+    }
 
     public void setDeck(Deck deck) {
         this.deck = deck;
     }
-
+    public boolean isButtonPressed() {
+        return isButtonPressed;
+    }
+public void setButtonPressed(boolean buttonPressed) {
+        isButtonPressed = buttonPressed;
+    }
     public void setName(String name) {
         if (name != null && !name.equals(this.name)) {
             this.name = name;

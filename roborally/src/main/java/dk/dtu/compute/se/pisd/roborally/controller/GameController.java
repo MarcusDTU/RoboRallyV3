@@ -115,6 +115,9 @@ public class GameController {
         }
         player.setSpace(space);
     }
+    public void powerUp(Player player){
+        player.oneUpPowerUpCnt();
+    }
 
     public void moveCurrentPlayerToSpace(Space space) {
         Player currentPlayer = board.getCurrentPlayer();
@@ -181,8 +184,10 @@ public class GameController {
     }
 
     private void executeNextStep() {
+        System.out.println("Execute next step");
         Player currentPlayer = board.getCurrentPlayer();
         if (board.getPhase() == Phase.ACTIVATION && currentPlayer != null) {
+            System.out.println("ACTIVATION phase");
             int step = board.getStep();
             if (step >= 0 && step < Player.NO_REGISTERS) {
                 CommandCard card = currentPlayer.getProgramField(step).getCard();
@@ -190,27 +195,40 @@ public class GameController {
                     Command command = card.command;
                     executeCommand(currentPlayer, command);
                 }
+                if(currentPlayer.board.getPhase() != Phase.PLAYER_INTERACTION){
+                    System.out.println("Not player interaction");
+                    int nextPlayerNumber = board.getPlayerNumber(currentPlayer) + 1;
+                    if (nextPlayerNumber < board.getPlayersNumber()) {
+                        board.setCurrentPlayer(board.getPlayer(nextPlayerNumber));
+                    } else {
+                        step++;
+                        if (step < Player.NO_REGISTERS) {
+                            makeProgramFieldsVisible(step);
+                            board.setStep(step);
+                            board.setCurrentPlayer(board.getPlayer(0));
+                        } else {
+                            startProgrammingPhase();
+                        }
+                    }
+                }
+            } else if(currentPlayer.isButtonPressed()) {
+                System.out.println(currentPlayer.isButtonPressed());
+                currentPlayer.setButtonPressed(false);
                 int nextPlayerNumber = board.getPlayerNumber(currentPlayer) + 1;
                 if (nextPlayerNumber < board.getPlayersNumber()) {
                     board.setCurrentPlayer(board.getPlayer(nextPlayerNumber));
+
                 } else {
-                    step++;
-                    if (step < Player.NO_REGISTERS) {
-                        makeProgramFieldsVisible(step);
-                        board.setStep(step);
-                        board.setCurrentPlayer(board.getPlayer(0));
-                    } else {
-                        startProgrammingPhase();
-                    }
+                    startProgrammingPhase();
                 }
-            } else {
-                // this should not happen
-                assert false;
+
+
             }
         } else {
             // this should not happen
             assert false;
         }
+
     }
 
     private void executeCommand(@NotNull Player player, Command command) {
@@ -244,10 +262,10 @@ public class GameController {
                     this.backup(player);
                     break;
                 case AGAIN:
-                    // DO NOTHING (for now)
+                    executeCommand(player, player.getLastCommand());
                     break;
                 case POWER_UP:
-                    // DO NOTHING (for now)
+                    this.powerUp(player);
                     break;
                 case OPTION_LEFT_RIGHT:
                     board.setPhase(Phase.PLAYER_INTERACTION);
@@ -257,9 +275,10 @@ public class GameController {
                     // DO NOTHING (for now)
             }
             //player.getDiscardedPile().getPile().pile.add(command);
+            player.setLastCommand(command);
             board.useCard();
 
-
+            System.out.println(player.getName() + " power up count " + player.getPowerUpCnt());
 
         }
     }
