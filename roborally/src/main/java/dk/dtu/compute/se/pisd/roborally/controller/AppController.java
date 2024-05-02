@@ -28,11 +28,8 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
 
-import dk.dtu.compute.se.pisd.roborally.model.Board;
-import dk.dtu.compute.se.pisd.roborally.model.CommandCardField;
-import dk.dtu.compute.se.pisd.roborally.model.Player;
+import dk.dtu.compute.se.pisd.roborally.model.*;
 
-import dk.dtu.compute.se.pisd.roborally.model.Space;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -139,6 +136,7 @@ public class AppController implements Observer {
         Board board = gson.fromJson(Files.readString(data), Board.class);
 
         for (Player player : board.getPlayers()) { // for each player in the board
+            player.getDiscardedPile().player = player; // set the player's discarded pile player to the player
             for (Space[] space: board.getSpaces()) { // for each space in the board
                 for (Space s : space) { // for each space in the space
                     if (player.getSpace() != null && player.getSpace().x == s.x && player.getSpace().y == s.y){ // if the player's space is not null and the player's space x and y are equal to the space's x and y
