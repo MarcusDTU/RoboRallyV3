@@ -366,7 +366,7 @@ public class GameController {
             board.setCurrentPlayer(board.getPlayer(nextPlayerNumber));
             // Last part of the assignment A3 in task 1 to make sure
             // the execution of the commands continues without needing
-            // to click again if they are in step mode
+            // to click again if they are not in step mode
             if(!board.isStepMode()) executePrograms();
         } else {
             startProgrammingPhase();
