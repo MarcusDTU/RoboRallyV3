@@ -174,7 +174,8 @@ public class AppController implements Observer {
                  s.board = board;
             }
         }
-        board.getCurrentPlayer().board = board;
+        Player currentPlayer = board.getCurrentPlayer();
+        currentPlayer.board = board;
 
         gameController = new GameController(board);
         //add if statements here later when other phases are added
