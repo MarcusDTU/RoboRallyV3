@@ -1,13 +1,16 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
+import com.google.gson.annotations.Expose;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 
 public class DiscardPileField extends Subject {
 
-    final public Player player;
+    public Player player;
 
+    @Expose
     private DiscardPile pile;
 
+    @Expose
     private boolean visible;
 
 

@@ -59,6 +59,7 @@ public class Player extends Subject {
     @Expose
     private Command currentCommand;
 
+    @Expose
     private Space space;
     @Expose
     private Heading heading = SOUTH;

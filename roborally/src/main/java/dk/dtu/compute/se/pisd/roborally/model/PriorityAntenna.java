@@ -1,11 +1,15 @@
 package dk.dtu.compute.se.pisd.roborally.model;
+import com.google.gson.annotations.Expose;
+
 import java.util.Arrays;
 import java.util.LinkedList;
 
 public class PriorityAntenna extends BoardElement{
 
-        int x;
-        int y;
+    @Expose
+    int x;
+    @Expose
+    int y;
 
         public PriorityAntenna(Orientation orientation, int x, int y) {
             super(orientation);
