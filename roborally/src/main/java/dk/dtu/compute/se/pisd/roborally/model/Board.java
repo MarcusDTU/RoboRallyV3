@@ -69,6 +69,9 @@ public class Board extends Subject {
     private Phase phase = INITIALISATION;
 
     @Expose
+    private int step = 0;
+
+    @Expose
     private boolean stepMode;
 
     public Board(int width, int height) {
@@ -161,6 +164,17 @@ public class Board extends Subject {
         }
     }
 
+    public int getStep() {
+        return step;
+    }
+
+    public void setStep(int step) {
+        if (step != this.step) {
+            this.step = step;
+            notifyChange();
+        }
+    }
+
     public boolean isStepMode() {
         return stepMode;
     }
@@ -231,7 +245,7 @@ public class Board extends Subject {
     public String getStatusMessage() {
         return "Phase: " + getPhase().name() +
                 ", Player = " + getCurrentPlayer().getName() +
-                ", Step: " + getCurrentPlayer().getStep() +
+                ", Step: " + getStep() +
                 ", Total Moves:" + getTotalMoves();
     }
     public int getTotalMoves() {

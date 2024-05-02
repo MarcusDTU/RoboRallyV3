@@ -180,7 +180,7 @@ public class AppController implements Observer {
         gameController = new GameController(board);
         //add if statements here later when other phases are added
         if(board.getPhase().name().equals("ACTIVATION")){ // if the board's phase is equal to "ACTIVATION"
-            gameController.startActivationPhase(); // start the activation phase
+            gameController.startActivationPhase(board.getStep()); // start the activation phase
         } else {
             gameController.startProgrammingPhase(); // start the programming phase
         }

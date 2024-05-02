@@ -52,8 +52,6 @@ public class Player extends Subject {
     @Expose
     private Space space;
     @Expose
-    private int step = 0;
-    @Expose
     private Heading heading = SOUTH;
 
 
@@ -165,17 +163,6 @@ public class Player extends Subject {
 
     public CommandCardField getCardField(int i) {
         return cards[i];
-    }
-
-    public int getStep() {
-        return step;
-    }
-
-    public void setStep(int step) {
-        if (step != this.step) {
-            this.step = step;
-            notifyChange();
-        }
     }
 
 }
