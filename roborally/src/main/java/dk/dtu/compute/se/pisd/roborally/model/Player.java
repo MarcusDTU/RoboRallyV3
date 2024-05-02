@@ -40,7 +40,7 @@ public class Player extends Subject {
     @Expose
     final public static int NO_CARDS = 8;
 
-    final public Board board;
+    public Board board;
     @Expose
     private DiscardPileField discardedPile;
     @Expose
@@ -49,8 +49,6 @@ public class Player extends Subject {
     private Command lastCommand = null;
     @Expose
     private Deck deck;
-    @Expose
-    public DiscardPile discardedPile = new DiscardPile();
     @Expose
     private String name;
     @Expose
