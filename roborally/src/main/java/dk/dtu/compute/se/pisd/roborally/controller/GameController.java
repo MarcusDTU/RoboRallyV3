@@ -355,6 +355,13 @@ public class GameController {
         return new CommandCard(commands[random]);
     }
 
+    /**
+     * Execute the command option and continue with the next player.
+     * @param command the command option to be executed
+     * @author Daniel Overballe Lerche, s235095@dtu.dk
+     * @author Marcus Langkilde, s195080@DTU.dk
+     * @author Haleef Abu Talib, s224523@dtu.dk
+     */
     public void executeCommandOptionAndContinue(Command command) {
         board.setPhase(Phase.ACTIVATION);
         executeCommand(board.getCurrentPlayer(), command);
