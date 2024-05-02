@@ -40,8 +40,15 @@ public class Player extends Subject {
     @Expose
     final public static int NO_CARDS = 8;
 
-    public Board board;
-
+    final public Board board;
+    @Expose
+    private DiscardPileField discardedPile;
+    @Expose
+    public DeckField deckField;
+    @Expose
+    private Command lastCommand = null;
+    @Expose
+    private Deck deck;
     @Expose
     public DiscardPile discardedPile = new DiscardPile();
     @Expose
@@ -50,6 +57,10 @@ public class Player extends Subject {
     private int robotId;
 
     @Expose
+    private int powerUpCnt = 0;
+    @Expose
+    private Command currentCommand;
+
     private Space space;
     @Expose
     private Heading heading = SOUTH;
@@ -59,6 +70,10 @@ public class Player extends Subject {
     private CommandCardField[] program;
     @Expose
     private CommandCardField[] cards;
+
+    @Expose
+    private boolean isButtonPressed = false;
+
 
     public Player(){}
 
@@ -78,12 +93,50 @@ public class Player extends Subject {
         for (int i = 0; i < cards.length; i++) {
             cards[i] = new CommandCardField(this);
         }
+
+        discardedPile = new DiscardPileField(this);
+
+        this.deck = new Deck();
+        deck.shuffleDeck();
+
     }
 
     public String getName() {
         return name;
     }
 
+    public Deck getDeck() {
+        return deck;
+    }
+    public Command getCurrentCommand() {
+        return currentCommand;
+    }
+    public void setCurrentCommand(Command command){
+        this.currentCommand = command;
+    }
+    public void oneUpPowerUpCnt() {
+        this.powerUpCnt++;
+    }
+    public int getPowerUpCnt() {
+        return powerUpCnt;
+    }
+    public void setLastCommand(Command lastCommand) {
+        if(lastCommand != Command.AGAIN){
+            this.lastCommand = lastCommand;}
+    }
+    public Command getLastCommand() {
+        return lastCommand;
+    }
+
+    public void setDeck(Deck deck) {
+        this.deck = deck;
+    }
+    public boolean isButtonPressed() {
+        return isButtonPressed;
+    }
+public void setButtonPressed(boolean buttonPressed) {
+        isButtonPressed = buttonPressed;
+    }
     public void setName(String name) {
         if (name != null && !name.equals(this.name)) {
             this.name = name;
@@ -165,4 +218,9 @@ public class Player extends Subject {
         return cards[i];
     }
 
+    public DiscardPileField getDiscardedPile() {
+        return discardedPile;
+    }
+
+    public DeckField getCurrentDeck(){ return deckField; }
 }

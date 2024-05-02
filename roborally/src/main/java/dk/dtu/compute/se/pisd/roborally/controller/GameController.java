@@ -24,6 +24,9 @@ package dk.dtu.compute.se.pisd.roborally.controller;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 /**
  * ...
  *
@@ -66,6 +69,21 @@ public class GameController {
         moveForward(player);
     }
 
+   public void backup(@NotNull Player player) {
+        Space space = player.getSpace();
+        Heading heading = player.getHeading();
+        Space target = board.getNeighbour(space, heading.opposite());
+        if (target != null) {
+            try {
+                moveToSpace(player, target, heading.opposite());
+            } catch (ImpossibleMoveException e) {
+                // we don't do anything here  for now; we just catch the
+                // exception so that we do no pass it on to the caller
+                // (which would be very bad style).
+            }
+        }
+    }
+
     // TODO Assignment A3
     public void turnRight(@NotNull Player player) {
         player.setHeading(player.getHeading().next());
@@ -96,6 +114,9 @@ public class GameController {
             }
         }
         player.setSpace(space);
+    }
+    public void powerUp(Player player){
+        player.oneUpPowerUpCnt();
     }
 
     public void moveCurrentPlayerToSpace(Space space) {
@@ -171,8 +192,10 @@ public class GameController {
     }
 
     private void executeNextStep() {
+        System.out.println("Execute next step");
         Player currentPlayer = board.getCurrentPlayer();
         if (board.getPhase() == Phase.ACTIVATION && currentPlayer != null) {
+            System.out.println("ACTIVATION phase");
             int step = board.getStep();
             if (step >= 0 && step < Player.NO_REGISTERS) {
                 CommandCard card = currentPlayer.getProgramField(step).getCard();
@@ -180,27 +203,40 @@ public class GameController {
                     Command command = card.command;
                     executeCommand(currentPlayer, command);
                 }
+                if(currentPlayer.board.getPhase() != Phase.PLAYER_INTERACTION){
+                    System.out.println("Not player interaction");
+                    int nextPlayerNumber = board.getPlayerNumber(currentPlayer) + 1;
+                    if (nextPlayerNumber < board.getPlayersNumber()) {
+                        board.setCurrentPlayer(board.getPlayer(nextPlayerNumber));
+                    } else {
+                        step++;
+                        if (step < Player.NO_REGISTERS) {
+                            makeProgramFieldsVisible(step);
+                            board.setStep(step);
+                            board.setCurrentPlayer(board.getPlayer(0));
+                        } else {
+                            startProgrammingPhase();
+                        }
+                    }
+                }
+            } else if(currentPlayer.isButtonPressed()) {
+                System.out.println(currentPlayer.isButtonPressed());
+                currentPlayer.setButtonPressed(false);
                 int nextPlayerNumber = board.getPlayerNumber(currentPlayer) + 1;
                 if (nextPlayerNumber < board.getPlayersNumber()) {
                     board.setCurrentPlayer(board.getPlayer(nextPlayerNumber));
+
                 } else {
-                    step++;
-                    if (step < Player.NO_REGISTERS) {
-                        makeProgramFieldsVisible(step);
-                        board.setStep(step);
-                        board.setCurrentPlayer(board.getPlayer(0));
-                    } else {
-                        startProgrammingPhase();
-                    }
+                    startProgrammingPhase();
                 }
-            } else {
-                // this should not happen
-                assert false;
+
+
             }
         } else {
             // this should not happen
             assert false;
         }
+
     }
 
     private void executeCommand(@NotNull Player player, Command command) {
@@ -208,7 +244,7 @@ public class GameController {
             // XXX This is a very simplistic way of dealing with some basic cards and
             //     their execution. This should eventually be done in a more elegant way
             //     (this concerns the way cards are modelled as well as the way they are executed).
-
+            player.setCurrentCommand(command);
             switch (command) {
                 case FORWARD:
                     this.moveForward(player);
@@ -230,19 +266,28 @@ public class GameController {
                     this.turnRight(player);
                     this.turnRight(player);
                     break;
+                case BACK_UP:
+                    this.backup(player);
+                    break;
                 case AGAIN:
-                    // DO NOTHING (for now)
+                    executeCommand(player, player.getLastCommand());
                     break;
                 case POWER_UP:
-                    // DO NOTHING (for now)
+                    this.powerUp(player);
+                    break;
+                case OPTION_LEFT_RIGHT:
+                    board.setPhase(Phase.PLAYER_INTERACTION);
+
                     break;
                 default:
                     // DO NOTHING (for now)
             }
-            player.discardedPile.pile.add(command);
-            System.out.println(player.getName()+player.discardedPile.pile);
+            //player.getDiscardedPile().getPile().pile.add(command);
+            player.setLastCommand(command);
             board.useCard();
-            System.out.println(board.getCurrentNumberOfCards());
+
+            System.out.println(player.getName() + " power up count " + player.getPowerUpCnt());
+
         }
     }
 
@@ -267,14 +312,33 @@ public class GameController {
         if(board.getCurrentNumberOfCards() <= 0){
             for(int i = 0; i < board.getPlayersNumber(); i++){
                 Player player = board.getPlayer(i);
-                player.discardedPile.pile.clear();
+                Deck currentDeck = player.getDeck();
+/*
+
+
+                if(currentDeck.initDeck.size() < 9){
+                    for(int j = 0; j < player.getDiscardedPile().getPile().pile.size(); j++){
+                        currentDeck.initDeck.add(player.getDiscardedPile().getPile().pile.get(j));
+                    }
+                    player.getDiscardedPile().getPile().pile.clear();
+                }
+                */
 
             }
-            board.resetCards();
+            //board.resetCards();
         }
 
         for (int i = 0; i < board.getPlayersNumber(); i++) {
             Player player = board.getPlayer(i);
+            Deck currentDeck = player.getDeck();
+            //ArrayList<Command> twentySeven = init.initDeck;
+            if(currentDeck.initDeck.size() < 9){
+                currentDeck.initDeck.addAll(player.getDiscardedPile().getPile().pile);
+                player.getDiscardedPile().getPile().pile.clear();
+                currentDeck.shuffleDeck();
+            }
+            // when discard pile is added currentDeck.shuffleDeck();
+
             if (player != null) {
                 for (int j = 0; j < Player.NO_REGISTERS; j++) {
                     CommandCardField field = player.getProgramField(j);
@@ -283,11 +347,29 @@ public class GameController {
                 }
                 for (int j = 0; j < Player.NO_CARDS; j++) {
                     CommandCardField field = player.getCardField(j);
-                    field.setCard(generateRandomCommandCard());
+                    field.setCard(new CommandCard(currentDeck.initDeck.get(0)));
+                    currentDeck.initDeck.remove(0);
                     field.setVisible(true);
+                }
+                for(int j = 0; j <= player.getDiscardedPile().getPile().pile.size(); j++){
+                    DiscardPileField pile = player.getDiscardedPile();
+                    pile.setPile(player.getDiscardedPile().getPile());
+                    pile.setVisible(true);
+                }
+            }
+
+        }
+
+
+
+        for(int i = 0; i < board.getPlayersNumber(); i++){
+            for(int j =0; j < board.getPlayer(0).NO_CARDS; j++){
+                if(board.getPlayer(i).getCardField(j) != null){
+                    board.getPlayer(i).getDiscardedPile().getPile().pile.add(board.getPlayer(i).getCardField(j).getCard().command);
                 }
             }
         }
+
     }
 
     private CommandCard generateRandomCommandCard() {

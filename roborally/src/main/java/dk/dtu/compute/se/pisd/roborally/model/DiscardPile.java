@@ -6,5 +6,7 @@ public class DiscardPile {
 
     public ArrayList<Command> pile = new ArrayList<>();
 
+    //Add card to discard pile
+
 
 }
