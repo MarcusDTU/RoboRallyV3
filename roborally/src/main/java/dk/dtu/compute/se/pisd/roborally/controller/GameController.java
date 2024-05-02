@@ -184,51 +184,37 @@ public class GameController {
     }
 
     private void executeNextStep() {
-        System.out.println("Execute next step");
         Player currentPlayer = board.getCurrentPlayer();
         if (board.getPhase() == Phase.ACTIVATION && currentPlayer != null) {
-            System.out.println("ACTIVATION phase");
             int step = board.getStep();
             if (step >= 0 && step < Player.NO_REGISTERS) {
                 CommandCard card = currentPlayer.getProgramField(step).getCard();
                 if (card != null) {
                     Command command = card.command;
                     executeCommand(currentPlayer, command);
+                    if(command == Command.OPTION_LEFT_RIGHT) return;
                 }
-                if(currentPlayer.board.getPhase() != Phase.PLAYER_INTERACTION){
-                    System.out.println("Not player interaction");
-                    int nextPlayerNumber = board.getPlayerNumber(currentPlayer) + 1;
-                    if (nextPlayerNumber < board.getPlayersNumber()) {
-                        board.setCurrentPlayer(board.getPlayer(nextPlayerNumber));
-                    } else {
-                        step++;
-                        if (step < Player.NO_REGISTERS) {
-                            makeProgramFieldsVisible(step);
-                            board.setStep(step);
-                            board.setCurrentPlayer(board.getPlayer(0));
-                        } else {
-                            startProgrammingPhase();
-                        }
-                    }
-                }
-            } else if(currentPlayer.isButtonPressed()) {
-                System.out.println(currentPlayer.isButtonPressed());
-                currentPlayer.setButtonPressed(false);
                 int nextPlayerNumber = board.getPlayerNumber(currentPlayer) + 1;
                 if (nextPlayerNumber < board.getPlayersNumber()) {
                     board.setCurrentPlayer(board.getPlayer(nextPlayerNumber));
-
                 } else {
-                    startProgrammingPhase();
+                    step++;
+                    if (step < Player.NO_REGISTERS) {
+                        makeProgramFieldsVisible(step);
+                        board.setStep(step);
+                        board.setCurrentPlayer(board.getPlayer(0));
+                    } else {
+                        startProgrammingPhase();
+                    }
                 }
-
-
+            } else {
+                // this should not happen
+                assert false;
             }
         } else {
             // this should not happen
             assert false;
         }
-
     }
 
     private void executeCommand(@NotNull Player player, Command command) {
@@ -269,7 +255,6 @@ public class GameController {
                     break;
                 case OPTION_LEFT_RIGHT:
                     board.setPhase(Phase.PLAYER_INTERACTION);
-
                     break;
                 default:
                     // DO NOTHING (for now)
@@ -368,6 +353,25 @@ public class GameController {
         Command[] commands = Command.values();
         int random = (int) (Math.random() * commands.length);
         return new CommandCard(commands[random]);
+    }
+
+    public void executeCommandOptionAndContinue(Command command) {
+        board.setPhase(Phase.ACTIVATION);
+        executeCommand(board.getCurrentPlayer(), command);
+        // Switch to the next player
+        int nextPlayerNumber = board.getPlayerNumber(board.getCurrentPlayer()) + 1;
+        // if the player before next player was the last one then
+        // switch to programming phase
+        if (nextPlayerNumber < board.getPlayersNumber()) {
+            board.setCurrentPlayer(board.getPlayer(nextPlayerNumber));
+            // Last part of the assignment A3 in task 1 to make sure
+            // the execution of the commands continues without needing
+            // to click again if they are in step mode
+            if(!board.isStepMode()) executePrograms();
+        } else {
+            startProgrammingPhase();
+        }
+
     }
 
     /**
