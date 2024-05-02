@@ -371,14 +371,16 @@ public class GameController {
         // switch to programming phase
         if (nextPlayerNumber < board.getPlayersNumber()) {
             board.setCurrentPlayer(board.getPlayer(nextPlayerNumber));
-            // Last part of the assignment A3 in task 1 to make sure
-            // the execution of the commands continues without needing
-            // to click again if they are not in step mode
-            if(!board.isStepMode()) executePrograms();
         } else {
-            startProgrammingPhase();
+            int step = board.getStep() + 1;
+            if (step < Player.NO_REGISTERS) {
+                makeProgramFieldsVisible(step);
+                board.setStep(step);
+                board.setCurrentPlayer(board.getPlayer(0));
+            } else {
+                startProgrammingPhase();
+            }
         }
-
     }
 
     /**
