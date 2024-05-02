@@ -16,7 +16,7 @@ public class Pit extends FieldAction{
      *
      */
     @Override
-    public abstract boolean doAction(GameController gameController, Space space) {
+    public boolean doAction(GameController gameController, Space space) {
         return false;
     }
 
