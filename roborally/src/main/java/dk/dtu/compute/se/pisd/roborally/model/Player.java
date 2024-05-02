@@ -56,9 +56,6 @@ public class Player extends Subject {
     private CommandCardField[] program;
     private CommandCardField[] cards;
 
-    private boolean isButtonPressed = false;
-
-
     public Player(@NotNull Board board, int robotId, @NotNull String name) {
         this.board = board;
         this.name = name;
@@ -113,12 +110,7 @@ public class Player extends Subject {
     public void setDeck(Deck deck) {
         this.deck = deck;
     }
-    public boolean isButtonPressed() {
-        return isButtonPressed;
-    }
-public void setButtonPressed(boolean buttonPressed) {
-        isButtonPressed = buttonPressed;
-    }
+
     public void setName(String name) {
         if (name != null && !name.equals(this.name)) {
             this.name = name;
