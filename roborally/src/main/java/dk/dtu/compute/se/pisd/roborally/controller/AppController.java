@@ -25,13 +25,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Observer;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
-
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
-
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.CommandCardField;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
-
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
@@ -57,7 +54,6 @@ import java.util.Optional;
 public class AppController implements Observer {
 
     final private List<Integer> PLAYER_NUMBER_OPTIONS = Arrays.asList(2, 3, 4, 5, 6);
-    final private List<String> PLAYER_COLORS = Arrays.asList("red", "green", "blue", "orange", "grey", "magenta");
 
     final private RoboRally roboRally;
 
@@ -103,34 +99,44 @@ public class AppController implements Observer {
 
 
     /**
-     * Stops the current game, providing the user with an option to save their progress. The user may also cancel the
-     * operation to stop the game. The method returns {true} if the game was successfully stopped, which can include
-     * saving the game. If the user chooses to cancel the operation or if there is no game currently being played, the method
-     * will return {false}.
-     * @author ...
+     * Save the current game state to a file. The method serializes the board to a JSON string and writes it to a file.
+     * @author Asma Maryam, s230716@dtu.dk
+     * @author Turan Talayhan, s224746@student.dtu.dk
+     * @throws IOException if an I/O error occurs while writing to the file.
+     * @see Gson
      */
 
     public void saveGame() throws IOException {
-        Board board = gameController.board; // get the board from the game controller
-        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create(); // create a Gson object
+        Board board = gameController.board;
+
+        // gson object to serialize the board to a JSON string
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+
+        // get the user's home folder
         String homeFolder = System.getProperty("user.home");
+
+        // fileWriter object to write the board to a file
         FileWriter fileWriter = new FileWriter(homeFolder + File.separator + "gameData.json");
+
         if (board != null) {
-            fileWriter.append(gson.toJson(board)); // write the board to the file
+            // serialize the board to a JSON string and write it to the file
+            fileWriter.append(gson.toJson(board));
         }
-        fileWriter.close(); // close the file writer
+
+        fileWriter.close();
     }
 
     /**
-     * Load a game state from a file, given the file path. The method will throw an {IOException} if an I/O error occurs
-     * while reading from the file or if a malformed or unmappable byte sequence is read from the file. The method assumes
-     * a specific file structure and that all necessary classes (such as {Board}, {Player}, {Space}, and {CommandCardField})
-     * are present and properly structured. It iterates through the board and player components, linking them together and
-     * setting up the game state. It also determines the current phase of the game and initiates the appropriate game phase
-     * through {GameController}. The {path} parameter should be a valid file path to a JSON file that correctly represents
-     * the game state with the expected schema. This method directly affects the state of the game and should be called in a
-     * context where such changes are appropriate.
+     * Load a game state from a file, given the file path. The method deserializes the JSON file and
+     * turns it into a board object. The method iterates through the board and player components,
+     * linking them together and setting up the game state. It also determines the current phase of the game and
+     * initiates the appropriate game phase through GameController.
+     * @author Asma Maryam, s230716@dtu.dk
+     * @author Turan Talayhan, s224746@student.dtu.dk
      * @param path The file path of the game state to be loaded.
+     * @throws IOException if an I/O error occurs while reading from the file or if a malformed or unmappable byte
+     * sequence is read from the file.
+     * @see Gson
      */
     public void loadGame(String path) throws IOException {
         Gson gson = new Gson();
@@ -138,53 +144,67 @@ public class AppController implements Observer {
 
         Board board = gson.fromJson(Files.readString(data), Board.class);
 
-        for (Player player : board.getPlayers()) { // for each player in the board
-            for (Space[] space: board.getSpaces()) { // for each space in the board
-                for (Space s : space) { // for each space in the space
+        // set the board's players' discarded piles, spaces, programmed cards, cards the player has in hand and their boards.
+        for (Player player : board.getPlayers()) {
+            // set the player's discarded pile.
+            player.getDiscardedPile().player = player;
+            for (Space[] space: board.getSpaces()) {
+                for (Space s : space) {
                     if (player.getSpace() != null && player.getSpace().x == s.x && player.getSpace().y == s.y){ // if the player's space is not null and the player's space x and y are equal to the space's x and y
-                        player.setSpace(s); // set the player's space to the space
+                        // set the player's space.
+                        player.setSpace(s);
                     }
                 }
             }
-            Player currentPlayer = board.getCurrentPlayer(); // get the current player
-            for (CommandCardField card : player.getProgram()) { // for each card in the player's program
+            Player currentPlayer = board.getCurrentPlayer();
+
+            for (CommandCardField card : player.getProgram()) {
                 card.player = player;
-                if (currentPlayer.getName().equals(player.getName())) { // if the current player's name is equal to the player's name
-                    for (CommandCardField card2 : currentPlayer.getProgram()) { // for each card in the current player's program
+                if (currentPlayer.getName().equals(player.getName())) {
+                    // set player's programmed cards
+                    for (CommandCardField card2 : currentPlayer.getProgram()) {
                         card2.player = currentPlayer;
                         card2.setCard(card.getCard());
                     }
                 }
             }
 
-            for (CommandCardField card: player.getCards()){ // for each card in the player's cards
+            for (CommandCardField card: player.getCards()){
                 card.player = player;
-                if(currentPlayer.getName().equals(player.getName())){ // if the current player's name is equal to the player's name
-                    for (CommandCardField card2: currentPlayer.getCards()){ // for each card in the current player's cards
+                if(currentPlayer.getName().equals(player.getName())){
+                    // set player's cards in hand
+                    for (CommandCardField card2: currentPlayer.getCards()){
                         card2.player = currentPlayer;
                     }
                 }
             }
+            // set player's board
             player.board = board;
         }
 
 
-        for (Space[] space : board.getSpaces()) { // for each space in the board's spaces
-             for (Space s : space) { // for each space in the space
+        // set the board's spaces' boards
+        for (Space[] space : board.getSpaces()) {
+             for (Space s : space) {
                  s.board = board;
             }
         }
+
         Player currentPlayer = board.getCurrentPlayer();
+
+        // set currentPlayer's board
         currentPlayer.board = board;
 
         gameController = new GameController(board);
-        //add if statements here later when other phases are added
-        if(board.getPhase().name().equals("ACTIVATION")){ // if the board's phase is equal to "ACTIVATION"
-            gameController.startActivationPhase(board.getStep()); // start the activation phase
+
+        // start the appropriate phase
+        if(board.getPhase().name().equals("ACTIVATION")){
+            gameController.startActivationPhase(board.getStep());
         } else {
-            gameController.startProgrammingPhase(); // start the programming phase
+            gameController.startProgrammingPhase();
         }
-        roboRally.createBoardView(gameController); // create the board view
+
+        roboRally.createBoardView(gameController);
     }
 
     /**
@@ -216,7 +236,7 @@ public class AppController implements Observer {
             alert.setContentText("Are you sure you want to exit RoboRally?");
             Optional<ButtonType> result = alert.showAndWait();
 
-            if (!result.isPresent() || result.get() != ButtonType.OK) {
+            if (result.isEmpty() || result.get() != ButtonType.OK) {
                 return; // return without exiting the application
             }
         }

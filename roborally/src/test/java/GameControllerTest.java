@@ -14,6 +14,10 @@ class GameControllerTest {
         board = new Board(10, 10); // Create a 10x10 board
         gameController = new GameController(board);
     }
+    /**
+     * @author Asma Maryam, s230716@dtu.dk
+     * @author Turan Talayhan, s224746@student.dtu.dk
+     */
 
     @Test
     void testMoveForward() {
@@ -25,7 +29,10 @@ class GameControllerTest {
         gameController.moveForward(player);
         assertEquals(board.getSpace(5, 4), player.getSpace(), "Player should move one space North.");
     }
-
+    /**
+     * @author Asma Maryam, s230716@dtu.dk
+     * @author Turan Talayhan, s224746@student.dtu.dk
+     */
 
     @Test
     void testFastForward() {
@@ -37,7 +44,10 @@ class GameControllerTest {
         gameController.fastForward(player);
         assertEquals(board.getSpace(5, 7), player.getSpace(), "Player should move two spaces South.");
     }
-
+    /**
+     * @author Asma Maryam, s230716@dtu.dk
+     * @author Turan Talayhan, s224746@student.dtu.dk
+     */
     @Test
     void testTurnRight() {
         Player player = new Player(board, 1, "Alice");
@@ -46,6 +56,10 @@ class GameControllerTest {
         gameController.turnRight(player);
         assertEquals(Heading.EAST, player.getHeading(), "Player should now face East.");
     }
+    /**
+     * @author Asma Maryam, s230716@dtu.dk
+     * @author Turan Talayhan, s224746@student.dtu.dk
+     */
 
     @Test
     void testTurnLeft() {
@@ -56,7 +70,10 @@ class GameControllerTest {
         assertEquals(Heading.WEST, player.getHeading(), "Player should now face west.");
     }
 
-
+    /**
+     * @author Asma Maryam, s230716@dtu.dk
+     * @author Turan Talayhan, s224746@student.dtu.dk
+     */
     @Test
     void testPhaseTransition() {
         gameController.startProgrammingPhase();

@@ -5,6 +5,11 @@ import dk.dtu.compute.se.pisd.roborally.model.CommandCard;
 
 class CommandCardTest {
 
+    /**
+     * @author Asma Maryam, s230716@dtu.dk
+     * @author Turan Talayhan, s224746@student.dtu.dk
+     */
+
     @Test
     void testConstructorInitialization() {
         CommandCard card = new CommandCard(Command.FORWARD);
@@ -12,6 +17,10 @@ class CommandCardTest {
         assertEquals(Command.FORWARD, card.command, "The command should be FORWARD.");
     }
 
+    /**
+     * @author Asma Maryam, s230716@dtu.dk
+     * @author Turan Talayhan, s224746@student.dtu.dk
+     */
     @Test
     void testGetName() {
         CommandCard card = new CommandCard(Command.FAST_FORWARD);

@@ -57,7 +57,8 @@ public class Board extends Subject {
     private Integer gameId;
 
     @Expose
-    private Space[][] spaces;
+    public Space[][] spaces;
+
 
     @Expose
     private final List<Player> players = new ArrayList<>();
@@ -104,6 +105,8 @@ public class Board extends Subject {
             }
         }
     }
+
+
     public int getCurrentNumberOfCards() {
         return currentNumberOfCards;
     }
@@ -194,6 +197,12 @@ public class Board extends Subject {
         }
     }
 
+    public void setPlayers(List<Player> players) {
+        this.players.clear();
+        this.players.addAll(players);
+        notifyChange();
+    }
+
     /**
      * Returns the neighbour of the given space of the board in the given heading.
      * The neighbour is returned only, if it can be reached from the given space
@@ -213,7 +222,7 @@ public class Board extends Subject {
         //      just calculates the next space in the respective
         //      direction in a cyclic way.
 
-        // XXX an other option (not for now) would be that null represents a hole
+        // XXX another option (not for now) would be that null represents a hole
         //     or the edge of the board in which the players can fall
 
         int x = space.x;

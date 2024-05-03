@@ -19,14 +19,20 @@ class SpaceTest {
         board = new Board(10, 10); // Assuming this creates a 10x10 board
         space = new Space(board, 5, 5); // Place the space at position (5, 5)
     }
-
+    /**
+     * @author Asma Maryam, s230716@dtu.dk
+     * @author Turan Talayhan, s224746@student.dtu.dk
+     */
     @Test
     void testConstructorInitialization() {
         assertEquals(5, space.x, "Space x-coordinate should be initialized to 5.");
         assertEquals(5, space.y, "Space y-coordinate should be initialized to 5.");
         assertNull(space.getPlayer(), "Initially, no player should be in the space.");
     }
-
+    /**
+     * @author Asma Maryam, s230716@dtu.dk
+     * @author Turan Talayhan, s224746@student.dtu.dk
+     */
     @Test
     void testSetAndGetPlayer() {
         Player player = new Player(board, 1, "Test Player");

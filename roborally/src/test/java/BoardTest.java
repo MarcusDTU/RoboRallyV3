@@ -11,12 +11,22 @@ class BoardTest {
         board = new Board(8, 8);
     }
 
+    /**
+    * @author Asma Maryam, s230716@dtu.dk
+    * @author Turan Talayhan, s224746@student.dtu.dk
+     */
+
     @Test
     void testBoardInitialization() {
         assertEquals(8, board.getWidth(), "Board width should be initialized to 8.");
         assertEquals(8, board.getHeight(), "Board height should be initialized to 8.");
         assertNotNull(board.getSpace(0, 0), "Space at (0,0) should not be null.");
     }
+
+    /**
+     * @author Asma Maryam, s230716@dtu.dk
+     * @author Turan Talayhan, s224746@student.dtu.dk
+     */
 
     @Test
     void testAddAndGetPlayer() {
@@ -26,6 +36,10 @@ class BoardTest {
         assertSame(player, board.getPlayer(0), "Should retrieve the same player added to the board.");
     }
 
+    /**
+     * @author Asma Maryam, s230716@dtu.dk
+     * @author Turan Talayhan, s224746@student.dtu.dk
+     */
     @Test
     void testGetNeighbour() {
         Space origin = board.getSpace(0, 0);
@@ -37,6 +51,11 @@ class BoardTest {
         Space expectedWrapAround = board.getSpace(0, 7);
         assertSame(expectedWrapAround, wrapAroundNeighbor, "North neighbor of (0,0) should wrap around to (0,7).");
     }
+
+    /**
+     * @author Asma Maryam, s230716@dtu.dk
+     * @author Turan Talayhan, s224746@student.dtu.dk
+     */
 
     @Test
     void testPhaseAndStep() {

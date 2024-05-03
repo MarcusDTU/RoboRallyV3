@@ -4,6 +4,10 @@ import dk.dtu.compute.se.pisd.roborally.model.Damage;
 import org.junit.jupiter.api.Test;
 
 class DamageTest {
+    /**
+     * @author Asma Maryam, s230716@dtu.dk
+     * @author Turan Talayhan, s224746@student.dtu.dk
+     */
 
     @Test
     void testDamageNames() {

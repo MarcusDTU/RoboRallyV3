@@ -43,11 +43,28 @@ public class Player extends Subject {
     public Board board;
 
     @Expose
-    public DiscardPile discardedPile = new DiscardPile();
+    private DiscardPileField discardedPile;
+
+    @Expose
+    private Command lastCommand = null;
+
+    @Expose
+    private Deck deck;
+
     @Expose
     private String name;
+
     @Expose
     private int robotId;
+
+    @Expose
+    private int powerUpCnt = 0;
+
+    @Expose
+    private Command currentCommand;
+
+    @Expose
+    private int checkpointCollected = 0;
 
     @Expose
     private Space space;
@@ -78,32 +95,43 @@ public class Player extends Subject {
         for (int i = 0; i < cards.length; i++) {
             cards[i] = new CommandCardField(this);
         }
+
+        discardedPile = new DiscardPileField(this);
+
+        this.deck = new Deck();
+        deck.shuffleDeck();
+
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        if (name != null && !name.equals(this.name)) {
-            this.name = name;
-            notifyChange();
-            if (space != null) {
-                space.playerChanged();
-            }
-        }
+    public Deck getDeck() {
+        return deck;
+    }
+    public Command getCurrentCommand() {
+        return currentCommand;
+    }
+    public void setCurrentCommand(Command command){
+        this.currentCommand = command;
+    }
+    public void oneUpPowerUpCnt() {
+        this.powerUpCnt++;
+    }
+    public int getPowerUpCnt() {
+        return powerUpCnt;
+    }
+    public void setLastCommand(Command lastCommand) {
+        if(lastCommand != Command.AGAIN){
+            this.lastCommand = lastCommand;}
+    }
+    public Command getLastCommand() {
+        return lastCommand;
     }
 
     public int getRobotId() {
         return robotId;
-    }
-
-    public void setRobotId(int robotId) {
-        this.robotId = robotId;
-        notifyChange();
-        if (space != null) {
-            space.playerChanged();
-        }
     }
 
     public Space getSpace() {
@@ -139,21 +167,20 @@ public class Player extends Subject {
         }
     }
 
+    public void setCheckpoint(int checkpointCollected) {
+        this.checkpointCollected = checkpointCollected;
+        notifyChange();
+    }
+
+    public int getCheckpointCollected() {
+        return checkpointCollected;
+    }
+
     public CommandCardField[] getProgram() {
         return program;
     }
 
     public CommandCardField[] getCards() {
-        return cards;
-    }
-
-    public CommandCardField[] setProgram(CommandCardField[] program) {
-        this.program = program;
-        return program;
-    }
-
-    public CommandCardField[] setCards(CommandCardField[] cards) {
-        this.cards = cards;
         return cards;
     }
 
@@ -165,4 +192,7 @@ public class Player extends Subject {
         return cards[i];
     }
 
+    public DiscardPileField getDiscardedPile() {
+        return discardedPile;
+    }
 }

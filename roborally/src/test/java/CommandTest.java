@@ -5,6 +5,10 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 class CommandTest {
+    /**
+     * @author Asma Maryam, s230716@dtu.dk
+     * @author Turan Talayhan, s224746@student.dtu.dk
+     */
 
     @Test
     void testDisplayName() {
@@ -19,12 +23,20 @@ class CommandTest {
         assertEquals("Left OR Right", Command.OPTION_LEFT_RIGHT.displayName, "OPTION_LEFT_RIGHT should have display name 'Left OR Right'.");
     }
 
+    /**
+     * @author Asma Maryam, s230716@dtu.dk
+     * @author Turan Talayhan, s224746@student.dtu.dk
+     */
     @Test
     void testOptions() {
         assertTrue(Command.OPTION_LEFT_RIGHT.getOptions().containsAll(List.of(Command.LEFT, Command.RIGHT)),
                 "OPTION_LEFT_RIGHT should have options LEFT and RIGHT.");
         assertTrue(Command.FORWARD.getOptions().isEmpty(), "FORWARD should have no options.");
     }
+    /**
+     * @author Asma Maryam, s230716@dtu.dk
+     * @author Turan Talayhan, s224746@student.dtu.dk
+     */
 
     @Test
     void testIsInteractive() {

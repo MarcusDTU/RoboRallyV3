@@ -4,6 +4,10 @@ import dk.dtu.compute.se.pisd.roborally.model.Damage;
 import dk.dtu.compute.se.pisd.roborally.model.DamageCard;
 
 class DamageCardTest {
+    /**
+     * @author Asma Maryam, s230716@dtu.dk
+     * @author Turan Talayhan, s224746@student.dtu.dk
+     */
 
     @Test
     void testDamageCardInitialization() {
@@ -14,7 +18,10 @@ class DamageCardTest {
             assertEquals(damageType, card.damage, "DamageCard should be initialized with the correct Damage type.");
         }
     }
-
+    /**
+     * @author Asma Maryam, s230716@dtu.dk
+     * @author Turan Talayhan, s224746@student.dtu.dk
+     */
     @Test
     void testGetName() {
         // Test name retrieval for each type of Damage
