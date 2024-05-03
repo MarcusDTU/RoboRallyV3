@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Arrays;
 import java.util.List;
 
-public class Antenna extends FieldAction {
+public class  Antenna extends FieldAction {
 
     private Heading heading;
 
@@ -42,7 +42,7 @@ public class Antenna extends FieldAction {
      * @return The players sorted by priority
      * @author Nikolaj Schæbel s220471
      */
-    private Player[] determinePriority(GameController gameController, Space space) {
+    public Player[] determinePriority(GameController gameController, Space space) {
         Player[] players = gameController.board.getPlayers();
         return sortPlayers(players, space);
     }
@@ -54,7 +54,7 @@ public class Antenna extends FieldAction {
      * @return The sorted players
      * @author Nikolaj Schæbel s220471
      */
-    private Player[] sortPlayers(Player[] players, Space space) {
+    public Player[] sortPlayers(Player[] players, Space space) {
         //sort array by distance to antenna
         Arrays.sort(players, (Player p1, Player p2) -> {
             int distance1 = calculateDistance(p1, space);
@@ -71,7 +71,7 @@ public class Antenna extends FieldAction {
      * @return The sorted players
      * @author Nikolaj Schæbel s220471
      */
-    private Player[] sortSameDistance(Player[] players, Space space) {
+    public Player[] sortSameDistance(Player[] players, Space space) {
         for (int i = 0; i < players.length; i++) {
             //find subset of players with same distance
             int subsetEndIndex = 0;
@@ -157,7 +157,7 @@ public class Antenna extends FieldAction {
      * @return The distance between the antenna and the player
      * @author Nikolaj Schæbel s220471
      */
-    private int calculateDistance(Player player, Space space) {
+    public int calculateDistance(Player player, Space space) {
         return Math.abs(player.getSpace().x - space.x) + Math.abs(player.getSpace().y - space.y);
     }
 }
