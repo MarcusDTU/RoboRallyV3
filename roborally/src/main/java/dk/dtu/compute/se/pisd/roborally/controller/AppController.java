@@ -100,8 +100,8 @@ public class AppController implements Observer {
 
     /**
      * Save the current game state to a file. The method serializes the board to a JSON string and writes it to a file.
-     * @author Asma Maryam
-     * @author Turan Talayhan
+     * @author Asma Maryam, s230716@dtu.dk
+     * @author Turan Talayhan, s224746@student.dtu.dk
      * @throws IOException if an I/O error occurs while writing to the file.
      * @see Gson
      */
@@ -131,8 +131,8 @@ public class AppController implements Observer {
      * turns it into a board object. The method iterates through the board and player components,
      * linking them together and setting up the game state. It also determines the current phase of the game and
      * initiates the appropriate game phase through GameController.
-     * @author Asma Maryam
-     * @author Turan Talayhan
+     * @author Asma Maryam, s230716@dtu.dk
+     * @author Turan Talayhan, s224746@student.dtu.dk
      * @param path The file path of the game state to be loaded.
      * @throws IOException if an I/O error occurs while reading from the file or if a malformed or unmappable byte
      * sequence is read from the file.

@@ -40,7 +40,6 @@ public class Player extends Subject {
     @Expose
     final public static int NO_CARDS = 8;
 
-    @Expose
     public Board board;
 
     @Expose
@@ -67,6 +66,7 @@ public class Player extends Subject {
     @Expose
     private int checkpointCollected = 0;
 
+    @Expose
     private Space space;
     @Expose
     private Heading heading = SOUTH;
