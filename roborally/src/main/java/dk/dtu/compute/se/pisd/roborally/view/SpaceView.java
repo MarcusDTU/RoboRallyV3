@@ -183,11 +183,10 @@ public class SpaceView extends StackPane implements ViewObserver {
     }
 
     private String getConveyorImage(ConveyorBelt conveyorBelt) {
-        String[] conveyor = conveyorBelt.convertHeadingToString().split("-");
-        if (conveyor.length == 2) {
+        if (conveyorBelt.getHeadings().length == 1) {
             return "belt_forward.png";
         }
-        else if (conveyor.length == 3) {
+        else if (conveyorBelt.getHeadings().length == 2) {
             if ((conveyorBelt.getHeadings()[0].ordinal() - 1) == (conveyorBelt.getHeadings()[1].ordinal())
                     ||  (conveyorBelt.getHeadings()[0].ordinal() + 3) == (conveyorBelt.getHeadings()[1].ordinal()))
             {
@@ -201,7 +200,7 @@ public class SpaceView extends StackPane implements ViewObserver {
                 return null;
             }
         }
-        else if (conveyor.length == 4) {
+        else if (conveyorBelt.getHeadings().length == 3) {
             if(conveyorBelt.getHeadings()[0].ordinal() == (conveyorBelt.getHeadings()[1].ordinal())) {
                 if ((conveyorBelt.getHeadings()[0].ordinal() - 1) == (conveyorBelt.getHeadings()[2].ordinal())
                         ||  (conveyorBelt.getHeadings()[0].ordinal() + 3) == (conveyorBelt.getHeadings()[2].ordinal()))
