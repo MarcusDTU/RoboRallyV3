@@ -85,7 +85,7 @@ public class AppController implements Observer {
 
             // XXX the board should eventually be created programmatically or loaded from a file
             //     here we just create an empty board with the required number of players.
-            Board board = LoadBoard.loadBoard("test");
+            Board board = LoadBoard.loadBoard("risky_crossing");
             if(board == null) {
                 board = new Board(8, 8);
 
