@@ -23,7 +23,6 @@ package dk.dtu.compute.se.pisd.roborally.model;
 
 import com.google.gson.annotations.Expose;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
-import dk.dtu.compute.se.pisd.roborally.controller.field.Antenna;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -58,7 +57,8 @@ public class Board extends Subject {
     private Integer gameId;
 
     @Expose
-    private Space[][] spaces;
+    public Space[][] spaces;
+
 
     @Expose
     private final List<Player> players = new ArrayList<>();
@@ -68,9 +68,6 @@ public class Board extends Subject {
 
     @Expose
     private Phase phase = INITIALISATION;
-
-    @Expose
-    private Space antennaSpace;
 
     @Expose
     private int step = 0;
@@ -109,25 +106,6 @@ public class Board extends Subject {
         }
     }
 
-    /**
-     * Returns the space which holds the antenna.
-     * @return the space which holds the antenna
-     * @author Daniel Overballe Lerche, s235095@dtu.dk
-     * @author Nikolaj Schæbel, s220471@dtu.dk
-     */
-    public Space getAntennaSpace() {
-        return antennaSpace;
-    }
-
-    /**
-     * Sets the space which holds the antenna.
-     * @param antennaSpace the space which holds the antenna
-     * @author Daniel Overballe Lerche, s235095@dtu.dk
-     * @author Nikolaj Schæbel, s220471@dtu.dk
-     */
-    public void setAntennaSpace(Space antennaSpace) {
-        this.antennaSpace = antennaSpace;
-    }
 
     public int getCurrentNumberOfCards() {
         return currentNumberOfCards;
@@ -244,7 +222,7 @@ public class Board extends Subject {
         //      just calculates the next space in the respective
         //      direction in a cyclic way.
 
-        // XXX an other option (not for now) would be that null represents a hole
+        // XXX another option (not for now) would be that null represents a hole
         //     or the edge of the board in which the players can fall
 
         int x = space.x;
