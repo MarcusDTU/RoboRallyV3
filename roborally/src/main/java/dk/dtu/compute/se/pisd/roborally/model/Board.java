@@ -56,7 +56,7 @@ public class Board extends Subject {
     @Expose
     private Integer gameId;
 
-    public final Space[][] spaces;
+    public Space[][] spaces;
 
 
     @Expose
