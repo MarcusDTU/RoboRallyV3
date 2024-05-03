@@ -84,6 +84,9 @@ class GameControllerTest {
         gameController.startActivationPhase(0);
         assertEquals(Phase.ACTIVATION, board.getPhase(), "Board phase should be set to ACTIVATION.");
     }
+    /**
+     * @author Marcus Langkilde, s195080
+     */
     @Test
     void testExecuteCommand() throws Exception {
         // Create a new player and set their initial position and heading
@@ -104,6 +107,9 @@ class GameControllerTest {
         // Assert that the player's new space is the expected space
         assertEquals(board.getSpace(5, 4), player.getSpace(), "Player should move one space North.");
     }
+    /**
+     * @author Marcus Langkilde, s195080
+     */
     @Test
     void testExecuteCommandOptionAndContinue() {
         // Create a new player and set their initial position and heading
@@ -129,10 +135,16 @@ class GameControllerTest {
         // Assert that the current player is the next player
         assertEquals(board.getPlayer(1), null, "Current player should be the next player.");
     }
+    /**
+     * @author Marcus Langkilde, s195080
+     */
     @Test
     void testNotImplemented() {
         assertThrows(AssertionError.class, () -> gameController.notImplemented());
     }
+    /**
+     * @author Marcus Langkilde, s195080
+     */
     @Test
     void testGenerateRandomCommandCard() throws Exception {
         // Use reflection to get the generateRandomCommandCard method
@@ -149,6 +161,9 @@ class GameControllerTest {
         assertNotNull(commandCard.command, "Command in CommandCard should not be null");
         assertTrue(commandCard.command instanceof Command, "Command in CommandCard should be an instance of Command");
     }
+    /**
+     * @author Marcus Langkilde, s195080
+     */
     @Test
     void testMoveCards() {
         // Create a new player and set their initial position and heading
@@ -184,6 +199,9 @@ class GameControllerTest {
         assertNotNull(target.getCard(), "Target field should contain the card after the move");
         assertEquals(Command.FORWARD, target.getCard().command, "Target field should contain the FORWARD command card");
     }
+    /**
+     * @author Marcus Langkilde, s195080
+     */
     @Test
     void testFinishProgrammingPhase() {
         // Set the current phase to PROGRAMMING
@@ -213,6 +231,9 @@ class GameControllerTest {
             }
         }
     }
+    /**
+     * @author Marcus Langkilde, s195080
+     */
     @Test
     void testMakeProgramFieldsInvisible() throws Exception {
         // Use reflection to get the makeProgramFieldsInvisible method
@@ -232,6 +253,9 @@ class GameControllerTest {
             }
         }
     }
+    /**
+     * @author Marcus Langkilde, s195080
+     */
     @Test
     void testMakeProgramFieldsVisible() throws Exception {
         // Use reflection to get the makeProgramFieldsVisible method
@@ -249,6 +273,9 @@ class GameControllerTest {
             assertTrue(field.isVisible(), "Program field at register 1 of each player should be visible");
         }
     }
+    /**
+     * @author Marcus Langkilde, s195080
+     */
     @Test
     void testMoveCurrentPlayerToSpace() {
         // Create a new player and set their initial position and heading
@@ -275,6 +302,9 @@ class GameControllerTest {
         // Assert that the target space's player is now the player
         assertEquals(player, targetSpace.getPlayer(), "Target space's player should be the player after the move");
     }
+    /**
+     * @author Marcus Langkilde, s195080
+     */
     @Test
     void testPowerUp() {
         // Create a new player
@@ -292,6 +322,9 @@ class GameControllerTest {
         // Assert that the power-up count of the player has increased by 1
         assertEquals(initialPowerUpCount + 1, player.getPowerUpCnt(), "Power-up count should have increased by 1");
     }
+    /**
+     * @author Marcus Langkilde, s195080
+     */
     @Test
     void testMoveToSpace() throws Exception {
         // Create a new player and set their initial position and heading
@@ -321,6 +354,9 @@ class GameControllerTest {
         // Assert that the target space's player is now the player
         assertEquals(player, targetSpace.getPlayer(), "Target space's player should be the player after the move");
     }
+    /**
+     * @author Marcus Langkilde, s195080
+     */
     @Test
     void testBackup() {
         // Create a new player and set their initial position and heading
@@ -335,6 +371,9 @@ class GameControllerTest {
         // Assert that the player's new space is the expected space
         assertEquals(board.getSpace(5, 6), player.getSpace(), "Player should move one space South.");
     }
+    /**
+     * @author Marcus Langkilde, s195080
+     */
     @Test
     void testMoveForwardThrowsImpossibleMoveException() {
         // Create a new player and set their initial position and heading
