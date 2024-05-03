@@ -183,4 +183,58 @@ public class SpaceView extends StackPane implements ViewObserver {
         }
     }
 
+    private String getConveyorImage(ConveyorBelt conveyorBelt) {
+        String[] conveyor = conveyorBelt.convertHeadingToString().split("-");
+        if (conveyor.length == 2) {
+            return "belt_forward.png";
+        }
+        else if (conveyor.length == 3) {
+            if (conveyorBelt.getHeadings()[0].ordinal() == (conveyorBelt.getHeadings()[1].ordinal() -1)
+                    ||  conveyorBelt.getHeadings()[0].ordinal() == (conveyorBelt.getHeadings()[1].ordinal() + 3))
+            {
+                return "belt_left.png";
+            }
+            else if (conveyorBelt.getHeadings()[0].ordinal() == (conveyorBelt.getHeadings()[1].ordinal() + 1)
+                    ||  conveyorBelt.getHeadings()[0].ordinal() == (conveyorBelt.getHeadings()[1].ordinal() - 3)) {
+                return "belt_right.png";
+            }
+            else {
+                return null;
+            }
+        }
+        else if (conveyor.length == 4) {
+            if(conveyorBelt.getHeadings()[0].ordinal() == (conveyorBelt.getHeadings()[1].ordinal())) {
+                if (conveyorBelt.getHeadings()[0].ordinal() == (conveyorBelt.getHeadings()[2].ordinal() -1)
+                        ||  conveyorBelt.getHeadings()[0].ordinal() == (conveyorBelt.getHeadings()[2].ordinal() + 3))
+                {
+                    return "junction_into_left.png";
+                }
+                else if (conveyorBelt.getHeadings()[0].ordinal() == (conveyorBelt.getHeadings()[2].ordinal() + 1)
+                        ||  conveyorBelt.getHeadings()[0].ordinal() == (conveyorBelt.getHeadings()[2].ordinal() - 3)) {
+                    return "junction_into_right.png";
+                }
+                else {
+                    return null;
+                }
+            }
+            else if (conveyorBelt.getHeadings()[0].ordinal() == (conveyorBelt.getHeadings()[1].ordinal() +2)
+                || conveyorBelt.getHeadings()[0].ordinal() == (conveyorBelt.getHeadings()[1].ordinal() -2))
+             {
+                 if (conveyorBelt.getHeadings()[0].ordinal() == (conveyorBelt.getHeadings()[2].ordinal() -1)
+                         ||  conveyorBelt.getHeadings()[0].ordinal() == (conveyorBelt.getHeadings()[2].ordinal() + 3))
+                 {
+                     return "junction_out_left.png";
+                 }
+                 else if (conveyorBelt.getHeadings()[0].ordinal() == (conveyorBelt.getHeadings()[2].ordinal() + 1)
+                         ||  conveyorBelt.getHeadings()[0].ordinal() == (conveyorBelt.getHeadings()[2].ordinal() - 3)) {
+                     return "junction_out_right.png";
+                 }
+                 else {
+                     return null;
+                 }
+             }
+        }
+        return null;
+    }
+
 }
