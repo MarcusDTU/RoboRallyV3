@@ -22,6 +22,7 @@
 package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.controller.field.Antenna;
 import dk.dtu.compute.se.pisd.roborally.controller.field.Checkpoint;
 import dk.dtu.compute.se.pisd.roborally.controller.field.ConveyorBelt;
 import dk.dtu.compute.se.pisd.roborally.controller.field.FieldAction;
@@ -61,7 +62,6 @@ public class SpaceView extends StackPane implements ViewObserver {
         this.setMaxHeight(SPACE_HEIGHT);
 
         // updatePlayer();
-
         // This space view should listen to changes of the space
         space.attach(this);
         update(space);
@@ -114,6 +114,12 @@ public class SpaceView extends StackPane implements ViewObserver {
                 checkpointImage.setFitWidth(SPACE_WIDTH);
                 checkpointImage.setFitHeight(SPACE_HEIGHT);
                 this.getChildren().add(checkpointImage);
+            }
+            if(action instanceof Antenna antenna) {
+                ImageView antennaImage = new ImageView("board_elements/images/antenna.png");
+                antennaImage.setFitWidth(SPACE_WIDTH);
+                antennaImage.setFitHeight(SPACE_HEIGHT);
+                this.getChildren().add(antennaImage);
             }
         }
     }

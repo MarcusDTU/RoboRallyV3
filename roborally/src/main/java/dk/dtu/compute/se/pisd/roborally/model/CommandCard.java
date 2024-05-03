@@ -21,6 +21,7 @@
  */
 package dk.dtu.compute.se.pisd.roborally.model;
 
+import com.google.gson.annotations.Expose;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import org.jetbrains.annotations.NotNull;
 
@@ -32,11 +33,13 @@ import org.jetbrains.annotations.NotNull;
  */
 public class CommandCard extends Subject {
 
-    final public Command command;
+    @Expose
+    public Command command;
 
     public CommandCard(@NotNull Command command) {
         this.command = command;
     }
+    public CommandCard(){}
 
     public String getName() {
         return command.displayName;

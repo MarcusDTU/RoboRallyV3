@@ -23,6 +23,7 @@ package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import org.jetbrains.annotations.NotNull;
+import java.util.List;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,11 +37,13 @@ import java.util.Collections;
 public class GameController {
 
     final public Board board;
+    public Player[] playersOrder;
 
     //private DiscardPile discardPile = new DiscardPile();
 
     public GameController(Board board) {
         this.board = board;
+        playersOrder = board.getPlayers();
     }
 
 
@@ -142,14 +145,14 @@ public class GameController {
         if (other != null){
             Space target = board.getNeighbour(space, heading);
             if (target != null) {
-                // XXX Note that there might be additional problems with
-                //     infinite recursion here (in some special cases)!
-                //     We will come back to that!
-                moveToSpace(other, target, heading);
-
-                // Note that we do NOT embed the above statement in a try catch block, since
-                // the thrown exception is supposed to be passed on to the caller
-
+                List<Heading> targetWalls = target.getWalls();
+                List<Heading> sourceWalls = space.getWalls();
+                // Movement is not possible to target if there is a wall in the way
+                if (!targetWalls.contains(heading.opposite()) && !sourceWalls.contains(heading)) {
+                    moveToSpace(other, target, heading);
+                } else {
+                    throw new ImpossibleMoveException(player, space, heading);
+                }
                 assert target.getPlayer() == null : target; // make sure target is free now
             } else {
                 throw new ImpossibleMoveException(player, space, heading);
@@ -233,9 +236,20 @@ public class GameController {
         board.setStep(0);
     }
 
+
     /**
      * Executes the programs of all players on the board.
      */
+
+    public void startActivationPhase(int steps) { // start the activation phase
+        makeProgramFieldsInvisible(); // make the program fields invisible
+        for (int i = 0; i <= steps; i++) { // for each step
+            makeProgramFieldsVisible(i); // make the program fields visible
+        }
+        board.setPhase(Phase.ACTIVATION); // set the board's phase to "ACTIVATION"
+    }
+
+
     public void executePrograms() {
         board.setStepMode(false);
         continuePrograms();
