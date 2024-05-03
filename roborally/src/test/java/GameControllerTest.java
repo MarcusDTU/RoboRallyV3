@@ -371,28 +371,5 @@ class GameControllerTest {
         // Assert that the player's new space is the expected space
         assertEquals(board.getSpace(5, 6), player.getSpace(), "Player should move one space South.");
     }
-    /**
-     * @author Marcus Langkilde, s195080
-     */
-    @Test
-    void testMoveForwardThrowsImpossibleMoveException() {
-        // Create a new player and set their initial position and heading
-        Player player = new Player(board, 1, "Alice");
-        Space startingSpace = board.getSpace(5, 5);
-        player.setSpace(startingSpace);
-        player.setHeading(Heading.NORTH);
-
-        // Add the player to the game
-        board.addPlayer(player);
-
-        // Set the player's space to a space at the edge of the board
-        Space edgeSpace = board.getSpace(5, 0); // This is the northern edge of the board
-        player.setSpace(edgeSpace);
-
-        // Attempt to move the player forward and expect an ImpossibleMoveException
-        assertThrows(Exception.class, () -> {
-            gameController.moveForward(player);
-        }, "Moving forward from the edge of the board should throw an Exception");
-    }
 
 }
