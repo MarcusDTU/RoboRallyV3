@@ -41,11 +41,11 @@ public enum Command {
     RIGHT("Turn Right"),
     LEFT("Turn Left"),
     FAST_FORWARD("Fast Fwd"),
-
     AGAIN("Again"),
     POWER_UP("Power Up"),
     FAST_FAST_FORWARD("Fast Fast Fwd"),
     U_TURN("U-Turn"),
+    BACK_UP("Back Up"),
     OPTION_LEFT_RIGHT("Left OR Right", LEFT, RIGHT);
 
     @Expose
