@@ -335,17 +335,5 @@ class GameControllerTest {
         // Assert that the player's new space is the expected space
         assertEquals(board.getSpace(5, 6), player.getSpace(), "Player should move one space South.");
     }
-    void testExecuteCommand() {
-        // Create a new player and set their initial position and heading
-        Player player = new Player(board, 1, "Alice");
-        Space startingSpace = board.getSpace(5, 5);
-        player.setSpace(startingSpace);
-        player.setHeading(Heading.NORTH);
 
-        // Call the executeCommand method on the gameController instance with a FORWARD command
-        gameController.executeCommand(player, Command.FORWARD);
-
-        // Assert that the player's new space is the expected space
-        assertEquals(board.getSpace(5, 4), player.getSpace(), "Player should move one space North.");
-    }
 }
