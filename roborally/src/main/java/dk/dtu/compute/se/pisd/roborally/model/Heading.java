@@ -39,14 +39,12 @@ public enum Heading {
         return values()[(this.ordinal() + values().length - 1) % values().length];
     }
 
-
     /**
      * Returns the opposite heading.
      * @return the opposite heading
      * @author Daniel Overballe Lerche, s235095@dtu.dk
      * @author Nikolaj Schæbel, s220471@dtu.dk
      */
-
     public Heading opposite() {
         return values()[(this.ordinal() + 2) % values().length];
     }
