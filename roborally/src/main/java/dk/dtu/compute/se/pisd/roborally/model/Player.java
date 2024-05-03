@@ -53,6 +53,7 @@ public class Player extends Subject {
 
     @Expose
     private String name;
+
     @Expose
     private int robotId;
 
@@ -133,14 +134,6 @@ public class Player extends Subject {
         return robotId;
     }
 
-    public void setRobotId(int robotId) {
-        this.robotId = robotId;
-        notifyChange();
-        if (space != null) {
-            space.playerChanged();
-        }
-    }
-
     public Space getSpace() {
         return space;
     }
@@ -188,16 +181,6 @@ public class Player extends Subject {
     }
 
     public CommandCardField[] getCards() {
-        return cards;
-    }
-
-    public CommandCardField[] setProgram(CommandCardField[] program) {
-        this.program = program;
-        return program;
-    }
-
-    public CommandCardField[] setCards(CommandCardField[] cards) {
-        this.cards = cards;
         return cards;
     }
 

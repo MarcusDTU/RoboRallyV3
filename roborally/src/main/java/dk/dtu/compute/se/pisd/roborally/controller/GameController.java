@@ -68,7 +68,6 @@ public class GameController {
             }
         }
     }
-
     /**
      * Moves the given player forward two spaces on the board, if possible.
      *
@@ -101,7 +100,6 @@ public class GameController {
             }
         }
     }
-
     /**
      * Turns the given player's heading to the right.
      *
@@ -241,6 +239,7 @@ public class GameController {
         }
         board.setPhase(Phase.ACTIVATION); // set the board's phase to "ACTIVATION"
     }
+
 
     public void executePrograms() {
         board.setStepMode(false);
@@ -437,6 +436,7 @@ public class GameController {
                     pile.setVisible(true);
                 }
             }
+
         }
 
 

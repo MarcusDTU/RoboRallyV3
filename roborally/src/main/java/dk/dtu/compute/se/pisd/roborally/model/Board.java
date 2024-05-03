@@ -73,6 +73,9 @@ public class Board extends Subject {
     private Space antennaSpace;
 
     @Expose
+    private final List<Space> startSpaces = new ArrayList<>();
+
+    @Expose
     private int step = 0;
 
     @Expose
@@ -106,6 +109,16 @@ public class Board extends Subject {
             if (!this.gameId.equals(gameId)) {
                 throw new IllegalStateException("A game with a set id may not be assigned a new id!");
             }
+        }
+    }
+
+    public List<Space> getStartSpaces() {
+        return startSpaces;
+    }
+
+    public void addStartSpace(Space space) {
+        if (!startSpaces.contains(space)) {
+            startSpaces.add(space);
         }
     }
 
