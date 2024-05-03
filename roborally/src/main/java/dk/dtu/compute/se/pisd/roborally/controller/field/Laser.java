@@ -17,6 +17,8 @@ public class Laser extends FieldAction {
         SINGLE, DOUBLE, TRIPPLE;
     }
 
+    private Type type;
+
     private Heading heading;
 
     public Heading getHeading() {
