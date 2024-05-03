@@ -113,9 +113,7 @@ public class Board extends Subject {
         currentNumberOfCards--;
     }
 
-    public void resetCards() {
-        currentNumberOfCards = MAX_NUMBER_OF_CARDS;
-    }
+
     public Space getSpace(int x, int y) {
         if (x >= 0 && x < width &&
                 y >= 0 && y < height) {
