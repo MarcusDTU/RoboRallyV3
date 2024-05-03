@@ -122,11 +122,13 @@ public class AppController implements Observer {
 
         // fileWriter object to write the board to a file
         FileWriter fileWriter = new FileWriter(homeFolder + File.separator + "gameData.json");
+
         if (board != null) {
             // serialize the board to a JSON string and write it to the file
             fileWriter.append(gson.toJson(board));
         }
-        fileWriter.close(); // close the file writer
+
+        fileWriter.close();
     }
 
     /**
@@ -192,7 +194,10 @@ public class AppController implements Observer {
                  s.board = board;
             }
         }
+
         Player currentPlayer = board.getCurrentPlayer();
+
+        // set currentPlayer's board
         currentPlayer.board = board;
 
         gameController = new GameController(board);
@@ -201,9 +206,10 @@ public class AppController implements Observer {
         if(board.getPhase().name().equals("ACTIVATION")){
             gameController.startActivationPhase(board.getStep());
         } else {
-            gameController.startProgrammingPhase(); // start the programming phase
+            gameController.startProgrammingPhase();
         }
-        roboRally.createBoardView(gameController); // create the board view
+
+        roboRally.createBoardView(gameController);
     }
 
     /**

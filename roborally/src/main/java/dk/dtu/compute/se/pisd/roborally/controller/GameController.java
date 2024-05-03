@@ -23,6 +23,7 @@ package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import org.jetbrains.annotations.NotNull;
+import dk.dtu.compute.se.pisd.roborally.model.Phase;
 import java.util.List;
 
 /**
@@ -34,13 +35,11 @@ import java.util.List;
 public class GameController {
 
     final public Board board;
-    public Player[] playersOrder;
 
     //private DiscardPile discardPile = new DiscardPile();
 
     public GameController(Board board) {
         this.board = board;
-        playersOrder = board.getPlayers();
     }
 
 
@@ -69,8 +68,6 @@ public class GameController {
             }
         }
     }
-
-    // TODO Assignment A3
     /**
      * Moves the given player forward two spaces on the board, if possible.
      *
@@ -103,8 +100,6 @@ public class GameController {
             }
         }
     }
-
-    // TODO Assignment A3
     /**
      * Turns the given player's heading to the right.
      *
@@ -116,7 +111,6 @@ public class GameController {
         player.setHeading(player.getHeading().next());
     }
 
-    // TODO Assignment A3
     /**
      * Turns the given player's heading to the left.
      *
@@ -360,9 +354,6 @@ public class GameController {
             //player.getDiscardedPile().getPile().pile.add(command);
             player.setLastCommand(command);
             board.useCard();
-
-            System.out.println(player.getName() + " power up count " + player.getPowerUpCnt());
-
         }
     }
 
