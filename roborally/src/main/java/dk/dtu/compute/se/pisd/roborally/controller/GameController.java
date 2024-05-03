@@ -34,7 +34,7 @@ import java.util.List;
  */
 public class GameController {
 
-    final public Board board;
+    public Board board;
     public Player[] playersOrder;
 
     //private DiscardPile discardPile = new DiscardPile();
