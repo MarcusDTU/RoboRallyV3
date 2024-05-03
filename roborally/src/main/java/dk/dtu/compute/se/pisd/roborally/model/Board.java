@@ -23,6 +23,7 @@ package dk.dtu.compute.se.pisd.roborally.model;
 
 import com.google.gson.annotations.Expose;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.controller.field.Antenna;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -57,8 +58,7 @@ public class Board extends Subject {
     private Integer gameId;
 
     @Expose
-    public Space[][] spaces;
-
+    private Space[][] spaces;
 
     @Expose
     private final List<Player> players = new ArrayList<>();
@@ -68,6 +68,12 @@ public class Board extends Subject {
 
     @Expose
     private Phase phase = INITIALISATION;
+
+    @Expose
+    private Space antennaSpace;
+
+    @Expose
+    private final List<Space> startSpaces = new ArrayList<>();
 
     @Expose
     private int step = 0;
@@ -106,6 +112,35 @@ public class Board extends Subject {
         }
     }
 
+    public List<Space> getStartSpaces() {
+        return startSpaces;
+    }
+
+    public void addStartSpace(Space space) {
+        if (!startSpaces.contains(space)) {
+            startSpaces.add(space);
+        }
+    }
+
+    /**
+     * Returns the space which holds the antenna.
+     * @return the space which holds the antenna
+     * @author Daniel Overballe Lerche, s235095@dtu.dk
+     * @author Nikolaj Schæbel, s220471@dtu.dk
+     */
+    public Space getAntennaSpace() {
+        return antennaSpace;
+    }
+
+    /**
+     * Sets the space which holds the antenna.
+     * @param antennaSpace the space which holds the antenna
+     * @author Daniel Overballe Lerche, s235095@dtu.dk
+     * @author Nikolaj Schæbel, s220471@dtu.dk
+     */
+    public void setAntennaSpace(Space antennaSpace) {
+        this.antennaSpace = antennaSpace;
+    }
 
     public int getCurrentNumberOfCards() {
         return currentNumberOfCards;

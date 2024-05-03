@@ -25,7 +25,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Observer;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
-import dk.dtu.compute.se.pisd.roborally.RoboRally;
+import dk.dtu.compute.se.pisd.roborally.RoboRally;git 
+import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.CommandCardField;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
@@ -80,13 +81,17 @@ public class AppController implements Observer {
 
             // XXX the board should eventually be created programmatically or loaded from a file
             //     here we just create an empty board with the required number of players.
-            Board board = new Board(8, 8);
+            Board board = LoadBoard.loadBoard("risky_crossing");
+            if(board == null) {
+                board = new Board(8, 8);
+
+            }
             gameController = new GameController(board);
             int no = result.get();
             for (int i = 0; i < no; i++) {
                 Player player = new Player(board, i+1, "Player " + (i + 1));
                 board.addPlayer(player);
-                player.setSpace(board.getSpace(i % board.width, i));
+                player.setSpace(board.getStartSpaces().get(i));
             }
 
             // XXX: V2
@@ -117,13 +122,11 @@ public class AppController implements Observer {
 
         // fileWriter object to write the board to a file
         FileWriter fileWriter = new FileWriter(homeFolder + File.separator + "gameData.json");
-
         if (board != null) {
             // serialize the board to a JSON string and write it to the file
             fileWriter.append(gson.toJson(board));
         }
-
-        fileWriter.close();
+        fileWriter.close(); // close the file writer
     }
 
     /**
@@ -189,10 +192,7 @@ public class AppController implements Observer {
                  s.board = board;
             }
         }
-
         Player currentPlayer = board.getCurrentPlayer();
-
-        // set currentPlayer's board
         currentPlayer.board = board;
 
         gameController = new GameController(board);
@@ -201,10 +201,9 @@ public class AppController implements Observer {
         if(board.getPhase().name().equals("ACTIVATION")){
             gameController.startActivationPhase(board.getStep());
         } else {
-            gameController.startProgrammingPhase();
+            gameController.startProgrammingPhase(); // start the programming phase
         }
-
-        roboRally.createBoardView(gameController);
+        roboRally.createBoardView(gameController); // create the board view
     }
 
     /**
