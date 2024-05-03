@@ -13,7 +13,7 @@ public class DiscardPileTest {
 
         DiscardPileField discardPile = new DiscardPileField(player);
 
-        (player.getDiscardedPile());
+        assertNotNull(player.getDiscardedPile());
 
     }
 }
