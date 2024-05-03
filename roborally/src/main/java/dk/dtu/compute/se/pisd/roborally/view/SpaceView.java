@@ -97,16 +97,15 @@ public class SpaceView extends StackPane implements ViewObserver {
         if(space.getActions().isEmpty()) return;
         for (FieldAction action : space.getActions()) {
             if(action instanceof ConveyorBelt conveyorBelt) {
-                ImageView conveyorBeltImage = new ImageView("conveyor_belts/blue/belt_forward.png");
+                String image = getConveyorImage(conveyorBelt);
+                String path = "conveyor_belts/" + conveyorBelt.getColor() +
+                        "/" +
+                        image;
+                ImageView conveyorBeltImage = new ImageView(path);
                 conveyorBeltImage.setFitWidth(SPACE_WIDTH);
                 conveyorBeltImage.setFitHeight(SPACE_HEIGHT);
+                conveyorBeltImage.rotateProperty().set(90 * conveyorBelt.getHeadings()[0].ordinal() - 180);
                 this.getChildren().add(conveyorBeltImage);
-                Heading[] heading = conveyorBelt.getHeadings();
-                StringBuilder conyerbeltPath = new StringBuilder();
-                conyerbeltPath.append("conveyor_belts/");
-                conyerbeltPath.append(conveyorBelt.getColor().toString().toLowerCase());
-                conyerbeltPath.append("/belt_");
-                // TODO add the right conveyor belts
             }
             if (action instanceof Checkpoint checkpoint) {
                 ImageView checkpointImage = new ImageView("checkpoints/checkpoint" + checkpoint.getOrderNumber() + ".png");
@@ -189,13 +188,13 @@ public class SpaceView extends StackPane implements ViewObserver {
             return "belt_forward.png";
         }
         else if (conveyor.length == 3) {
-            if (conveyorBelt.getHeadings()[0].ordinal() == (conveyorBelt.getHeadings()[1].ordinal() -1)
-                    ||  conveyorBelt.getHeadings()[0].ordinal() == (conveyorBelt.getHeadings()[1].ordinal() + 3))
+            if ((conveyorBelt.getHeadings()[0].ordinal() - 1) == (conveyorBelt.getHeadings()[1].ordinal())
+                    ||  (conveyorBelt.getHeadings()[0].ordinal() + 3) == (conveyorBelt.getHeadings()[1].ordinal()))
             {
                 return "belt_left.png";
             }
-            else if (conveyorBelt.getHeadings()[0].ordinal() == (conveyorBelt.getHeadings()[1].ordinal() + 1)
-                    ||  conveyorBelt.getHeadings()[0].ordinal() == (conveyorBelt.getHeadings()[1].ordinal() - 3)) {
+            else if ((conveyorBelt.getHeadings()[0].ordinal() + 1) == (conveyorBelt.getHeadings()[1].ordinal() )
+                    ||  (conveyorBelt.getHeadings()[0].ordinal() - 3) == conveyorBelt.getHeadings()[1].ordinal()) {
                 return "belt_right.png";
             }
             else {
@@ -204,29 +203,29 @@ public class SpaceView extends StackPane implements ViewObserver {
         }
         else if (conveyor.length == 4) {
             if(conveyorBelt.getHeadings()[0].ordinal() == (conveyorBelt.getHeadings()[1].ordinal())) {
-                if (conveyorBelt.getHeadings()[0].ordinal() == (conveyorBelt.getHeadings()[2].ordinal() -1)
-                        ||  conveyorBelt.getHeadings()[0].ordinal() == (conveyorBelt.getHeadings()[2].ordinal() + 3))
+                if ((conveyorBelt.getHeadings()[0].ordinal() - 1) == (conveyorBelt.getHeadings()[2].ordinal())
+                        ||  (conveyorBelt.getHeadings()[0].ordinal() + 3) == (conveyorBelt.getHeadings()[2].ordinal()))
                 {
                     return "junction_into_left.png";
                 }
-                else if (conveyorBelt.getHeadings()[0].ordinal() == (conveyorBelt.getHeadings()[2].ordinal() + 1)
-                        ||  conveyorBelt.getHeadings()[0].ordinal() == (conveyorBelt.getHeadings()[2].ordinal() - 3)) {
+                else if ((conveyorBelt.getHeadings()[0].ordinal() + 1) == (conveyorBelt.getHeadings()[2].ordinal())
+                        ||  (conveyorBelt.getHeadings()[0].ordinal() - 3) == (conveyorBelt.getHeadings()[2].ordinal())) {
                     return "junction_into_right.png";
                 }
                 else {
                     return null;
                 }
             }
-            else if (conveyorBelt.getHeadings()[0].ordinal() == (conveyorBelt.getHeadings()[1].ordinal() +2)
-                || conveyorBelt.getHeadings()[0].ordinal() == (conveyorBelt.getHeadings()[1].ordinal() -2))
+            else if ((conveyorBelt.getHeadings()[0].ordinal() + 2) == (conveyorBelt.getHeadings()[1].ordinal())
+                || (conveyorBelt.getHeadings()[0].ordinal() - 2) == (conveyorBelt.getHeadings()[1].ordinal()))
              {
-                 if (conveyorBelt.getHeadings()[0].ordinal() == (conveyorBelt.getHeadings()[2].ordinal() -1)
-                         ||  conveyorBelt.getHeadings()[0].ordinal() == (conveyorBelt.getHeadings()[2].ordinal() + 3))
+                 if ((conveyorBelt.getHeadings()[0].ordinal() - 1) == (conveyorBelt.getHeadings()[2].ordinal())
+                         ||  (conveyorBelt.getHeadings()[0].ordinal() + 3) == (conveyorBelt.getHeadings()[2].ordinal()))
                  {
                      return "junction_out_left.png";
                  }
-                 else if (conveyorBelt.getHeadings()[0].ordinal() == (conveyorBelt.getHeadings()[2].ordinal() + 1)
-                         ||  conveyorBelt.getHeadings()[0].ordinal() == (conveyorBelt.getHeadings()[2].ordinal() - 3)) {
+                 else if ((conveyorBelt.getHeadings()[0].ordinal() + 1) == (conveyorBelt.getHeadings()[2].ordinal())
+                         ||  (conveyorBelt.getHeadings()[0].ordinal() - 3)== (conveyorBelt.getHeadings()[2].ordinal())) {
                      return "junction_out_right.png";
                  }
                  else {

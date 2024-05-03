@@ -81,6 +81,7 @@ public class LoadBoard {
                         if(action instanceof StartField){
                             // TODO - Only one start field is allowed if it is there
                             result.addStartSpace(space);
+                            System.out.println("Start space");
                         } else if(action instanceof Antenna){
                             if (result.getAntennaSpace() != null) {
                                 throw new IOException("More than one antenna found on the board!");

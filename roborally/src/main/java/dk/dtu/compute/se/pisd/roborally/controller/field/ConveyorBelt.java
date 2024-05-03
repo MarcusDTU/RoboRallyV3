@@ -46,7 +46,7 @@ public class ConveyorBelt extends FieldAction {
 
     private Color color;
 
-    private Type type;
+    //private Type type;
 
     private Heading[] heading;
 
@@ -117,7 +117,7 @@ public class ConveyorBelt extends FieldAction {
     public void setColor(Color color) {
         this.color = color;
     }
-
+    /*
     public Type getType() {
         return type;
     }
@@ -125,7 +125,7 @@ public class ConveyorBelt extends FieldAction {
     public void setType(Type type) {
         this.type = type;
     }
-
+*/
     @Override
     public boolean doAction(@NotNull GameController gameController, @NotNull Space space) {
         // TODO needs to be implemented
