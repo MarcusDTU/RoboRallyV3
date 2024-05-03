@@ -46,6 +46,15 @@ public class LoadBoard {
     private static final String DEFAULTBOARD = "defaultboard";
     private static final String JSON_EXT = "json";
 
+    /**
+     * Load a board from a file with the given name. If the name is null, the
+     * default board is loaded.
+     *
+     * @param boardname the name of the board to be loaded
+     * @return the board loaded from the file
+     * @author Nikolaj Schæbel, s220471@dtu.dk
+     * @author Daniel Overballe Lerche, s235095@dtu.dk
+     */
     public static Board loadBoard(String boardname) {
         if (boardname == null) {
             boardname = DEFAULTBOARD;
