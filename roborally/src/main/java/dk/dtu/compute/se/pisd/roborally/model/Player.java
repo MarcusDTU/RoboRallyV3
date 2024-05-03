@@ -47,9 +47,6 @@ public class Player extends Subject {
     private DiscardPileField discardedPile;
 
     @Expose
-    public DeckField deckField;
-
-    @Expose
     private Command lastCommand = null;
 
     @Expose
@@ -133,30 +130,8 @@ public class Player extends Subject {
         return lastCommand;
     }
 
-    public void setDeck(Deck deck) {
-        this.deck = deck;
-    }
-
-    public void setName(String name) {
-        if (name != null && !name.equals(this.name)) {
-            this.name = name;
-            notifyChange();
-            if (space != null) {
-                space.playerChanged();
-            }
-        }
-    }
-
     public int getRobotId() {
         return robotId;
-    }
-
-    public void setRobotId(int robotId) {
-        this.robotId = robotId;
-        notifyChange();
-        if (space != null) {
-            space.playerChanged();
-        }
     }
 
     public Space getSpace() {
@@ -209,16 +184,6 @@ public class Player extends Subject {
         return cards;
     }
 
-    public CommandCardField[] setProgram(CommandCardField[] program) {
-        this.program = program;
-        return program;
-    }
-
-    public CommandCardField[] setCards(CommandCardField[] cards) {
-        this.cards = cards;
-        return cards;
-    }
-
     public CommandCardField getProgramField(int i) {
         return program[i];
     }
@@ -230,6 +195,4 @@ public class Player extends Subject {
     public DiscardPileField getDiscardedPile() {
         return discardedPile;
     }
-
-    public DeckField getCurrentDeck(){ return deckField; }
 }

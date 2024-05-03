@@ -25,9 +25,6 @@ import dk.dtu.compute.se.pisd.roborally.model.*;
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
-import java.util.ArrayList;
-import java.util.Collections;
-
 /**
  *
  * Controls the game logic.
