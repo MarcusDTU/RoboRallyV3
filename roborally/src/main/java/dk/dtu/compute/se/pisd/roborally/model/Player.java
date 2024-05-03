@@ -40,26 +40,36 @@ public class Player extends Subject {
     @Expose
     final public static int NO_CARDS = 8;
 
+    @Expose
     public Board board;
+
     @Expose
     private DiscardPileField discardedPile;
+
     @Expose
     public DeckField deckField;
+
     @Expose
     private Command lastCommand = null;
+
     @Expose
     private Deck deck;
+
     @Expose
     private String name;
+
     @Expose
     private int robotId;
 
     @Expose
     private int powerUpCnt = 0;
+
     @Expose
     private Command currentCommand;
 
     @Expose
+    private int checkpointCollected = 0;
+
     private Space space;
     @Expose
     private Heading heading = SOUTH;
@@ -69,10 +79,6 @@ public class Player extends Subject {
     private CommandCardField[] program;
     @Expose
     private CommandCardField[] cards;
-
-    @Expose
-    private boolean isButtonPressed = false;
-
 
     public Player(){}
 
@@ -130,12 +136,7 @@ public class Player extends Subject {
     public void setDeck(Deck deck) {
         this.deck = deck;
     }
-    public boolean isButtonPressed() {
-        return isButtonPressed;
-    }
-public void setButtonPressed(boolean buttonPressed) {
-        isButtonPressed = buttonPressed;
-    }
+
     public void setName(String name) {
         if (name != null && !name.equals(this.name)) {
             this.name = name;
@@ -189,6 +190,15 @@ public void setButtonPressed(boolean buttonPressed) {
                 space.playerChanged();
             }
         }
+    }
+
+    public void setCheckpoint(int checkpointCollected) {
+        this.checkpointCollected = checkpointCollected;
+        notifyChange();
+    }
+
+    public int getCheckpointCollected() {
+        return checkpointCollected;
     }
 
     public CommandCardField[] getProgram() {
