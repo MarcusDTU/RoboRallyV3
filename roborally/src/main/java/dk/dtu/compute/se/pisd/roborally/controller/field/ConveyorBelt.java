@@ -35,7 +35,7 @@ import org.jetbrains.annotations.NotNull;
 public class ConveyorBelt extends FieldAction {
 
     public enum Color {
-        BLUE, GREEN;
+        BLUE, GREEN
     }
 
     public enum Type {
@@ -89,25 +89,6 @@ public class ConveyorBelt extends FieldAction {
             }
         }
         return true;
-    }
-
-    /**
-     * Converts an array of headings to a string representation.
-     * @return a string representation of the heading array
-     * @author Daniel Overballe Lerche, s235095@dtu.dk
-     * @author Nikolaj Schæbel, s220471@dtu.dk
-     */
-    public String convertHeadingToString() {
-        StringBuilder headingString = new StringBuilder(switch (heading.length) {
-            case 1 -> "STRAIGHT";
-            case 2 -> "CORNER";
-            case 3 -> "JUNCTION";
-            default -> "";
-        });
-        for (Heading value : heading) {
-            headingString.append("-").append(value.toString());
-        }
-        return headingString.toString();
     }
 
     public Color getColor() {

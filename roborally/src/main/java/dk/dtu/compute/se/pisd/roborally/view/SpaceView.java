@@ -92,6 +92,7 @@ public class SpaceView extends StackPane implements ViewObserver {
     /**
      * Adds actions to the space view, if there is any.
      * @author Daniel Overballe Lerche, s235095@dtu.dk
+     * @author Nikolaj Schæbel, s220471@dtu.dk
      */
     private void addActions() {
         if(space.getActions().isEmpty()) return;
@@ -182,12 +183,18 @@ public class SpaceView extends StackPane implements ViewObserver {
         }
     }
 
+    /**
+     * Returns the image of the conveyor belt based on the direction of the conveyor belt.
+     * @param conveyorBelt The conveyor belt to get the image of
+     * @return The image of the conveyor belt
+     * @author Nikolaj Schæbel, s220471@dtu.dk
+     * @author Daniel Overballe Lerche, s235095@dtu.dk
+     */
     private String getConveyorImage(ConveyorBelt conveyorBelt) {
-        String[] conveyor = conveyorBelt.convertHeadingToString().split("-");
-        if (conveyor.length == 2) {
+        if (conveyorBelt.getHeadings().length == 1) {
             return "belt_forward.png";
         }
-        else if (conveyor.length == 3) {
+        else if (conveyorBelt.getHeadings().length == 2) {
             if ((conveyorBelt.getHeadings()[0].ordinal() - 1) == (conveyorBelt.getHeadings()[1].ordinal())
                     ||  (conveyorBelt.getHeadings()[0].ordinal() + 3) == (conveyorBelt.getHeadings()[1].ordinal()))
             {
@@ -201,7 +208,7 @@ public class SpaceView extends StackPane implements ViewObserver {
                 return null;
             }
         }
-        else if (conveyor.length == 4) {
+        else if (conveyorBelt.getHeadings().length == 3) {
             if(conveyorBelt.getHeadings()[0].ordinal() == (conveyorBelt.getHeadings()[1].ordinal())) {
                 if ((conveyorBelt.getHeadings()[0].ordinal() - 1) == (conveyorBelt.getHeadings()[2].ordinal())
                         ||  (conveyorBelt.getHeadings()[0].ordinal() + 3) == (conveyorBelt.getHeadings()[2].ordinal()))

@@ -17,9 +17,15 @@ public class Checkpoint extends FieldAction {
         return orderNumber;
     }
 
+    /**
+     * This method checks if the player is on the checkpoint and have collected the previous checkpoint
+     * @param gameController the game controller
+     * @param space the space the player is on
+     * @return true if the player is on the checkpoint and have collected the previous checkpoint
+     */
     @Override
     public boolean doAction(@NotNull GameController gameController, @NotNull Space space) {
-
+        //update the player's checkpoint if the player is on the checkpoint and have collected the previous checkpoint
         for(Player p: gameController.board.getPlayers()){
             if(p.getSpace().equals(space) && p.getCheckpointCollected() == (orderNumber - 1)){
                 p.setCheckpoint(orderNumber);
