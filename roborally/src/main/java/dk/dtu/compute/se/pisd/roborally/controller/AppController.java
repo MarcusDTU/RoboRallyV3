@@ -26,6 +26,8 @@ import com.google.gson.GsonBuilder;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Observer;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
+import dk.dtu.compute.se.pisd.roborally.controller.field.*;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.Adapter;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.CommandCardField;
@@ -41,11 +43,10 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * ...
@@ -95,7 +96,7 @@ public class AppController implements Observer {
             }
 
             // XXX: V2
-            // board.setCurrentPlayer(board.getPlayer(0));
+            //board.setCurrentPlayer(board.getPlayer(0));
             gameController.startProgrammingPhase();
 
             roboRally.createBoardView(gameController);
@@ -115,7 +116,10 @@ public class AppController implements Observer {
         Board board = gameController.board;
 
         // gson object to serialize the board to a JSON string
-        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>())
+                .excludeFieldsWithoutExposeAnnotation()
+                .create();
 
         // get the user's home folder
         String homeFolder = System.getProperty("user.home");
@@ -144,11 +148,21 @@ public class AppController implements Observer {
      * @see Gson
      */
     public void loadGame(String path) throws IOException {
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>())
+                .excludeFieldsWithoutExposeAnnotation()
+                .create();
         Path data = Path.of(path);
-
         Board board = gson.fromJson(Files.readString(data), Board.class);
-
+        // UGLY HACK to make sure the observers is not null after deserialization
+        try {
+            Field observersField = Subject.class.getDeclaredField("observers");
+            observersField.setAccessible(true); // Make the field accessible
+            observersField.set(board, Collections.newSetFromMap(new WeakHashMap<Observer, Boolean>()));
+            observersField.setAccessible(false);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
         // set the board's players' discarded piles, spaces, programmed cards, cards the player has in hand and their boards.
         for (Player player : board.getPlayers()) {
             // set the player's discarded pile.
@@ -210,6 +224,7 @@ public class AppController implements Observer {
         }
 
         roboRally.createBoardView(gameController);
+
     }
 
     /**
