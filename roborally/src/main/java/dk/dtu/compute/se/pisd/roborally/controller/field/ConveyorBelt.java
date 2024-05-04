@@ -21,6 +21,7 @@
  */
 package dk.dtu.compute.se.pisd.roborally.controller.field;
 
+import com.google.gson.annotations.Expose;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
@@ -44,10 +45,12 @@ public class ConveyorBelt extends FieldAction {
         JUNCTION
     }
 
+    @Expose
     private Color color;
 
     //private Type type;
 
+    @Expose
     private Heading[] heading;
 
     /**

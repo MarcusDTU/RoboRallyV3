@@ -1,5 +1,6 @@
 package dk.dtu.compute.se.pisd.roborally.controller.field;
 
+import com.google.gson.annotations.Expose;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
@@ -7,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class Checkpoint extends FieldAction {
 
+    @Expose
     private int orderNumber;
 
     public void setOrderNumber(int orderNumber) {

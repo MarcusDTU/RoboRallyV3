@@ -1,5 +1,6 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
+import com.google.gson.annotations.Expose;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 
 import java.util.Collections;
@@ -11,10 +12,13 @@ import java.util.Collections;
  */
 public class DeckField extends Subject {
 
-    final public Player player;
+    @Expose
+    public Player player;
 
+    @Expose
     private Deck deck;
 
+    @Expose
     private boolean visible;
 
 
@@ -30,6 +34,8 @@ public class DeckField extends Subject {
         this.deck = new Deck();
         this.visible = true;
     }
+
+    public DeckField(){}
 
     /**
      * Retrieves the deck in the field.
