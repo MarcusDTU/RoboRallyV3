@@ -96,6 +96,7 @@ public class Board extends Subject {
         this.currentNumberOfCards = MAX_NUMBER_OF_CARDS;
     }
 
+    public Board() {}
 
     public Integer getGameId() {
         return gameId;
