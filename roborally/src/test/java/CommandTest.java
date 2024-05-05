@@ -1,9 +1,8 @@
+import static org.junit.jupiter.api.Assertions.*;
+
 import dk.dtu.compute.se.pisd.roborally.model.Command;
 import org.junit.jupiter.api.Test;
-
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class CommandTest {
     /**

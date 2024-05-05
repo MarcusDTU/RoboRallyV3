@@ -1,8 +1,7 @@
-import dk.dtu.compute.se.pisd.roborally.model.*;
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
+import dk.dtu.compute.se.pisd.roborally.model.*;
 
 class PlayerTest {
 
