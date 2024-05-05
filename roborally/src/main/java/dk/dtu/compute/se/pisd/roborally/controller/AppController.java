@@ -151,7 +151,8 @@ public class AppController implements Observer {
                 .create();
         Path data = Path.of(path);
         Board board = gson.fromJson(Files.readString(data), Board.class);
-
+        // Set the current player to whatever the name there is on loaded board's current player
+        // This is done to avoid the issue of having a new player object created when loading the game
         for (Player player : board.getPlayers()) {
             if(player.getName().equals(board.getCurrentPlayer().getName())) {
                 board.setCurrentPlayer(player);
@@ -170,27 +171,13 @@ public class AppController implements Observer {
                     }
                 }
             }
-            Player currentPlayer = board.getCurrentPlayer();
-
+            // set the player's programmed cards
             for (CommandCardField card : player.getProgram()) {
                 card.player = player;
-                if (currentPlayer.getName().equals(player.getName())) {
-                    // set player's programmed cards
-                    for (CommandCardField card2 : currentPlayer.getProgram()) {
-                        card2.player = currentPlayer;
-                        card2.setCard(card.getCard());
-                    }
-                }
             }
-
-            for (CommandCardField card: player.getCards()){
+            // set the player's cards in hand
+            for (CommandCardField card : player.getCards()){
                 card.player = player;
-                if(currentPlayer.getName().equals(player.getName())){
-                    // set player's cards in hand
-                    for (CommandCardField card2: currentPlayer.getCards()){
-                        card2.player = currentPlayer;
-                    }
-                }
             }
             // set player's board
             player.board = board;
