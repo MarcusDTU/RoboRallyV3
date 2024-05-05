@@ -81,6 +81,9 @@ public class Board extends Subject {
     @Expose
     private boolean stepMode;
 
+    // Empty constructor for GSON since it will give errors without it
+    public Board() {}
+
     public Board(int width, int height) {
         this.width = width;
         this.height = height;

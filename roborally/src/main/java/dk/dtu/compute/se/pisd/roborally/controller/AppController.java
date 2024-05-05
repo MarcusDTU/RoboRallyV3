@@ -26,11 +26,10 @@ import com.google.gson.GsonBuilder;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Observer;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
+import dk.dtu.compute.se.pisd.roborally.controller.field.*;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.Adapter;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard;
-import dk.dtu.compute.se.pisd.roborally.model.Board;
-import dk.dtu.compute.se.pisd.roborally.model.CommandCardField;
-import dk.dtu.compute.se.pisd.roborally.model.Player;
-import dk.dtu.compute.se.pisd.roborally.model.Space;
+import dk.dtu.compute.se.pisd.roborally.model.*;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -41,11 +40,10 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * ...
@@ -95,7 +93,7 @@ public class AppController implements Observer {
             }
 
             // XXX: V2
-            // board.setCurrentPlayer(board.getPlayer(0));
+            //board.setCurrentPlayer(board.getPlayer(0));
             gameController.startProgrammingPhase();
 
             roboRally.createBoardView(gameController);
@@ -115,7 +113,10 @@ public class AppController implements Observer {
         Board board = gameController.board;
 
         // gson object to serialize the board to a JSON string
-        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>())
+                .excludeFieldsWithoutExposeAnnotation()
+                .create();
 
         // get the user's home folder
         String homeFolder = System.getProperty("user.home");
@@ -144,10 +145,18 @@ public class AppController implements Observer {
      * @see Gson
      */
     public void loadGame(String path) throws IOException {
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>())
+                .excludeFieldsWithoutExposeAnnotation()
+                .create();
         Path data = Path.of(path);
-
         Board board = gson.fromJson(Files.readString(data), Board.class);
+
+        for (Player player : board.getPlayers()) {
+            if(player.getName().equals(board.getCurrentPlayer().getName())) {
+                board.setCurrentPlayer(player);
+            }
+        }
 
         // set the board's players' discarded piles, spaces, programmed cards, cards the player has in hand and their boards.
         for (Player player : board.getPlayers()) {
@@ -201,14 +210,6 @@ public class AppController implements Observer {
         currentPlayer.board = board;
 
         gameController = new GameController(board);
-
-        // start the appropriate phase
-        if(board.getPhase().name().equals("ACTIVATION")){
-            gameController.startActivationPhase(board.getStep());
-        } else {
-            gameController.startProgrammingPhase();
-        }
-
         roboRally.createBoardView(gameController);
     }
 
