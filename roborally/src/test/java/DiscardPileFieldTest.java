@@ -1,8 +1,11 @@
-import static org.junit.jupiter.api.Assertions.*;
-
+import dk.dtu.compute.se.pisd.roborally.model.Board;
+import dk.dtu.compute.se.pisd.roborally.model.DiscardPile;
+import dk.dtu.compute.se.pisd.roborally.model.DiscardPileField;
+import dk.dtu.compute.se.pisd.roborally.model.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import dk.dtu.compute.se.pisd.roborally.model.*;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class DiscardPileFieldTest {
 

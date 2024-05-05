@@ -1,7 +1,7 @@
-import static org.junit.jupiter.api.Assertions.*;
-
 import dk.dtu.compute.se.pisd.roborally.model.Damage;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class DamageTest {
     /**

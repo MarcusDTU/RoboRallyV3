@@ -1,7 +1,9 @@
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.Test;
 import dk.dtu.compute.se.pisd.roborally.model.Damage;
 import dk.dtu.compute.se.pisd.roborally.model.DamageCard;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class DamageCardTest {
     /**

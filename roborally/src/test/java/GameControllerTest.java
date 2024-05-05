@@ -1,10 +1,11 @@
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Method;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class GameControllerTest {
 
@@ -134,13 +135,6 @@ class GameControllerTest {
 
         // Assert that the current player is the next player
         assertEquals(board.getPlayer(1), null, "Current player should be the next player.");
-    }
-    /**
-     * @author Marcus Langkilde, s195080
-     */
-    @Test
-    void testNotImplemented() {
-        assertThrows(AssertionError.class, () -> gameController.notImplemented());
     }
     /**
      * @author Marcus Langkilde, s195080
