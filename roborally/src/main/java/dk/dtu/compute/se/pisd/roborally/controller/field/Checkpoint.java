@@ -23,6 +23,7 @@ public class Checkpoint extends FieldAction {
      * @param gameController the game controller
      * @param space the space the player is on
      * @return true if the player is on the checkpoint and have collected the previous checkpoint
+     * @author Nikolaj Schæbel, s220471@dtu.dk
      */
     @Override
     public boolean doAction(@NotNull GameController gameController, @NotNull Space space) {
