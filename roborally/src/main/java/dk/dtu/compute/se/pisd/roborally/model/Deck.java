@@ -1,5 +1,7 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -10,7 +12,7 @@ import java.util.Collections;
  * @author Haleef Abu Talib, s224523@dtu.dk
  */
 public class Deck {
-
+    @Expose
     public ArrayList<Command> initDeck;
     /**
      * Constructs a new deck with the initial set of command cards.
