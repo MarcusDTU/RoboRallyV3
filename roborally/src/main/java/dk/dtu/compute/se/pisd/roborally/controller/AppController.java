@@ -29,10 +29,7 @@ import dk.dtu.compute.se.pisd.roborally.RoboRally;
 import dk.dtu.compute.se.pisd.roborally.controller.field.*;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.Adapter;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard;
-import dk.dtu.compute.se.pisd.roborally.model.Board;
-import dk.dtu.compute.se.pisd.roborally.model.CommandCardField;
-import dk.dtu.compute.se.pisd.roborally.model.Player;
-import dk.dtu.compute.se.pisd.roborally.model.Space;
+import dk.dtu.compute.se.pisd.roborally.model.*;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -154,15 +151,13 @@ public class AppController implements Observer {
                 .create();
         Path data = Path.of(path);
         Board board = gson.fromJson(Files.readString(data), Board.class);
-        // UGLY HACK to make sure the observers is not null after deserialization
-        try {
-            Field observersField = Subject.class.getDeclaredField("observers");
-            observersField.setAccessible(true); // Make the field accessible
-            observersField.set(board, Collections.newSetFromMap(new WeakHashMap<Observer, Boolean>()));
-            observersField.setAccessible(false);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
+
+        for (Player player : board.getPlayers()) {
+            if(player.getName().equals(board.getCurrentPlayer().getName())) {
+                board.setCurrentPlayer(player);
+            }
         }
+
         // set the board's players' discarded piles, spaces, programmed cards, cards the player has in hand and their boards.
         for (Player player : board.getPlayers()) {
             // set the player's discarded pile.
@@ -215,16 +210,7 @@ public class AppController implements Observer {
         currentPlayer.board = board;
 
         gameController = new GameController(board);
-
-        // start the appropriate phase
-        if(board.getPhase().name().equals("ACTIVATION")){
-            gameController.startActivationPhase(board.getStep());
-        } else {
-            gameController.startProgrammingPhase();
-        }
-
         roboRally.createBoardView(gameController);
-
     }
 
     /**
