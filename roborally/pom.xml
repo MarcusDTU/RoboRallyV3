@@ -72,6 +72,12 @@
             <artifactId>javafx-fxml</artifactId>
             <version>${javafx.version}</version>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.1</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -137,7 +143,7 @@
                 <configuration>
                     <jlinkImageName>roborally</jlinkImageName>
                     <launcher>launcher</launcher>
-                    <mainClass>roborally/org.openjfx.App</mainClass>
+                    <mainClass>dk.dtu.compute.se.pisd.roborally.StartRoboRally</mainClass>
                 </configuration>
             </plugin>
         </plugins>

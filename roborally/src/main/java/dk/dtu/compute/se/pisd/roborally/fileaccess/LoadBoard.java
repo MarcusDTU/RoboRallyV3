@@ -25,13 +25,18 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import dk.dtu.compute.se.pisd.roborally.controller.field.FieldAction;
+import dk.dtu.compute.se.pisd.roborally.controller.field.Antenna;
+import dk.dtu.compute.se.pisd.roborally.controller.field.StartField;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.BoardTemplate;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
-import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 
-import java.io.*;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 /**
  * ...
@@ -44,6 +49,15 @@ public class LoadBoard {
     private static final String DEFAULTBOARD = "defaultboard";
     private static final String JSON_EXT = "json";
 
+    /**
+     * Load a board from a file with the given name. If the name is null, the
+     * default board is loaded.
+     *
+     * @param boardname the name of the board to be loaded
+     * @return the board loaded from the file
+     * @author Nikolaj Schæbel, s220471@dtu.dk
+     * @author Daniel Overballe Lerche, s235095@dtu.dk
+     */
     public static Board loadBoard(String boardname) {
         if (boardname == null) {
             boardname = DEFAULTBOARD;
@@ -75,7 +89,24 @@ public class LoadBoard {
 			    if (space != null) {
                     space.getActions().addAll(spaceTemplate.actions);
                     space.getWalls().addAll(spaceTemplate.walls);
+                    for (FieldAction action : space.getActions()) {
+                        if(action instanceof StartField){
+                            // TODO - Only one start field is allowed if it is there
+                            result.addStartSpace(space);
+                        } else if(action instanceof Antenna){
+                            if (result.getAntennaSpace() != null) {
+                                throw new IOException("More than one antenna found on the board!");
+                            }
+                            // TODO - Only one antenna is allowed if it is there
+                            result.setAntennaSpace(space);
+                        }
+                    }
                 }
+            }
+            if(result.getAntennaSpace() == null){
+                throw new IOException("No antenna found on the board!");
+            } else if(result.getStartSpaces().size() < 6){
+                throw new IOException("Not enough start fields found on the board. There needs to be 6 start fields!");
             }
 			reader.close();
 			return result;

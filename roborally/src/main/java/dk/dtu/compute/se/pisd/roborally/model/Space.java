@@ -21,8 +21,9 @@
  */
 package dk.dtu.compute.se.pisd.roborally.model;
 
+import com.google.gson.annotations.Expose;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
-import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
+import dk.dtu.compute.se.pisd.roborally.controller.field.FieldAction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,13 +38,19 @@ public class Space extends Subject {
 
     private Player player;
 
+    @Expose
     private List<Heading> walls = new ArrayList<>();
+    @Expose
     private List<FieldAction> actions = new ArrayList<>();
 
-    public final Board board;
+    public Board board;
 
-    public final int x;
-    public final int y;
+    @Expose
+    public int x;
+    @Expose
+    public int y;
+
+    public Space(){}
 
     public Space(Board board, int x, int y) {
         this.board = board;
